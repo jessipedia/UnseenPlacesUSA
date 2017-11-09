@@ -1,6 +1,6 @@
 # Node
 npm-debug.log
-./node_modules
+/tools/node_modules
 
 # Mac
 .DS_Store
