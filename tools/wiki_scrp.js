@@ -4,8 +4,12 @@ var request = require('request');
 
 var readableStream = fs.createReadStream('./lists/gold_mine.txt');
 var desc = "gold mine";
+
 var data = '';
 readableStream.setEncoding('utf8');
+
+const now = new Date();
+console.log(now);
 
 var model = {
     'name': '.firstHeading',
@@ -76,12 +80,14 @@ function gather(place, nm) {
                     //latitude
                     parsed.location.coordinates[1] = latlon[0];
                     parsed.source = url;
+                    parsed.added = now;
+                    delete parsed.geo;
 
                 } else {
                     return
                 }
 
-                delete parsed.geo;
+
 
                 var rejson = JSON.stringify(parsed, null, 2);
                 //console.log(rejson);
