@@ -3,12 +3,13 @@ var scrapy = require('node-scrapy');
 var request = require('request');
 
 var readableStream = fs.createReadStream('./lists/gold_mine.txt');
+var desc = "gold mine";
 var data = '';
 readableStream.setEncoding('utf8');
 
 var model = {
     'name': '.firstHeading',
-    'location': {
+    'geo': {
         selector: '.geo',
         unique: true
     },
@@ -64,18 +65,23 @@ function gather(place, nm) {
                 var parsed = JSON.parse(json);
 
 
-                if (parsed.location != null) {
-                    var latlon = parsed.location.split(';');
-                    parsed.description = "gold mine";
-                    parsed.lat = latlon[0];
-                    parsed.lon = latlon[1];
-                    parsed.lon = parsed.lon.replace(/\s/, '');
+                if (parsed.geo != null) {
+                    var latlon = parsed.geo.split(';');
+                    //remove the space
+                    latlon[1] = latlon[1].replace(/\s/, '');
+                    parsed.description = desc;
+                    parsed.location = {type: "Point", coordinates: []}
+                    //longitude
+                    parsed.location.coordinates[0] = latlon[1];
+                    //latitude
+                    parsed.location.coordinates[1] = latlon[0];
+                    parsed.source = url;
 
                 } else {
                     return
                 }
 
-                delete parsed.location;
+                delete parsed.geo;
 
                 var rejson = JSON.stringify(parsed, null, 2);
                 //console.log(rejson);
