@@ -2,6 +2,7 @@
 var fs = require('fs');
 var scrapy = require('node-scrapy');
 var request = require('request');
+var mongoose = require('mongoose');
 
 
 //read in the data in our list file
@@ -24,6 +25,38 @@ var model = {
         unique: true
     },
 };
+
+//mongoose data schema
+var placeSchema = mongoose.Schema({
+  name: String,
+  description: String,
+  location: {
+    type: String,
+    coordinates: [
+      Number,
+      Number
+    ]
+  },
+  source: String,
+  //Is this an acceptable date
+  added: Date
+
+
+}, { typeKey: '$type' })
+
+var Place = mongoose.model('Place', placeSchema);
+
+//connect to db (IS THIS THE RIGHT DB?)
+//Should I be useing createConnection here?
+mongoose.connect('mongodb://localhost/places',{useMongoClient: true});
+
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("Connected")
+});
+
 
 //read in the data
 readableStream.on('data', function(chunk) {
@@ -83,14 +116,12 @@ function gather(place, nm) {
                     var latlon = parsed.geo.split(';');
                     //remove the space
                     latlon[1] = latlon[1].replace(/\s/, '');
-                    parsed.description = desc;
-                    parsed.location = {type: "Point", coordinates: []}
+                    parsed.location = {type: "", coordinates: []}
                     //longitude
                     parsed.location.coordinates[0] = latlon[1];
                     //latitude
                     parsed.location.coordinates[1] = latlon[0];
                     parsed.source = url;
-                    parsed.added = now;
                     delete parsed.geo;
 
                 } else {
@@ -99,9 +130,30 @@ function gather(place, nm) {
 
                 //convert all values to JSON
                 var rejson = JSON.stringify(parsed, null, 2);
+                //console.log(rejson);
+
+                //var placeCreate = new Place({rejson});
+                var placeCreate = new Place({
+                  name: parsed.name,
+                  description: desc,
+                  location: {
+                    type: "Point",
+                    coordinates: [
+                      parsed.location.coordinates[0],
+                      parsed.location.coordinates[1]
+                    ]
+                  },
+                  source: parsed.source,
+                  added: now
+                });
+                console.log(placeCreate);
+
+                placeCreate.save(function (err, placeCreate) {
+                  if (err) return console.error(err);
+                });
 
                 //add this entry to JSON file
-                fs.appendFile('./json/gold_mine.json', '\n\n' + rejson + ',', finished);
+                //fs.appendFile('./json/gold_mine.json', '\n\n' + rejson + ',', finished);
 
                 function finished(err) {
                 }
