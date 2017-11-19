@@ -3,8 +3,6 @@ var fs = require('fs');
 var scrapy = require('node-scrapy');
 var request = require('request');
 var mongoose = require('mongoose');
-var assert = require('assert');
-
 
 //read in the data in our list file
 var readableStream = fs.createReadStream('./lists/alaska_state_prisons.txt');
@@ -15,10 +13,6 @@ var data = '';
 
 //this variable is used to set the description field
 var desc = "";
-//this is a date contant to set the added  field
-const now = new Date();
-
-mongoose.Promise = global.Promise;
 
 //the data model for node-scrapy
 var model = {
@@ -30,6 +24,7 @@ var model = {
 };
 
 //mongoose data schema
+//need to set typeKey to use 'type' for geoJSON
 var placeSchema = mongoose.Schema({
   name: String,
   description: String,
@@ -41,59 +36,34 @@ var placeSchema = mongoose.Schema({
     ]
   },
   source: String,
-  //Is this an acceptable date
   added: Date
-
-
 }, { typeKey: '$type' })
-
+//Set a variable so we can use our model quickly
 var Place = mongoose.model('Place', placeSchema);
 
-// connect to db (IS THIS THE RIGHT DB?)
-// Should I be useing createConnection here?
-mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
+//Set a const for recording the date & time
+const now = new Date();
 
-var db = mongoose.connection;
+//Counter for tracking saves to the db
+//so we can close db when saves are complete
+var count = 0;
 
-//db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log("Connected")
-});
-
-
-//read in the data
 readableStream.on('data', function(chunk) {
     data += chunk;
 });
 
-//split the data on commas into an array
-//trim out extra characters and spaces
-//cycle through the array
-//call the gather function to scrape data and create JSON
-function makeData(){
-   readableStream.on('end', function() {
-    var list = data.split(',');
+readableStream.on('end', function() {
+   list = data.split(',');
 
-    for (var i = 0; i < list.length; i++) {
-        var name = list[i];
-        var strp = list[i].trim();
-        strp = list[i].replace(/\([^)]*\)/, '');
-        strp = encodeURIComponent(strp);
-        //console.log(strp);
-        gather(strp, name);
-
-    }
-
-    //mongoose.connection.close();
-  });
-}
-
-makeData.then(function(){
-  console.log("Exit");
-  process.exit();
-})
-
-//mongoose.disconnect();
+  for (var i = 0; i < list.length; i++) {
+      counter = i;
+      var name = list[i];
+      var strp = list[i].trim();
+      strp = list[i].replace(/\([^)]*\)/, '');
+      strp = encodeURIComponent(strp);
+      gather(strp, name);
+  }
+});
 
 function gather(place, nm) {
   //use wikipedia api to search for data
@@ -102,8 +72,10 @@ function gather(place, nm) {
 
     //make the request to the api
     request(wikiapi, function(err, res, body) {
+        console.log("Searching wikipedia");
         if (err != null) {
             console.log("Request " + err);
+            return
         } else {
             var parsed = JSON.parse(body);
             if (!parsed[3]) {
@@ -111,14 +83,14 @@ function gather(place, nm) {
             }
             //find the article url in the returned api data
             var url = parsed[3][0];
+            console.log("found url");
 
-            //pass the url into scrapy
             scrapy.scrape(url, model, function(err, data) {
                 if (err) {
                     console.log(nm);
                     console.log(wikiapi);
                     //record searches that don't work
-                    fs.appendFile('broken.txt', nm + ", " + desc + ", " + wikiapi);
+                    fs.appendFileSync('broken.txt', nm + ", " + desc + ", " + wikiapi);
                     return
                 }
                 //convert js values to JSON
@@ -144,9 +116,7 @@ function gather(place, nm) {
 
                 //convert all values to JSON
                 var rejson = JSON.stringify(parsed, null, 2);
-                //console.log(rejson);
 
-                //var placeCreate = new Place({rejson});
                 var placeCreate = new Place({
                   name: parsed.name,
                   description: desc,
@@ -162,40 +132,24 @@ function gather(place, nm) {
                 });
                 console.log(placeCreate);
 
-                // mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
-                //
-                // var db = mongoose.connection;
-                //
-                // //db.on('error', console.error.bind(console, 'connection error:'));
-                // db.once('open', function() {
-                //   console.log("Connected")
-                // });
-
-
-                var promise = placeCreate.save(function (err) {
-                  if (err) return console.error(err);
-                  console.log("Saved");
-                  //mongoose.disconnect();
-                  //console.log("Exit");
-                  //process.exit();
-                });
-                //assert.ok(promise instanceof require('mpromise'));
-
-
-
-                promise.then(function (doc) {
-                  //mongoose.disconnect();
-                  //console.log("Exit");
-                  //process.exit();
-
-                });
-
-                //add this entry to JSON file
-                //fs.appendFile('./json/gold_mine.json', '\n\n' + rejson + ',', finished);
-
-                function finished(err) {
+                count += 1;
+                if (count == 1) {
+                  mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
                 }
+                placeCreate.save(function(err) {
+                  if (err) {
+                    console.log("Error saving: " + err);
+                  } else {
+                    count -= 1;
+                    if (count === 0){
+                      mongoose.connection.close('close', function(){
+                      console.log("Closing Connection");
+                    });
+                    }
+
+                  }
+                });
             })
-        }
+          }
     })
 }
