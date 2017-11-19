@@ -5,14 +5,14 @@ var request = require('request');
 var mongoose = require('mongoose');
 
 //read in the data in our list file
-var readableStream = fs.createReadStream('./lists/alaska_state_prisons.txt');
+var readableStream = fs.createReadStream('./lists/arizona_state_prisons.txt');
 //set the encoding of the data stream
 readableStream.setEncoding('utf8');
 //establish the data variable for the incoming data
 var data = '';
 
 //this variable is used to set the description field
-var desc = "";
+var desc = "Arizona state prison";
 
 //the data model for node-scrapy
 var model = {
@@ -133,20 +133,22 @@ function gather(place, nm) {
                 console.log(placeCreate);
 
                 count += 1;
+                console.log(count);
                 if (count == 1) {
-                  mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
+                  mongoose.connect('mongodb://localhost/up_prod',{useMongoClient: true});
                 }
                 placeCreate.save(function(err) {
+                  count -= 1;
+                  console.log(count);
+                  if (count === 0){
+                    mongoose.disconnect();
+                  //   mongoose.connection.close('close', function(){
+                  //   console.log("Closing Connection");
+                  // });
+                  }
+
                   if (err) {
                     console.log("Error saving: " + err);
-                  } else {
-                    count -= 1;
-                    if (count === 0){
-                      mongoose.connection.close('close', function(){
-                      console.log("Closing Connection");
-                    });
-                    }
-
                   }
                 });
             })
