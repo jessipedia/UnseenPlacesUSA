@@ -5,14 +5,14 @@ var request = require('request');
 var mongoose = require('mongoose');
 
 //read in the data in our list file
-var readableStream = fs.createReadStream('./lists/arizona_state_prisons.txt');
+var readableStream = fs.createReadStream('./lists/wyoming_state_prisons.txt');
 //set the encoding of the data stream
 readableStream.setEncoding('utf8');
 //establish the data variable for the incoming data
 var data = '';
 
 //this variable is used to set the description field
-var desc = "Arizona state prison";
+var desc = "Wyoming state prison";
 
 //the data model for node-scrapy
 var model = {
@@ -67,8 +67,7 @@ readableStream.on('end', function() {
 
 function gather(place, nm) {
   //use wikipedia api to search for data
-  var wikiapi = 'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=' +
-      '&search=' + place;
+  var wikiapi = 'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=' + place;
 
     //make the request to the api
     request(wikiapi, function(err, res, body) {
@@ -142,9 +141,6 @@ function gather(place, nm) {
                   console.log(count);
                   if (count === 0){
                     mongoose.disconnect();
-                  //   mongoose.connection.close('close', function(){
-                  //   console.log("Closing Connection");
-                  // });
                   }
 
                   if (err) {
