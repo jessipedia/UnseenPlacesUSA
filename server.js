@@ -14,7 +14,7 @@ var placeSchema = mongoose.Schema({
   },
   source: String,
   added: Date
-}, { typeKey: '$type' })
+}, { typeKey: '$type' });
 //Set a variable so we can use our model quickly
 var Place = mongoose.model('Place', placeSchema);
 
@@ -37,17 +37,16 @@ function showAll(req, res) {
   res.send("this is where the search results go");
 }
 
-//?search=:search&state=:state'
-
 app.get('/api/place', searchResult);
 
 function searchResult(req, res) {
   var data = req.query;
   var search = data.search;
   var loc = data.state;
+  var query = new RegExp(search, 'i');
   mongoose.connect('mongodb://localhost/up_prod',{useMongoClient: true});
   console.log('DB Connected');
-  Place.find({ 'description' : search }, function(err, docs){
+  Place.find({ 'description' : { $regex: query } }, function(err, docs){
     if (err) {
       res.send(err)
       mongoose.disconnect();
@@ -59,20 +58,5 @@ function searchResult(req, res) {
       console.log('DB Disconnected');
       //console.log(docs);
   }
-  });
-
-  //res.send("You are looking for " + search + " in " + loc + ".");
-  //console.log("You are looking for " + search + " in " + loc + ".");
-  //res.send("place info will go here " + loc)
-
-  //mongoose.disconnect();
-  //console.log('DB Disconnected');
-}
-
-function results() {
-  if (err) {
-    return handleError(err);
-  } else{
-    console.log('Searching');
-  }
+  })
 }
