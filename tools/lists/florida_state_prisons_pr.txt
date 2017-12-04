@@ -1,0 +1,7 @@
+Bay Correctional Facility,
+Blackwater River Correctional Facility,
+Gadsden Correctional Facility,
+Graceville Correctional Facility,
+Lake City Correctional Facility,
+Moore Haven Correctional Facility,
+South Bay Correctional Facility

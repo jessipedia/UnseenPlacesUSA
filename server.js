@@ -49,40 +49,7 @@ function listen() {
 
 app.use(express.static('public'));
 
-app.get('/api/all', showAll);
-
-// Callback
-function showAll(req, res) {
-  //give all results here
-  res.send("this is where the search results go");
-}
-
 app.get('/api/place', placeResult);
-
-function searchResult(req, res) {
-  var data = req.query;
-  var search = data.search;
-  var loc = data.state;
-  var query = new RegExp(search, 'i');
-  mongoose.connect('mongodb://localhost/up_prod',{useMongoClient: true});
-  console.log('DB Connected');
-  Place.find({ 'description' : { $regex: query } }, function(err, docs){
-    if (err) {
-      res.send(err)
-      mongoose.disconnect();
-      console.log('DB Disconnected');
-      //console.log(err);
-  } else {
-      res.send(docs);
-      mongoose.disconnect();
-      console.log('DB Disconnected');
-      //console.log(docs);
-  }
-  })
-}
-
-// var neighborhood = db.neighborhoods.findOne( { geometry: { $geoIntersects: { $geometry: { type: "Point", coordinates: [ -73.93414657, 40.82302903 ] } } } } )
-// db.restaurants.find( { location: { $geoWithin: { $geometry: neighborhood.geometry } } } ).count()
 
 function placeResult(req, res) {
   var data = req.query;
@@ -90,25 +57,68 @@ function placeResult(req, res) {
   var loc = data.state;
   console.log(loc);
   mongoose.connect('mongodb://localhost/up_prod',{useMongoClient: true});
+  console.log('DB Connected');
 
-  State.findOne({ 'properties.NAME' : loc }, function(err, docs){
+  if (loc) {
 
-    var state = docs;
+    console.log('Searching for loc');
+    State.findOne({ 'properties.NAME' : data.state }, function(err, state){
 
-    Place.find( { 'location': { $geoWithin: { $geometry: state.geometry } } } , function(err, docs){
       if (err) {
         res.send(err)
         mongoose.disconnect();
-        console.log(docs);
         console.log('err DB Disconnected');
+        //console.log(err);
+    } else if (search){
+        search = data.search;
+        var query = new RegExp(search, 'i');
+        Place.find( { 'location': { $geoWithin: { $geometry: state.geometry } }, 'description' : { $regex: query } } , function(err, docs){
+          if (err) {
+            res.send(err)
+            mongoose.disconnect();
+            console.log('DB Disconnected');
+            //console.log(err);
+          } else {
+            res.send(docs);
+            mongoose.disconnect();
+            console.log('DB Disconnected');
+            //console.log(docs);
+          }
+        })
+    } else{
+      Place.find( { 'location': { $geoWithin: { $geometry: state.geometry } } } , function(err, docs){
+        if (err) {
+          res.send(err)
+          mongoose.disconnect();
+          console.log(docs);
+          console.log('err DB Disconnected');
+          //console.log(err);
+        } else {
+          res.send(docs);
+          mongoose.disconnect();
+          console.log('DB Disconnected');
+        }
+      })
+    }
+    })
+  } else if (search) {
+    search = data.search;
+
+    var query = new RegExp(search, 'i');
+    Place.find({ 'description' : { $regex: query } }, function(err, docs){
+      if (err) {
+        res.send(err)
+        mongoose.disconnect();
+        console.log('DB Disconnected');
         //console.log(err);
     } else {
         res.send(docs);
         mongoose.disconnect();
         console.log('DB Disconnected');
         //console.log(docs);
-      }
+    }
     })
-
-  });
+  } else{
+    res.send('ALL RESULTS')
+  }
 }

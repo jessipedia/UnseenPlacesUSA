@@ -1,0 +1,10 @@
+El Dorado Correctional Facility,
+Ellsworth Correctional Facility,
+Hutchinson Correctional Facility,
+Kansas Juvenile Correctional Complex,
+Lansing Correctional Facility,
+Larned Correctional Mental Health Facility,
+Larned Juvenile Correctional Facility,
+Norton Correctional Facility,
+Topeka Correctional Facility,
+Winfield Correctional Facility

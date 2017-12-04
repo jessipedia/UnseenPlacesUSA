@@ -1,0 +1,7 @@
+Eastern Oregon Youth Correctional Facility,
+Hillcrest Youth Correctional Facility,
+MacLaren Youth Correctional Facility,
+North Coast Youth Correctional Facility,
+Rogue Valley Youth Correctional Facility,
+Tillamook Youth Correctional Facility,
+Oak Creek Youth Correctional Facility

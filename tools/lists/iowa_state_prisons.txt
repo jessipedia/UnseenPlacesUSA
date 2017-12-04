@@ -1,0 +1,9 @@
+Anamosa State Penitentiary,
+Clarinda Correctional Facility,
+Fort Dodge Correctional Facility,
+Iowa Correctional Institution for Women,
+Iowa Medical and Classification Center,
+Iowa State Penitentiary,
+Mount Pleasant Correctional Facility,
+Newton Correctional Facility,
+North Central Correctional Facility

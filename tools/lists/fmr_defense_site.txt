@@ -1,0 +1,12 @@
+Anclote Missile Tracking Annex,
+Ashland Radar Station,
+Bayshore Bomb Scoring Site,
+BOMARC Missile Accident Site,
+Genesee Mountain Park Training Annex,
+Gentile Air Force Station,
+Interior Radar Bomb Scoring Site,
+Louis Blotner Radar Bomb Scoring Site,
+Snark Missile Launch Complex,
+Statesboro Bomb Scoring Site,
+Suffolk County Air Force Base Missile Annex,
+Tonopah Bombing Range (FUDS)

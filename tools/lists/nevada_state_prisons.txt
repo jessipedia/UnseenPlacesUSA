@@ -1,0 +1,9 @@
+Ely State Prison,
+High Desert State Prison,
+Lovelock Correctional Center,
+Northern Nevada Correctional Center and Stewart Conservation Camp,
+Northern Nevada Restitution Center,
+Southern Desert Correctional Center,
+Southern Nevada Correctional Center,
+Florence McClure Women's Correctional Center,
+Warm Springs Correctional Center

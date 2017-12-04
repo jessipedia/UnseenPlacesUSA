@@ -1,0 +1,13 @@
+Faribault,
+Lino Lakes,
+Moose Lake,
+Oak Park Heights,
+St. Cloud,
+Stillwater,
+Red Wing Adults,
+Rush City,
+Willow River,
+Shakopee,
+Togo,
+Togo Juvenile,
+Red Wing
