@@ -19,24 +19,28 @@ var placeSchema = mongoose.Schema({
 //Set a variable so we can use our model quickly
 var Place = mongoose.model('Place', placeSchema);
 
-var stateSchema = mongoose.Schema({
+var shapeSchema = mongoose.Schema({
   properties:
   {
-    GEO_ID: String,
-    STATE: String,
-    NAME: String,
-    LSAD: String,
-    CENSUSAREA: Number
+    Name: String,
+    STATEFP: Number,
+    STATENS: Number,
+    AFFGEOID: String,
+    GEOID: Number,
+    STUSPS: String,
+    LSAD: Number,
+    ALAND: Number,
+    AWATER: Number
   },
   geometry:
   {
     type: String,
-    coordinates: [[]]
-    //index: '2dsphere'
+    coordinates:
+    [[]]
   }
 }, { typeKey: '$type' });
 
-var State = mongoose.model('State', stateSchema);
+var Shape = mongoose.model('Shape', shapeSchema);
 
 var server = app.listen(process.env.PORT || 3000, listen);
 
@@ -62,7 +66,7 @@ function placeResult(req, res) {
   if (loc) {
 
     console.log('Searching for loc');
-    State.findOne({ 'properties.NAME' : data.state }, function(err, state){
+    Shape.findOne({ 'properties.Name' : data.state }, function(err, shape){
 
       if (err) {
         res.send(err)
@@ -72,7 +76,7 @@ function placeResult(req, res) {
     } else if (search){
         search = data.search;
         var query = new RegExp(search, 'i');
-        Place.find( { 'location': { $geoWithin: { $geometry: state.geometry } }, 'description' : { $regex: query } } , function(err, docs){
+        Place.find( { 'location': { $geoWithin: { $geometry: shape.geometry } }, 'description' : { $regex: query } } , function(err, docs){
           if (err) {
             res.send(err)
             mongoose.disconnect();
@@ -86,7 +90,7 @@ function placeResult(req, res) {
           }
         })
     } else{
-      Place.find( { 'location': { $geoWithin: { $geometry: state.geometry } } } , function(err, docs){
+      Place.find( { 'location': { $geoWithin: { $geometry: shape.geometry } } } , function(err, docs){
         if (err) {
           res.send(err)
           mongoose.disconnect();
