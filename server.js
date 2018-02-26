@@ -53,22 +53,32 @@ function listen() {
 
 app.use(express.static('public'));
 
-app.get('/api/place', placeResult);
+app.get('/api/places', placeResult);
 
 function placeResult(req, res) {
   var data = req.query;
   var search = data.search;
-  var loc = data.state;
-  console.log(loc);
+  var loc = data.location;
+  var name;
+  //console.log(loc);
   mongoose.connect('mongodb://localhost/up_prod',{useMongoClient: true});
   console.log('DB Connected');
 
   if (loc) {
 
-    console.log('Searching for loc');
-    Shape.findOne({ 'properties.Name' : data.state }, function(err, shape){
+    if (loc.length > 2){
+    name = 'properties.Name';
+    } else {
+    name = 'properties.STUSPS';
+    }
 
-      if (err) {
+    console.log('Searching for loc');
+    Shape.findOne({ [name] : data.location }, function(err, shape){
+      //console.log(shape);
+      if (shape === null){
+        res.send('Invalid Location Name')
+      }
+      else if (err) {
         res.send(err)
         mongoose.disconnect();
         console.log('err DB Disconnected');
@@ -123,6 +133,18 @@ function placeResult(req, res) {
     }
     })
   } else{
-    res.send('ALL RESULTS')
+    Place.find({}, function(err, docs){
+      if (err) {
+        res.send(err)
+        mongoose.disconnect();
+        console.log('DB Disconnected');
+        //console.log(err);
+    } else {
+        res.send(docs);
+        mongoose.disconnect();
+        console.log('DB Disconnected');
+        //console.log(docs);
+    }
+    })
   }
 }
