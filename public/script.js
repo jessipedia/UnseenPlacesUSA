@@ -1,33 +1,42 @@
-let usGeoJSON = 'cb_2016_us_state_500k_edit_v2.geojson';
+(function (){
 
-var projection = d3.geo.albers();
-var path = d3.geo.path().projection(projection);
+var margin = {top: 0, right: 0, bottom: 0, left: 0};
+var width = 800 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+var svg = d3.selectAll('div')
+            .append('svg')
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+console.log('After SVG');
+
+d3.queue()
+    .defer(d3.json, "states.json")
+    .await(ready);
+
+var projection = d3.geoAlbersUsa()
+                    .translate([ width / 2, height / 2])
+                    .scale(850);
+
+var path = d3.geoPath()
+            .projection(projection);
+
+function ready (error, data){
+  console.log(data);
+
+  var states = topojson.feature(data, data.objects.usStates).features;
+  console.log(states);
+
+  svg.selectAll(".states")
+    .attr("class", "state")
+    .data(states)
+    .enter().append("path")
+    .attr("d", path);
 
 
-d3.json(usGeoJSON, function(data){
+}
 
-  var mapContainer = d3.select('#mapContainer').append('svg')
-      .attr("preserveAspectRatio", "xMinYMin meet")
-      .attr("viewBox", "0 0 960 500")
-      .classed("card", true)
-
-  var group = mapContainer.selectAll('g')
-     .data(data.features)
-     .enter()
-     .append('g')
-
- var map = group.append("path")
-     .attr("d", path)
-     .attr("class", "area")
-     .style({
-       fill: 'none',
-       stroke: "#6E6E6E",
-     })
-})
-
-
-// d3.json("http://localhost:3000/api/places", function(data) {
-//   console.log(data);
-//
-//   var map = d3.select('').
-// })
+})();
