@@ -6,22 +6,36 @@
         <title></title>
         <meta name="description" content="">
         <style>
+          #title {
+            margin-bottom: 50px;
+          }
+
           svg {
             background: #efefef;
+            display: block;
+            margin: auto;
+            margin-bottom: 3em;
           }
+
+          .place {
+            fill : #ffffff;
+          }
+
+
+
         </style>
         <script src="d3/d3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
         <script src="https://d3js.org/topojson.v1.min.js"></script>
     </head>
     <body>
-
-        <p>Heeelloooooooo</p>
-        <p>Banana</p>
+        <h1 id="title">UnseenPlacesUSA</h1>
+        <p>Search Places:</p>
+        <p><input id="search" type="text" value=""></p>
+        <p><button type="submit" onClick="outputtext()">Submit</button></p>
         <div id="map"></div>
-        <div id="globe"></div>
-        <script language="javascript" type="text/javascript" src="script_globe.js"></script>
+        <div id="bar"></div>
         <script language="javascript" type="text/javascript" src="script.js"></script>
-        <script language="javascript" type="text/javascript" src="color.js"></script>
+        <script language="javascript" type="text/javascript" src="count.js"></script>
     </body>
 </html>

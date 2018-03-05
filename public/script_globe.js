@@ -31,12 +31,12 @@ console.log('Loding Globe');
             .range([90, -90]);
 
 
-  //
-  // svg.on('mousemove', function(){
-  //   var p = d3.mouse(this);
-  //   projection.rotate([λ(p[0]), φ(p[1])]);
-  //   svg.selectAll("path").attr("d", path);
-  // })
+
+  svg.on('mousemove', function(){
+    var p = d3.mouse(this);
+    projection.rotate([λ(p[0]), φ(p[1])]);
+    svg.selectAll("path").attr("d", path);
+  })
 
   d3.queue()
     .defer(d3.json, "custom.geo.json")
