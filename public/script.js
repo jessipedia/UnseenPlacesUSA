@@ -45,10 +45,10 @@ function ready (error, dataShape, dataPlace){
   var states = topojson.feature(dataShape, dataShape.objects.usStates).features;
   console.log(states);
 
-  svgMap.selectAll(".states")
-    .attr("class", "state")
+  svgMap.selectAll(".state")
     .data(states)
     .enter().append("path")
+    .attr("class", "state")
     .attr("d", path);
 
   console.log(dataPlace);
@@ -74,6 +74,8 @@ function ready (error, dataShape, dataPlace){
         console.log(e);
       }
     })
+    //.on('mouseover', tip.show)
+    //.on('mouseout', tip.hide)
 }
 
 function change(error, stateShapes, dataPlace){

@@ -1,16 +1,5 @@
 var placeData = "http://localhost:3000/api/places";
 
-var margin = {top: 20, right: 20, bottom: 20, left: 20};
-var width = 1000 - margin.left - margin.right,
-    height = 1000 - margin.top - margin.bottom;
-
-var svgBar = d3.select('#bar')
-            .append('svg')
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 d3.queue()
   .defer(d3.json, placeData)
   .await(ready);
@@ -47,12 +36,6 @@ function ready(error, dataPlace){
      }
    }
 
-   //console.log(data);
-
-   // for (var i = 0; i < data.length; i++) {
-   //   console.log(data[i].name);
-   // }
-
    var group = [
    {
    name: "private state prison",
@@ -67,35 +50,35 @@ function ready(error, dataPlace){
 
    var privatePrisonTotal = 0;
    var prisonTotal = 0;
-   var expr = /state prison/;
-   console.log(data);
-   console.log(data.length);
 
     for (var i = 0; i < data.length; i++) {
-      //console.log(data[i].name);
       if (data[i].name.includes('private prison')){
        privatePrisonTotal = privatePrisonTotal + data[i].count;
-       console.log(data[i].name);
      } else if (data[i].name.includes('state prison')){
        prisonTotal = prisonTotal + data[i].count;
-       console.log(data[i].name);
      } else if (data[i].name.includes('juvenile prison')){
        prisonTotal = prisonTotal + data[i].count;
-       console.log(data[i].name);
      } else if (data[i].name.includes('work release')){
        prisonTotal = prisonTotal + data[i].count;
-       console.log(data[i].name);
      } else {
        group.push({name: data[i].name, count: data[i].count})
      }
     };
     group[0].count = privatePrisonTotal;
     group[1].count = prisonTotal;
-    console.log(privatePrisonTotal);
-    console.log(prisonTotal);
-    console.log(group);
 
-   var y = -10;
+
+    var margin = {top: 20, right: 20, bottom: 20, left: 20};
+    var barHeight = 20;
+    var width = 1000 - margin.left - margin.right,
+        height = ((barHeight + 12) * group.length) - margin.top - margin.bottom;
+
+    var svgBar = d3.select('#bar')
+                .append('svg')
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
    svgBar.selectAll('.bar')
       .data(group)
@@ -105,16 +88,34 @@ function ready(error, dataPlace){
         //var count = d.count
         return d.count;
       })
-      .attr("height", 20)
-      .attr("x", 200)
-      .attr("y", function (){
-        y = y + 30;
+      .attr("height", barHeight)
+      .attr("x", 250)
+      .attr("y", function (d, i){
+        y = i *30
         return y
       })
 
-  svgBar.selectAll('text')
+    // svgBar.selectAll("div")
+    //   .data(group)
+    //   .attr("class", "textDiv")
+    //   .enter().append("div")
+    //   .attr("y", function (d, i){
+    //     y = i * 30 + 2;
+    //     return y
+    //   })
+    //   .attr("x", 10)
+    //   .attr("width", 50)
+    //   .attr("height", barHeight)
+    //   .append("text")
+    //   .text(function(d) { return d.name; })
+
+  svgBar.selectAll("text")
       .data(group)
-      .attr("y", 50)
+      .enter().append("text")
+      .attr("y", function (d, i){
+        y = i * 30 + 3;
+        return y
+      })
       .attr("x", 10)
       .attr("dy", ".75em")
       .text(function(d) { return d.name; });
