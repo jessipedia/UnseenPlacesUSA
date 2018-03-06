@@ -1,9 +1,8 @@
 var placeData = "http://localhost:3000/api/places";
-var data = [];
 
 var margin = {top: 20, right: 20, bottom: 20, left: 20};
 var width = 1000 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    height = 1000 - margin.top - margin.bottom;
 
 var svgBar = d3.select('#bar')
             .append('svg')
@@ -19,6 +18,7 @@ d3.queue()
 function ready(error, dataPlace){
   //console.log(dataPlace);
   var places = [];
+  var data = [];
 
   for (i = 0; i < dataPlace.length; i++) {
     try{
@@ -31,11 +31,10 @@ function ready(error, dataPlace){
   var current = null;
   var cnt = 0;
   places = places.sort();
-  //console.log(places);
+
    for (var i = 0; i <= places.length; i++) {
      if (places[i] != current) {
        if (cnt > 0){
-       //make a new data entry and reset current to 1
        data.push({name: current, count: cnt})
        current = places[i];
        cnt = 1;
@@ -44,13 +43,80 @@ function ready(error, dataPlace){
          cnt = 1;
        }
      }else{
-       //count another one in the current entry
        cnt++;
      }
    }
 
+   //console.log(data);
+
+   // for (var i = 0; i < data.length; i++) {
+   //   console.log(data[i].name);
+   // }
+
+   var group = [
+   {
+   name: "private state prison",
+   count: 0
+    },
+
+   {
+    name: "state prison",
+    count: 0
+    }
+   ];
+
+   var privatePrisonTotal = 0;
+   var prisonTotal = 0;
+   var expr = /state prison/;
+   console.log(data);
+   console.log(data.length);
+
+    for (var i = 0; i < data.length; i++) {
+      //console.log(data[i].name);
+      if (data[i].name.includes('private prison')){
+       privatePrisonTotal = privatePrisonTotal + data[i].count;
+       console.log(data[i].name);
+     } else if (data[i].name.includes('state prison')){
+       prisonTotal = prisonTotal + data[i].count;
+       console.log(data[i].name);
+     } else if (data[i].name.includes('juvenile prison')){
+       prisonTotal = prisonTotal + data[i].count;
+       console.log(data[i].name);
+     } else if (data[i].name.includes('work release')){
+       prisonTotal = prisonTotal + data[i].count;
+       console.log(data[i].name);
+     } else {
+       group.push({name: data[i].name, count: data[i].count})
+     }
+    };
+    group[0].count = privatePrisonTotal;
+    group[1].count = prisonTotal;
+    console.log(privatePrisonTotal);
+    console.log(prisonTotal);
+    console.log(group);
+
+   var y = -10;
+
    svgBar.selectAll('.bar')
-      .data(data)
+      .data(group)
       .attr("class", "bar")
+      .enter().append("rect")
+      .attr("width", function (d){
+        //var count = d.count
+        return d.count;
+      })
+      .attr("height", 20)
+      .attr("x", 200)
+      .attr("y", function (){
+        y = y + 30;
+        return y
+      })
+
+  svgBar.selectAll('text')
+      .data(group)
+      .attr("y", 50)
+      .attr("x", 10)
+      .attr("dy", ".75em")
+      .text(function(d) { return d.name; });
 
 }
