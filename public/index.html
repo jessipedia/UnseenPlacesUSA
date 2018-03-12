@@ -29,10 +29,24 @@
             fill: lightcoral;
           }
 
+          .bar:hover {
+            fill: lightcoral;
+          }
+
+          .numText{
+            fill: #efefef;
+          }
+
+          .bar:hover + .numText{
+            fill: black;
+          }
+
           #mapid {
             height: 75em;
             width: 50%;
           }
+
+
 
 
         </style>
@@ -48,7 +62,7 @@
         <p><input id="search" type="text" value=""></p>
         <p><button type="submit" onClick="outputtext()">Submit</button></p>
         <div id="map"></div>
-        <div id="bar"></div>
+        <div id="countBox"></div>
         <script language="javascript" type="text/javascript" src="script.js"></script>
         <script language="javascript" type="text/javascript" src="count.js"></script>
         <script language="javascript" type="text/javascript" src="config.js"></script>

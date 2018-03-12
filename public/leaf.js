@@ -9,7 +9,7 @@ var myIcon = L.icon({
 //I do not understand this promise
 fetch(url)
   .then(res => res.json())
-  .then((data) => {
+  .then(data => {
     console.log('Checkout this JSON! ', data);
     for (var i = 0; i < data.length; i++) {
       placeMarker[i] = L.marker([data[i].location.coordinates[1], data[i].location.coordinates[0]], {icon: myIcon})
