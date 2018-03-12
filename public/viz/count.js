@@ -1,7 +1,7 @@
 var placeData = "http://localhost:3000/api/places";
 
 loadJSON(placeData)
-  .then(result => draw(count(result)));
+  .then(result => drawBar(count(result)));
 
 function loadJSON(url){
   return new Promise(resolve => {
@@ -37,7 +37,7 @@ function count(data){
     return counted;
 }
 
-function draw(data){
+function drawBar(data){
       var margin = {top: 0, right: 0, bottom: 0, left: 0};
       var barHeight = 20;
       var width = 1000 - margin.left - margin.right,
