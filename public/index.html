@@ -28,17 +28,12 @@
           }
 
           .box{
-            padding-left: 10px;
-            padding-right: 10px;
-            padding-top: 10px;
+            background: #efefef;
+            margin: 10px;
           }
 
           .boxHead{
             background: #efefef;
-          }
-
-          .boxBody:hover{
-            max-height: 800px;
           }
 
           .boxBody{
@@ -63,7 +58,10 @@
             display: inline-block;
           }
 
-
+          input[type="checkbox"]:checked ~ .boxBody {
+              max-height: 800px;
+            }
+          }
 
           p{
             display: inline-block;
@@ -80,10 +78,10 @@
         <div id="map"></div>
         <div id="container">
           <div class="box">
-            <div class="boxHead">
-              <h1 class="placeNameHeader">Cool Place!</h1>
-              <input id="toggle" type="checkbox" checked>
-            </div>
+
+              <h1 class="placeNameHeader">First Place</h1>
+              <input id="toggle" type="checkbox">
+
             <div class="boxBody">
               <div class="boxBodyContent">
                   <img src="image.jpg" class="satImage">
@@ -93,11 +91,13 @@
             </div>
           </div>
           <div class="box">
-            <div class="boxHead">
-              <h1 class="placeNameHeader">Cool Place!</h1>
-            </div>
+              <h1 class="placeNameHeader">Second Place</h1>
+              <input id="toggle" type="checkbox">
             <div class="boxBody">
               <div class="boxBodyContent">
+                <img src="image.jpg" class="satImage">
+                <p>Aliquam rhoncus, felis et sodales congue, erat arcu tincidunt est, aliquet scelerisque lectus nibh vitae odio. Donec congue lectus eget tincidunt posuere. Mauris vel arcu pellentesque, posuere metus at, euismod nunc. Nunc vel massa fermentum, venenatis turpis in, semper sapien. Donec quis nibh tincidunt, faucibus neque ut, pretium dolor. Fusce non aliquam lorem. Donec ut libero at velit fringilla blandit ac in risus. Vestibulum consectetur nisi sit amet risus accumsan, non aliquam massa convallis. Integer rhoncus felis ut metus volutpat pharetra. Quisque sit amet dolor iaculis, rhoncus nisl quis, lobortis lectus. Curabitur nec ultrices enim, ut porta velit.
+                </p>
               </div>
             </div>
           </div>
