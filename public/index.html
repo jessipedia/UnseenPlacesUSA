@@ -38,9 +38,9 @@
 
           .boxBody{
             background: #efefef;
-            max-height: 10px;
+            max-height: 0px;
             overflow: hidden;
-            transition: max-height 1s ease;
+            transition: max-height 500ms ease;
 
           }
 
@@ -50,7 +50,17 @@
 
           .satImage{
             width: 50%;
+            display: inline;
+            float: left;
           }
+
+          .desc{
+             display: inline;
+             width: 49%;
+             float: right;
+             margin: 0;
+
+           }
 
           .placeNameHeader{
             margin: 0;
@@ -58,14 +68,16 @@
             display: inline-block;
           }
 
+          .toggle{
+            float: right;
+          }
+
           input[type="checkbox"]:checked ~ .boxBody {
               max-height: 800px;
             }
           }
 
-          p{
-            display: inline-block;
-          }
+
 
         </style>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
@@ -80,23 +92,23 @@
           <div class="box">
 
               <h1 class="placeNameHeader">First Place</h1>
-              <input id="toggle" type="checkbox">
+              <input class="toggle" type="checkbox">
 
             <div class="boxBody">
               <div class="boxBodyContent">
                   <img src="image.jpg" class="satImage">
-                  <p>Aliquam rhoncus, felis et sodales congue, erat arcu tincidunt est, aliquet scelerisque lectus nibh vitae odio. Donec congue lectus eget tincidunt posuere. Mauris vel arcu pellentesque, posuere metus at, euismod nunc. Nunc vel massa fermentum, venenatis turpis in, semper sapien. Donec quis nibh tincidunt, faucibus neque ut, pretium dolor. Fusce non aliquam lorem. Donec ut libero at velit fringilla blandit ac in risus. Vestibulum consectetur nisi sit amet risus accumsan, non aliquam massa convallis. Integer rhoncus felis ut metus volutpat pharetra. Quisque sit amet dolor iaculis, rhoncus nisl quis, lobortis lectus. Curabitur nec ultrices enim, ut porta velit.
+                  <p class="desc">Aliquam rhoncus, felis et sodales congue, erat arcu tincidunt est, aliquet scelerisque lectus nibh vitae odio. Donec congue lectus eget tincidunt posuere. Mauris vel arcu pellentesque, posuere metus at, euismod nunc. Nunc vel massa fermentum, venenatis turpis in, semper sapien. Donec quis nibh tincidunt, faucibus neque ut, pretium dolor. Fusce non aliquam lorem. Donec ut libero at velit fringilla blandit ac in risus. Vestibulum consectetur nisi sit amet risus accumsan, non aliquam massa convallis. Integer rhoncus felis ut metus volutpat pharetra. Quisque sit amet dolor iaculis, rhoncus nisl quis, lobortis lectus. Curabitur nec ultrices enim, ut porta velit.
                   </p>
               </div>
             </div>
           </div>
           <div class="box">
               <h1 class="placeNameHeader">Second Place</h1>
-              <input id="toggle" type="checkbox">
+              <input class="toggle" type="checkbox">
             <div class="boxBody">
               <div class="boxBodyContent">
                 <img src="image.jpg" class="satImage">
-                <p>Aliquam rhoncus, felis et sodales congue, erat arcu tincidunt est, aliquet scelerisque lectus nibh vitae odio. Donec congue lectus eget tincidunt posuere. Mauris vel arcu pellentesque, posuere metus at, euismod nunc. Nunc vel massa fermentum, venenatis turpis in, semper sapien. Donec quis nibh tincidunt, faucibus neque ut, pretium dolor. Fusce non aliquam lorem. Donec ut libero at velit fringilla blandit ac in risus. Vestibulum consectetur nisi sit amet risus accumsan, non aliquam massa convallis. Integer rhoncus felis ut metus volutpat pharetra. Quisque sit amet dolor iaculis, rhoncus nisl quis, lobortis lectus. Curabitur nec ultrices enim, ut porta velit.
+                <p class="desc">Aliquam rhoncus, felis et sodales congue, erat arcu tincidunt est, aliquet scelerisque lectus nibh vitae odio. Donec congue lectus eget tincidunt posuere. Mauris vel arcu pellentesque, posuere metus at, euismod nunc. Nunc vel massa fermentum, venenatis turpis in, semper sapien. Donec quis nibh tincidunt, faucibus neque ut, pretium dolor. Fusce non aliquam lorem. Donec ut libero at velit fringilla blandit ac in risus. Vestibulum consectetur nisi sit amet risus accumsan, non aliquam massa convallis. Integer rhoncus felis ut metus volutpat pharetra. Quisque sit amet dolor iaculis, rhoncus nisl quis, lobortis lectus. Curabitur nec ultrices enim, ut porta velit.
                 </p>
               </div>
             </div>
