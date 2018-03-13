@@ -8,16 +8,15 @@
         <style>
           html,
           body {
-          margin: 0;
-          padding: 0;
-          height: 100%;
+            margin: 0;
+            padding: 0;
+            height: 100%;
           }
 
           #map {
             height: 100vh;
             width: 42%;
             position: fixed;
-            display: inline-block;
             float: left;
           }
 
@@ -25,19 +24,14 @@
             width: 58%;
             margin: 0;
             padding: 0;
-            display: inline-block;
             float: right;
           }
 
           .box{
-            margin: 0;
-            border: 0;
-            display: inline-block;
             padding-left: 10px;
             padding-right: 10px;
             padding-top: 10px;
-            vertical-align: bottom;
-
+            padding-bottom: 10px;
           }
 
           .boxHead{
@@ -52,10 +46,13 @@
             width: 50%;
           }
 
-          h1{
-            border: 0;
+          .placeNameHeader{
             margin: 0;
-            padding: 0;
+            padding: 10px;
+          }
+
+          .boxBodyContent{
+            padding: 10px;
           }
 
 
@@ -71,18 +68,22 @@
         <div id="container">
           <div class="box">
             <div class="boxHead">
-              <h1>Cool Place!</h1>
+              <h1 class="placeNameHeader">Cool Place!</h1>
             </div>
             <div class="boxBody">
-              <img src="image.jpg" class="satImage">
+              <div class="boxBodyContent">
+                <img src="image.jpg" class="satImage">
+              </div>
             </div>
           </div>
           <div class="box">
             <div class="boxHead">
-              <h1>Cool Place!</h1>
+              <h1 class="placeNameHeader">Cool Place!</h1>
             </div>
             <div class="boxBody">
-              <img src="image.jpg" class="satImage">
+              <div class="boxBodyContent">
+                <img src="image.jpg" class="satImage">
+              </div>
             </div>
           </div>
         </div>
