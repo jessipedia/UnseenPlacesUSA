@@ -1,5 +1,5 @@
 var url = "http://localhost:3000/api/places";
-var myMap = L.map('mapid').setView([39.648734, -119.9761848], 2.5);
+var myMap = L.map('map').setView([39.648734, -118.9761848], 2.5);
 var myKey = config.MY_KEY;
 var placeMarkers = [];
 
