@@ -52,6 +52,7 @@
             width: 50%;
             display: inline;
             float: left;
+            padding-bottom: 10px;
           }
 
           .desc{
@@ -62,14 +63,19 @@
 
            }
 
+          .labelHeader{
+            height: 100%;
+          }
+
           .placeNameHeader{
             margin: 0;
             padding: 10px;
+            width: 100%;
             display: inline-block;
           }
 
           .toggle{
-            float: right;
+            display: none;
           }
 
           input[type="checkbox"]:checked ~ .boxBody {
@@ -90,10 +96,8 @@
         <div id="map"></div>
         <div id="container">
           <div class="box">
-
-              <h1 class="placeNameHeader">First Place</h1>
-              <input class="toggle" type="checkbox">
-
+            <input class="toggle" type="checkbox" id="check1">
+            <label class="labelHeader" for="check1"><h1 class="placeNameHeader">First Place</h1></label>
             <div class="boxBody">
               <div class="boxBodyContent">
                   <img src="image.jpg" class="satImage">
@@ -103,8 +107,8 @@
             </div>
           </div>
           <div class="box">
-              <h1 class="placeNameHeader">Second Place</h1>
-              <input class="toggle" type="checkbox">
+              <input class="toggle" type="checkbox" id="check">
+              <label class="labelHeader" for="check"><h1 class="placeNameHeader">Second Place</h1></label>
             <div class="boxBody">
               <div class="boxBodyContent">
                 <img src="image.jpg" class="satImage">
