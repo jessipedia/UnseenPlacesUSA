@@ -10,7 +10,6 @@ var myIcon = L.icon({
 fetch(url)
   .then(res => res.json())
   .then(data => {
-    console.log('Checkout this JSON! ', data);
     for (var i = 0; i < data.length; i++) {
       placeMarker[i] = L.marker([data[i].location.coordinates[1], data[i].location.coordinates[0]], {icon: myIcon})
       placeMarker[i].addTo(myMap)
@@ -18,11 +17,6 @@ fetch(url)
   })
 
   .catch(err => { throw err });
-
-  console.log('wow!');
-
-
-
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
