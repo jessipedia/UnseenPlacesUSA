@@ -9,7 +9,6 @@ function loadJSON(url){
       .then(res => res.json())
       .then(data => resolve(data));
   })
-
 }
 
 function count(data){
