@@ -20,7 +20,7 @@ function drawBoxes(data){
     //console.log(data[i]._id);
 
     let box = document.createElement('div');
-    box.setAttribute("class", "box " + data[i]._id);
+    box.setAttribute("class", "box "+ data[i]._id);
 
     let input = document.createElement('input');
     input.setAttribute("class", "toggle");

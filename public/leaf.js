@@ -29,12 +29,12 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 function onClick(){
   let place = document.getElementById(this._id);
-  console.log(place);
+  console.log(this._latlng.lat);
   place.checked = true;
   let boxes = document.getElementsByClassName(this._id);
   let box = boxes[0];
-  console.log(box);
-  //place.focus();
   box.scrollIntoView({behavior:"smooth"});
   console.log(this.name);
+
+  myMap.flyTo([this._latlng.lat, this._latlng.lng], 15);
 }

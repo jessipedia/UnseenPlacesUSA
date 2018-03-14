@@ -30,10 +30,13 @@
           .box{
             background: #efefef;
             margin: 10px;
+            padding: 0;
           }
 
           .boxHead{
             background: #efefef;
+            margin: 0;
+            padding: 0;
           }
 
           .boxBody{
@@ -59,29 +62,25 @@
            }
 
           .labelHeader{
+            width: 100%;
             height: 100%;
           }
 
           .placeNameHeader{
             margin: 0;
             padding: 10px;
-            width: 100%;
+            width: 95%;
             display: inline-block;
             font-size: 1.5em;
           }
 
           .toggle{
             display: none;
-            float: right;
-            margin: auto;
           }
 
           input[type="checkbox"]:checked ~ .boxBody {
               max-height: 800px;
           }
-
-
-
 
         </style>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
