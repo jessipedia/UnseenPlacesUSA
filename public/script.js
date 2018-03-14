@@ -40,10 +40,10 @@ function drawBoxes(data){
     boxBody.setAttribute("class", "boxBody");
     box.appendChild(boxBody);
 
-    let img = document.createElement('img');
-    img.setAttribute("src", "image.jpg");
-    img.setAttribute("class", "satImage");
-    boxBody.appendChild(img);
+    // let img = document.createElement('img');
+    // img.setAttribute("src", "image.jpg");
+    // img.setAttribute("class", "satImage");
+    // boxBody.appendChild(img);
 
     let desc = document.createElement('p');
     desc.textContent = data[i].name + " is a/an " + data[i].description + ".";
