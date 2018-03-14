@@ -11,11 +11,13 @@ fetch(url)
   .then(res => res.json())
   .then(data => {
     for (var i = 0; i < data.length; i++) {
-      placeMarker[i] = L.marker([data[i].location.coordinates[1], data[i].location.coordinates[0]], {icon: myIcon})
-      placeMarker[i].addTo(myMap)
+      //console.log(data[i]);
+      let marker = L.marker([data[i].location.coordinates[1], data[i].location.coordinates[0]], {icon: myIcon});
+      marker._id = data[i]._id;
+      marker.name = data[i].name;
+      marker.addTo(myMap).on('click', onClick);
     }
   })
-
   .catch(err => { throw err });
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -25,12 +27,14 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     accessToken: myKey
 }).addTo(myMap);
 
-
-function placeMarker(lat, lon){
-  var lat = this.lat;
-  var lon = this.lon;
-
-  this.show = function(){
-    L.marker([lat, lon]).addTo(myMap);
-  }
+function onClick(){
+  let place = document.getElementById(this._id);
+  console.log(place);
+  place.checked = true;
+  let boxes = document.getElementsByClassName(this._id);
+  let box = boxes[0];
+  console.log(box);
+  //place.focus();
+  box.scrollIntoView({behavior:"smooth"});
+  console.log(this.name);
 }

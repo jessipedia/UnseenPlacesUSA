@@ -1,3 +1,5 @@
+var url = "http://localhost:3000/api/places";
+
 loadJSON(url)
   .then(result => drawBoxes(result));
 
@@ -18,7 +20,7 @@ function drawBoxes(data){
     //console.log(data[i]._id);
 
     let box = document.createElement('div');
-    box.setAttribute("class", "box");
+    box.setAttribute("class", "box " + data[i]._id);
 
     let input = document.createElement('input');
     input.setAttribute("class", "toggle");
