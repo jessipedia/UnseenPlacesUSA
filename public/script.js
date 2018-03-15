@@ -1,4 +1,5 @@
 var url = "http://localhost:3000/api/places";
+var placeData = [];
 
 loadJSON(url)
   .then(result => drawBoxes(result));
@@ -16,6 +17,10 @@ function drawBoxes(data){
   //console.log(data);
 
   for (var i = 0; i < data.length; i++) {
+    let id = data[i]._id;
+    let cord = data[i].location.coordinates;
+    placeData.push({id, cord});
+
     var container = document.getElementById('container');
     //console.log(data[i]._id);
 
@@ -28,10 +33,13 @@ function drawBoxes(data){
     input.setAttribute("id", data[i]._id);
     input.setAttribute("value", "box");
     input.onclick = function(input){
-      let id = input.target.id
-      console.log(input.target.id);
-      let thisCheckbox = document.getElementById(id);
-      console.log(thisCheckbox.checked);
+      let thisCheckbox = document.getElementById(input.target.id);
+      if (thisCheckbox.checked){
+        let obj = placeData.filter(function(place){return place.id == input.target.id});
+        let lon = obj[0].cord[0];
+        let lat = obj[0].cord[1];
+        myMap.flyTo([lat, lon], 15);
+      }
     }
     box.appendChild(input);
 
@@ -61,5 +69,5 @@ function drawBoxes(data){
 
     container.appendChild(box);
   }
-
+  //console.log(placeData);
 }
