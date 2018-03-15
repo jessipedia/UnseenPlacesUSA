@@ -13,7 +13,7 @@ function loadJSON(url){
 }
 
 function drawBoxes(data){
-  console.log(data);
+  //console.log(data);
 
   for (var i = 0; i < data.length; i++) {
     var container = document.getElementById('container');
@@ -26,6 +26,13 @@ function drawBoxes(data){
     input.setAttribute("class", "toggle");
     input.setAttribute("type", "checkbox");
     input.setAttribute("id", data[i]._id);
+    input.setAttribute("value", "box");
+    input.onclick = function(input){
+      let id = input.target.id
+      console.log(input.target.id);
+      let thisCheckbox = document.getElementById(id);
+      console.log(thisCheckbox.checked);
+    }
     box.appendChild(input);
 
     let label = document.createElement('label');
@@ -54,6 +61,5 @@ function drawBoxes(data){
 
     container.appendChild(box);
   }
-
 
 }
