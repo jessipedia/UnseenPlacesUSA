@@ -73,8 +73,10 @@ function drawBoxes(data){
 }
 
 function submit(){
+  console.log(myMap);
   let loc = document.getElementById('dropdown').value;
-  let placeUrl = "http://localhost:3000/api/places" + "?location=" + loc;
+  var search = document.getElementById('search').value;
+  let placeUrl = "http://localhost:3000/api/places" + "?location=" + loc + "&search=" + search;
 
   let boxes = document.getElementsByClassName('box');
   for (var i = boxes.length - 1; i > -1 ; i--) {

@@ -29,9 +29,15 @@
 
           .controls{
             background: #efefef;
-            margin: 10px;
+            margin-bottom: 100px;
             padding: 10px;
-            width: 100%;
+            width: 95%;
+            height: 20px;
+            position: fixed;
+          }
+
+          #spacer{
+            height: 40px;
           }
 
           .box{
@@ -159,7 +165,10 @@
               	<option value="WI">Wisconsin</option>
               	<option value="WY">Wyoming</option>
               </select>
+              <input id="search" type="text" value="">
               <button type="submit" onClick="submit()">Submit</button>
+          </div>
+          <div id="spacer">
           </div>
           <div class="box">
             <input class="toggle" type="checkbox" id="check1">
