@@ -1,6 +1,7 @@
 var url = "http://localhost:3000/api/places";
 var myMap = L.map('map', {preferCanvas: true, scrollWheelZoom: false}).setView([39.648734, -118.9761848], 2.5);
 var myKey = config.MY_KEY;
+var placesLayer = L.layerGroup();
 var placeMarkers = [];
 
 var myIcon = L.icon({
@@ -9,15 +10,7 @@ var myIcon = L.icon({
 //I do not understand this promise
 fetch(url)
   .then(res => res.json())
-  .then(data => {
-    for (var i = 0; i < data.length; i++) {
-      //console.log(data[i]);
-      let marker = L.marker([data[i].location.coordinates[1], data[i].location.coordinates[0]], {icon: myIcon});
-      marker._id = data[i]._id;
-      marker.name = data[i].name;
-      marker.addTo(myMap).on('click', onClick);
-    }
-  })
+  .then(data => drawMarkers(data))
   .catch(err => { throw err });
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -26,6 +19,24 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     id: 'mapbox.satellite',
     accessToken: myKey
 }).addTo(myMap);
+
+function drawMarkers(data){
+  placesLayer.eachLayer(function (layer) {
+    layer.remove();
+  });
+  //console.log(data);
+
+  for (var i = 0; i < data.length; i++) {
+    //console.log(data[i]);
+    let marker = L.marker([data[i].location.coordinates[1], data[i].location.coordinates[0]], {icon: myIcon});
+    marker._id = data[i]._id;
+    marker.name = data[i].name;
+    marker.addTo(placesLayer).on('click', onClick);
+  }
+  //console.log(placesLayer);
+  placesLayer.addTo(myMap);
+}
+
 
 function onClick(){
   let place = document.getElementById(this._id);

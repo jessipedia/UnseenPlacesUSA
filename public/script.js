@@ -73,19 +73,19 @@ function drawBoxes(data){
 }
 
 function submit(){
-  console.log(myMap);
+
   let loc = document.getElementById('dropdown').value;
   var search = document.getElementById('search').value;
   let placeUrl = "http://localhost:3000/api/places" + "?location=" + loc + "&search=" + search;
 
   let boxes = document.getElementsByClassName('box');
   for (var i = boxes.length - 1; i > -1 ; i--) {
-    console.log(boxes[i]);
+    //console.log(boxes[i]);
     boxes[i].remove();
 
   }
-  //boxes.remove();
-  loadJSON(placeUrl)
-    .then(result => drawBoxes(result));
-  //console.log(boxes);
+
+  let json = loadJSON(placeUrl)
+    json.then(result =>drawBoxes(result));
+    json.then(result =>drawMarkers(result));
 }
