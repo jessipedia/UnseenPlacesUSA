@@ -1,6 +1,7 @@
 var url = "http://localhost:3000/api/places";
 var myMap = L.map('map', {preferCanvas: true, scrollWheelZoom: false}).setView([39.648734, -118.9761848], 2.5);
 var myKey = config.MY_KEY;
+var myScale = L.control.scale().addTo(myMap)
 var placesLayer = L.layerGroup();
 var placeMarkers = [];
 
@@ -24,28 +25,66 @@ function drawMarkers(data){
   placesLayer.eachLayer(function (layer) {
     layer.remove();
   });
-  //console.log(data);
+
+  let latSum = 0;
+  let lonSum = 0;
+  let westMostLon = 100;
+  let eastMostLon = -200;
+  let smallestLonName;
+  let biggestLonName;
 
   for (var i = 0; i < data.length; i++) {
-    //console.log(data[i]);
-    let marker = L.marker([data[i].location.coordinates[1], data[i].location.coordinates[0]], {icon: myIcon});
-    marker._id = data[i]._id;
-    marker.name = data[i].name;
-    marker.addTo(placesLayer).on('click', onClick);
+    lonSum = lonSum + data[i].location.coordinates[0];
+    latSum = latSum + data[i].location.coordinates[1];
+
+    if (data[i].location.coordinates[0] < westMostLon){
+      westMostLon = data[i].location.coordinates[0];
+      smallestLonName = data[i].name;
+    }
+
+    if (data[i].location.coordinates[0] > eastMostLon){
+      eastMostLon = data[i].location.coordinates[0];
+      biggestLonName = data[i].name;
   }
-  //console.log(placesLayer);
+
+
+  let marker = L.marker([data[i].location.coordinates[1], data[i].location.coordinates[0]], {icon: myIcon});
+  marker._id = data[i]._id;
+  marker.name = data[i].name;
+  marker.addTo(placesLayer).on('click', onClick);
+  }
+  
+  function diff(w,e){
+    return Math.abs(w - e);
+  }
+
+  let diffNum = diff(westMostLon,eastMostLon);
+
+  function zoomLevel(diffNum){
+    if (diffNum>=50){
+      return 2.5;
+    }else if (diffNum >= 30 && diffNum < 50 ) {
+      return 4;
+    }else if (diffNum >= 10 && diffNum < 30 ) {
+      return 6;
+    }else {
+      return 7;
+    }
+  }
+
+  let zoom = zoomLevel(diffNum);
+
+  myMap.flyTo([latSum/data.length, lonSum/data.length], zoom)
   placesLayer.addTo(myMap);
 }
 
 
 function onClick(){
   let place = document.getElementById(this._id);
-  console.log(this._latlng.lat);
   place.checked = true;
   let boxes = document.getElementsByClassName(this._id);
   let box = boxes[0];
   box.scrollIntoView({behavior:"smooth"});
-  console.log(this.name);
 
   myMap.flyTo([this._latlng.lat, this._latlng.lng], 15);
 }

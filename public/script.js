@@ -14,15 +14,14 @@ function loadJSON(url){
 }
 
 function drawBoxes(data){
-  //console.log(data);
 
   for (var i = 0; i < data.length; i++) {
+    let avan = AvsAnSimple.query(data[i].description);
     let id = data[i]._id;
     let cord = data[i].location.coordinates;
     placeData.push({id, cord});
 
     var container = document.getElementById('container');
-    //console.log(data[i]._id);
 
     let box = document.createElement('div');
     box.setAttribute("class", "box "+ data[i]._id);
@@ -57,19 +56,13 @@ function drawBoxes(data){
     boxBody.setAttribute("class", "boxBody");
     box.appendChild(boxBody);
 
-    // let img = document.createElement('img');
-    // img.setAttribute("src", "image.jpg");
-    // img.setAttribute("class", "satImage");
-    // boxBody.appendChild(img);
-
     let desc = document.createElement('p');
-    desc.textContent = data[i].name + " is a/an " + data[i].description + ".";
+    desc.textContent = data[i].name + " " + avan + " " + data[i].description + ".";
     desc.setAttribute("class", "desc");
     boxBody.appendChild(desc);
 
     container.appendChild(box);
   }
-  //console.log(placeData);
 }
 
 function submit(){
@@ -80,8 +73,8 @@ function submit(){
 
   let boxes = document.getElementsByClassName('box');
   for (var i = boxes.length - 1; i > -1 ; i--) {
-    //console.log(boxes[i]);
-    boxes[i].remove();
+
+  boxes[i].remove();
 
   }
 
