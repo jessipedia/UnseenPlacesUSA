@@ -57,7 +57,7 @@ function drawBoxes(data){
     box.appendChild(boxBody);
 
     let desc = document.createElement('p');
-    desc.textContent = data[i].name + " " + avan + " " + data[i].description + ".";
+    desc.textContent = data[i].name + " is " + avan + " " + data[i].description + ".";
     desc.setAttribute("class", "desc");
     boxBody.appendChild(desc);
 
