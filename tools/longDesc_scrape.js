@@ -27,7 +27,7 @@ var request = require('request');
 gather();
 
 function gather(){
-  let url = 'https://en.wikipedia.org/wiki/Chino_Mine';
+  let url = 'https://en.wikipedia.org/wiki/Naval_Air_Facility_Adak';
 
   request(url, function(err, res, body){
     console.log('Requesting');
@@ -36,7 +36,21 @@ function gather(){
         return
     } else {
         var $ = cheerio.load(body);
-        console.log($(".mw-parser-output").html());
+        let wholeText = $.text();
+        let textList = wholeText.split(/\n/);
+        let wordList = [];
+
+        for (var i = 0; i < textList.length; i++) {
+          if (textList[i] == ''){
+
+          } else if (textList[i].includes('\t'))  {
+
+          } else {
+            wordList.push(textList[i])
+          }
+
+        }
+        console.log(wordList);
     }
   })
 }
