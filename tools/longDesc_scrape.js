@@ -6,7 +6,7 @@ var nlp = require('compromise');
 gather();
 
 function gather(){
-  let url = 'https://en.wikipedia.org/wiki/Greensville_Correctional_Center';
+  let url = 'https://en.wikipedia.org/wiki/Chino_Mine';
 
   request(url, function(err, res, body){
     console.log('Requesting');
@@ -15,8 +15,7 @@ function gather(){
         return
     } else {
         var $ = cheerio.load(body);
-        let wholeText = $.text();
-        let textList = wholeText.split(/\n/);
+        let textList = $.text().split(/\n/);
         let wordList = [];
 
         for (var i = 0; i < textList.length; i++) {
@@ -24,7 +23,8 @@ function gather(){
             wordList.push(textList[i])
           }
         }
-        console.log(wordList);
+        let para = wordList[0].replace(/\[\d\]/g, '')
+        console.log(para);
     }
   })
 }
