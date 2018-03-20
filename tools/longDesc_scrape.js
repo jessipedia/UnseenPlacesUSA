@@ -23,34 +23,41 @@ readableStream.on('end', function() {
       let strp = name.replace(/\([^)]*\)/, '');
       strp = encodeURIComponent(strp);
 
-      gather(strp, name);
+
+      gather(strp)
+        .then(result => scrape(result));
   }
 });
 
 
 
-function gather(place, nm){
+function gather(place){
+  return new Promise(resolve => {
+  //console.log(place);
   let wikiapi = 'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search='+ place;
 
-  //console.log(wikiapi);
-
-  request(wikiapi, function(err, res, body) {
-    if (err != null) {
-        //console.log("Request " + err);
-        return
-    } else {
-        var parsed = JSON.parse(body);
-
-        if (parsed[3][0]) {
-          var url = parsed[3][0];
-        } else {
-          console.log(parsed[0]);
+    request(wikiapi, function(err, res, body) {
+      if (err != null) {
+          //console.log("Request " + err);
           return
-        }
-      }
-  })
+      } else {
+          var parsed = JSON.parse(body);
 
-  //let url = 'https://en.wikipedia.org/wiki/John_M._Sully';
+          if (parsed[3][0]) {
+            //console.log(parsed[3][0]);
+            return parsed[3][0];
+          } else {
+            //console.log('nothing');
+            return null
+            //console.log(parsed[0]);
+          }
+        }
+    })
+  })
+}
+
+function scrape(url){
+  console.log(url);
 
   // request(url, function(err, res, body){
   //   console.log('Requesting');
@@ -70,5 +77,5 @@ function gather(place, nm){
   //       let para = wordList[0].replace(/\[\d\]/g, '')
   //       console.log(para);
   //   }
-  //})
+  // })
 }
