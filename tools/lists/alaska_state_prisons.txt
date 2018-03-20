@@ -11,4 +11,4 @@ Palmer Medium and Minimum Correctional Centers,
 Spring Creek Correctional Center,
 Wildwood Correctional Center,
 Wildwood Pretrial Facility,
-Yukon-Kuskokwim Correctional Center,
+Yukon-Kuskokwim Correctional Center
