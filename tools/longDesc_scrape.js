@@ -1,33 +1,12 @@
 var cheerio = require('cheerio');
 var fs = require('fs');
 var request = require('request');
-
-// var readableStream = fs.createReadStream('./lists/alaska_state_prisons.txt');
-//
-// readableStream.setEncoding('utf8');
-//
-// On event 'data', callback. What is event 'data'
-// Can this be better written with Promises?
-// readableStream.on('data', function(){
-//   data += chunk;
-// })
-//
-// readableStream.on('end', function(){
-//   let list = data.split(',');
-//
-//   for (var i = 0; i < list.length; i++) {
-//     let name = list[i];
-//     let strp = list[i].trim;
-//     strp = list[i].replace(/\([^)]*\)/, '');
-//     strp = encodeURIComponent(strp);
-//     gather(strp, name);
-//   }
-// })
+var nlp = require('compromise');
 
 gather();
 
 function gather(){
-  let url = 'https://en.wikipedia.org/wiki/Naval_Air_Facility_Adak';
+  let url = 'https://en.wikipedia.org/wiki/Wild_Horse_Wind_Farm';
 
   request(url, function(err, res, body){
     console.log('Requesting');
@@ -40,7 +19,15 @@ function gather(){
         let textList = wholeText.split(/\n/);
         let wordList = [];
 
+        console.log(nlp('This is a cat.').sentences());
+
+        console.log(nlp('at').sentences());
+
         for (var i = 0; i < textList.length; i++) {
+          //console.log(textList[i]);
+          //nlp(textList[i]).sentences;
+          //console.log('After');
+
           if (textList[i] == ''){
 
           } else if (textList[i].includes('\t'))  {
@@ -50,7 +37,7 @@ function gather(){
           }
 
         }
-        console.log(wordList);
+        //console.log(wordList);
     }
   })
 }
