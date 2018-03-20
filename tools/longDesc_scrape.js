@@ -5,7 +5,7 @@ var nlp = require('compromise');
 
 var data;
 
-var readableStream = fs.createReadStream('./lists/alaska_state_prisons.txt');
+var readableStream = fs.createReadStream('./lists/florida_state_prisons.txt');
 
 readableStream.setEncoding('utf8');
 
@@ -38,17 +38,17 @@ function gather(place){
 
     request(wikiapi, function(err, res, body) {
       if (err != null) {
-          //console.log("Request " + err);
+          console.log("Request " + err);
           return
       } else {
           var parsed = JSON.parse(body);
 
           if (parsed[3][0]) {
             //console.log(parsed[3][0]);
-            return parsed[3][0];
+            resolve(parsed[3][0]);
           } else {
             //console.log('nothing');
-            return null
+            resolve(null);
             //console.log(parsed[0]);
           }
         }
@@ -56,26 +56,34 @@ function gather(place){
   })
 }
 
-function scrape(url){
-  console.log(url);
+function scrape(result){
+  if (result == null){
+    return
+  } else{
+    //let url = 'https://en.wikipedia.org/wiki/Goose_Creek_Correctional_Center';
+    request(result, function(err, res, body){
+      console.log('****');
+      if (err != null) {
+          console.log("Request " + err);
+          return
+      } else {
+          var $ = cheerio.load(body);
+          let textList = $.text().split(/\n/);
+          let wordList = [];
+          //console.log(textList);
+          for (var i = 0; i < textList.length; i++) {
+            //console.log(textList[i]);
+            //console.log(textList[i].length);
+            if(textList[i].length > 100){
 
-  // request(url, function(err, res, body){
-  //   console.log('Requesting');
-  //   if (err != null) {
-  //       console.log("Request " + err);
-  //       return
-  //   } else {
-  //       var $ = cheerio.load(body);
-  //       let textList = $.text().split(/\n/);
-  //       let wordList = [];
-  //
-  //       for (var i = 0; i < textList.length; i++) {
-  //         if(nlp(textList[i]).sentences().length > 1){
-  //           wordList.push(textList[i])
-  //         }
-  //       }
-  //       let para = wordList[0].replace(/\[\d\]/g, '')
-  //       console.log(para);
-  //   }
-  // })
+              wordList.push(textList[i])
+            }
+          }
+          let para = wordList[0].replace(/\[\d\]/g, '')
+          console.log(para);
+      }
+    })
+  }
+
+
 }

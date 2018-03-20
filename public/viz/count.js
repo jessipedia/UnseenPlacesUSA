@@ -12,6 +12,7 @@ function loadJSON(url){
 }
 
 function count(data){
+    console.log(data);
     var counted = new Map();
 
     counted.set('private state prison', 0);
