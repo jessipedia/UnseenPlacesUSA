@@ -3,10 +3,41 @@ var fs = require('fs');
 var request = require('request');
 var nlp = require('compromise');
 
+var data;
+
+var readableStream = fs.createReadStream('./lists/florida_state_prisons.txt');
+
+readableStream.setEncoding('utf8');
+
+readableStream.on('data', function(chunk) {
+    data += chunk;
+});
+
+readableStream.on('end', function() {
+   let list = data.split(',');
+   //console.log(list);
+   let listFix = [];
+
+  for (var i = 0; i < list.length; i++) {
+      //console.log(list[i]);
+      counter = i;
+      var name = list[i].trim();
+      name = name.replace(/undefined/, '');
+      var strp = list[i].trim();
+      strp = list[i].replace(/\([^)]*\)/, '');
+      strp = encodeURIComponent(strp);
+      //console.log(strp);
+      //console.log(name);
+      listFix.push(name);
+
+  }
+  console.log(listFix);
+});
+
 gather();
 
-function gather(){
-  let url = 'https://en.wikipedia.org/wiki/Chino_Mine';
+function gather(place, nm){
+  let url = 'https://en.wikipedia.org/wiki/John_M._Sully';
 
   request(url, function(err, res, body){
     console.log('Requesting');
