@@ -82,7 +82,7 @@ function scrape(parsed){
               return
             } else if(textList[i].length > 100 &&
               textList[i].includes('This article') == false &&
-              //textList[i].includes('Coordinates') == false &&
+              textList[i].match(/[ ][a-zA-Z]+/) != null &&
               textList[i].includes('From Wikipedia') == false &&
               textList[i].match(/For(\s.+)see/) == null
             ){
