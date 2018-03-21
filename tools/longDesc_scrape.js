@@ -60,7 +60,8 @@ function scrape(parsed){
     return
   } else{
     //let url = 'https://en.wikipedia.org/wiki/Goose_Creek_Correctional_Center';
-    let result = parsed[3][0];
+    let result = 'https://en.wikipedia.org/wiki/Suffolk_County_Air_Force_Base_Missile_Annex';
+    //parsed[3][0];
     let nm = parsed[0];
 
     request(result, function(err, res, body){
@@ -76,15 +77,24 @@ function scrape(parsed){
           for (var i = 0; i < textList.length; i++) {
             //console.log(textList[i]);
             //console.log(textList[i].length);
-            if(textList[i].length > 100 && textList[i].includes('This article') == false && textList[i].includes('Coordinates') == false ){
+            if(textList[i].includes('If an internal link led you here') == true){
+              //Do something with disambiguation
+              return
+            } else if(textList[i].length > 100 &&
+              textList[i].includes('This article') == false &&
+              //textList[i].includes('Coordinates') == false &&
+              textList[i].includes('From Wikipedia') == false &&
+              textList[i].match(/For(\s.+)see/) == null
+            ){
 
               wordList.push(textList[i])
+              //console.log(textList[i].match(/For(\s.+)see/));
 
             }
           }
-          let para = wordList[0].replace(/\[\d\]/g, '');
-          fs.appendFileSync('scrape_article.csv', nm + ', ' + result + ', ' + para + '\n');
-          //console.log(wordList);
+          //let para = wordList[0].replace(/\[\d\]/g, '');
+          //fs.appendFileSync('scrape_article.csv', nm + ', ' + result + ', ' + para + '\n');
+          console.log(wordList);
           //console.log(para);
       }
     })
