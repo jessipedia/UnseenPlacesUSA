@@ -5,6 +5,8 @@ var nlp = require('compromise');
 
 //require('request-debug')(request);
 
+var shortDesc = 'unseen place'
+
 var data;
 var readableStream = fs.createReadStream('./lists/test.txt');
 
@@ -51,6 +53,11 @@ function gather(place){
           if (parsed[3][0]) {
             resolve(parsed);
           } else {
+            //this is were you first find out if something has a wikipedia page
+            //create incompletePlace here, data is not passed to next function
+            //how does reolving a promise interact with side effects?
+            let nm = parsed[0];
+            console.log('\n' + 'Incomplete ' + '\n' + nm + '\n' + shortDesc);
             resolve(null);
           }
         }
@@ -80,10 +87,14 @@ function scrape(parsed){
           let text = longDesc(body);
           let latlon = geo(body, url);
 
-          console.log(latlon);
-          //previous version scraped name, geolocation
+          if (text && latlon){
+            console.log('\n' + 'Complete ' + '\n' + nm + '\n' + latlon + '\n' + shortDesc + '\n' + url + '\n' + text);
+          } else{
+            console.log('\n' + 'Incomplete ' + '\n' + nm + '\n' + latlon + '\n' + shortDesc  + '\n' + url + '\n'  + text);
+          }
 
-          fs.appendFileSync('scrape.csv', nm + ', ' + url + ', ' + text + '\n');
+          //console.log(latlon);
+          //fs.appendFileSync('scrape.csv', nm + ', ' + url + ', ' + text + '\n');
 
       }
     })
@@ -99,7 +110,7 @@ function geo(body, url){
     return(coord);
   } else{
     //lon is the negative number in US (geo[1])
-    return(url);
+    return(null);
   }
 }
 
