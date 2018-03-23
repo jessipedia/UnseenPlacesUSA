@@ -78,6 +78,7 @@ function scrape(parsed){
           return
       } else {
           let text = longDesc(body);
+          geo(body, url);
           //previous version scraped name, geolocation
 
           fs.appendFileSync('scrape.csv', nm + ', ' + url + ', ' + text + '\n');
@@ -85,6 +86,15 @@ function scrape(parsed){
       }
     })
   }
+}
+
+function geo(body, url){
+  let $ = cheerio.load(body);
+  let geo = $(".geo").html();
+  if (geo == null){
+    console.log(url);
+  }
+
 }
 
 function longDesc(body){
