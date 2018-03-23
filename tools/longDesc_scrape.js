@@ -78,7 +78,9 @@ function scrape(parsed){
           return
       } else {
           let text = longDesc(body);
-          geo(body, url);
+          let latlon = geo(body, url);
+
+          console.log(latlon);
           //previous version scraped name, geolocation
 
           fs.appendFileSync('scrape.csv', nm + ', ' + url + ', ' + text + '\n');
@@ -90,11 +92,15 @@ function scrape(parsed){
 
 function geo(body, url){
   let $ = cheerio.load(body);
-  let geo = $(".geo").html();
-  if (geo == null){
-    console.log(url);
+  let coord = $(".geo").html();
+  if (coord){
+    //console.log(url);
+    coord = coord.toString();
+    return(coord);
+  } else{
+    //lon is the negative number in US (geo[1])
+    return(url);
   }
-
 }
 
 function longDesc(body){
