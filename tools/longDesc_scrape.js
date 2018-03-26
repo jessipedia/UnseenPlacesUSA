@@ -3,15 +3,15 @@ var fs = require('fs');
 var request = require('request');
 var nlp = require('compromise');
 var config = require('./config.js');
-
-
-
-//console.log(config.staticKey);
-
-//require('request-debug')(request);
+var bottleneck = require('bottleneck');
 
 var shortDesc = 'unseen place';
 const now = new Date();
+
+const limiter = new bottleneck({
+  maxConcurrent: 1,
+  minTime: 2000
+});
 
 var data;
 var readableStream = fs.createReadStream('./lists/test.txt');
@@ -33,7 +33,7 @@ readableStream.on('end', function() {
       strp = encodeURIComponent(strp);
 
 
-      gather(strp)
+      limiter.schedule(() => gather(strp))
         .then(result => scrape(result))
         .then(result => stusup(result));
   }
@@ -53,22 +53,10 @@ function gather(place){
     request(options, function(err, res, body) {
       if (err) {
           console.log("Gather Request " + err + '\n' + '\t' + wikiapi);
-          return;
+          resolve("Gather Request " + err + '\n' + '\t' + wikiapi);
       } else {
           let parsed = JSON.parse(body);
-
-          if (parsed[3][0]) {
             resolve(parsed);
-          } else {
-            //this is were you first find out if something has a wikipedia page
-            //create incompletePlace here, data is not passed to next function
-            //how does reolving a promise interact with side effects?
-
-
-            let nm = parsed[0];
-            //console.log('\n' + 'Incomplete ' + '\n' + nm + '\n' + shortDesc + '\n' + now);
-            return;
-          }
         }
     })
   })
@@ -77,9 +65,11 @@ function gather(place){
 function scrape(parsed){
   return new Promise(resolve => {
     if (parsed == null){
-      console.log('Scrape Results null');
+      console.log('Scrape Results null: ' + parsed);
       return;
     } else{
+
+      if (parsed[3][0]){
 
       let url = parsed[3][0];
       //console.log(url);
@@ -100,6 +90,11 @@ function scrape(parsed){
           resolve(body);
         }
       })
+    } else {
+      console.log(parsed[0]);
+      resolve();
+    }
+
       }
 })
 }
@@ -121,7 +116,7 @@ function stusup(body){
       console.log('Geocode Request Made');
       if (err != null) {
         console.log("Geocode Request " + err + '\n' + '\t' + mapsUrl);
-        return
+        return;
       } else{
         let parsed = JSON.parse(body);
         console.log(parsed);
