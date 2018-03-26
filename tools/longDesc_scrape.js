@@ -2,10 +2,16 @@ var cheerio = require('cheerio');
 var fs = require('fs');
 var request = require('request');
 var nlp = require('compromise');
+var config = require('./config.js');
+
+
+
+//console.log(config.staticKey);
 
 //require('request-debug')(request);
 
-var shortDesc = 'unseen place'
+var shortDesc = 'unseen place';
+const now = new Date();
 
 var data;
 var readableStream = fs.createReadStream('./lists/test.txt');
@@ -28,7 +34,8 @@ readableStream.on('end', function() {
 
 
       gather(strp)
-        .then(result => scrape(result));
+        .then(result => scrape(result))
+        .then(result => stusup(result));
   }
 });
 
@@ -46,9 +53,9 @@ function gather(place){
     request(options, function(err, res, body) {
       if (err) {
           console.log("Gather Request " + err + '\n' + '\t' + wikiapi);
-          return
+          return;
       } else {
-          var parsed = JSON.parse(body);
+          let parsed = JSON.parse(body);
 
           if (parsed[3][0]) {
             resolve(parsed);
@@ -56,9 +63,11 @@ function gather(place){
             //this is were you first find out if something has a wikipedia page
             //create incompletePlace here, data is not passed to next function
             //how does reolving a promise interact with side effects?
+
+
             let nm = parsed[0];
-            console.log('\n' + 'Incomplete ' + '\n' + nm + '\n' + shortDesc);
-            resolve(null);
+            //console.log('\n' + 'Incomplete ' + '\n' + nm + '\n' + shortDesc + '\n' + now);
+            return;
           }
         }
     })
@@ -66,39 +75,66 @@ function gather(place){
 }
 
 function scrape(parsed){
-  if (parsed == null){
-    return
-  } else{
+  return new Promise(resolve => {
+    if (parsed == null){
+      console.log('Scrape Results null');
+      return;
+    } else{
 
-    let url = parsed[3][0];
-    let nm = parsed[0];
+      let url = parsed[3][0];
+      //console.log(url);
+      //let nm = parsed[0];
 
-    let options = {
-      uri: url,
-      family: 4
+      let options = {
+        uri: url,
+        family: 4
+      }
+
+      request(options, function(err, res, body){
+        console.log('Scrape Request Made');
+
+        if (err != null) {
+            console.log("Scrape Request " + err + '\n' + '\t' + url);
+            resolve(null)
+        } else {
+          resolve(body);
+        }
+      })
+      }
+})
+}
+
+function stusup(body){
+  //console.log(body);
+  return new Promise(resolve => {
+
+  let text = longDesc(body);
+  let latlon = geo(body);
+
+  if (text && latlon){
+    latlon = latlon.split(';');
+    let lat = latlon[0];
+    let lon = latlon[1];
+    let mapsUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lon + '&key=' + config.staticKey;
+
+    request(mapsUrl, function(err, res, body){
+      console.log('Geocode Request Made');
+      if (err != null) {
+        console.log("Geocode Request " + err + '\n' + '\t' + mapsUrl);
+        return
+      } else{
+        let parsed = JSON.parse(body);
+        console.log(parsed);
+      }
+
+    })
+
+    //console.log('\n' + 'Complete ' + '\n' + nm + '\n' + now + '\n' + latlon + '\n' + shortDesc + '\n' + url + '\n' + text);
+    } else{
+    //console.log('\n' + 'Incomplete ' + '\n' + nm + '\n' + now + '\n' + latlon + '\n' + shortDesc  + '\n' + url + '\n'  + text);
     }
 
-    request(options, function(err, res, body){
-
-      if (err != null) {
-          console.log("Scrape Request " + err + '\n' + '\t' + url);
-          return
-      } else {
-          let text = longDesc(body);
-          let latlon = geo(body, url);
-
-          if (text && latlon){
-            console.log('\n' + 'Complete ' + '\n' + nm + '\n' + latlon + '\n' + shortDesc + '\n' + url + '\n' + text);
-          } else{
-            console.log('\n' + 'Incomplete ' + '\n' + nm + '\n' + latlon + '\n' + shortDesc  + '\n' + url + '\n'  + text);
-          }
-
-          //console.log(latlon);
-          //fs.appendFileSync('scrape.csv', nm + ', ' + url + ', ' + text + '\n');
-
-      }
-    })
-  }
+  })
 }
 
 function geo(body, url){
