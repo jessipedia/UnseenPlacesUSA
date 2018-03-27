@@ -33,9 +33,12 @@ var placeSchema = mongoose.Schema({
 }, { typeKey: '$type' })
 
 var Place = mongoose.model('Place', placeSchema);
+var incompleteCount = 0;
+var completeCount = 0;
+var count = 0;
 
 var data;
-var readableStream = fs.createReadStream('./lists/nevada_state_prisons.txt');
+var readableStream = fs.createReadStream('./lists/superfund.txt');
 
 readableStream.setEncoding('utf8');
 
@@ -56,7 +59,8 @@ readableStream.on('end', function() {
 
       limiter.schedule(() => gather(strp))
         .then(result => scrape(result))
-        .then(result => createObj(result));
+        .then(result => createObj(result))
+        .then(result => insert(result));
   }
 });
 
@@ -121,12 +125,8 @@ function createObj(body){
       let latlon = geo(body);
       let nm = firstHeading(body);
       let link = source(body);
-      console.log(nm);
-      //console.log(latlon);
-      //console.log(text == null);
 
       if (latlon && text){
-        //console.log('Complete ' + nm);
         latlon = latlon.split(';');
         let lat = latlon[0];
         let lon = latlon[1];
@@ -164,7 +164,7 @@ function createObj(body){
                       updated: now,
                     });
 
-                    console.log('Complete ' + placeCreate);
+                    resolve(placeCreate);
 
                   } else{
                     //This is the wrong object, move on
@@ -190,7 +190,7 @@ function createObj(body){
                   updated: now,
                 });
 
-                console.log('Partially Incomplete no stusps ' + placeCreate)
+                resolve(placeCreate);
               }
             }
           })
@@ -213,7 +213,7 @@ function createObj(body){
             updated: now,
           });
 
-          console.log('Complete ' + placeCreate);
+          resolve(placeCreate);
         }
 
       } else if (text && latlon == null){
@@ -235,7 +235,7 @@ function createObj(body){
           created: now,
           updated: now,
         });
-        console.log('Partially Incomplete no latlon' + placeCreate);
+        resolve(placeCreate);
 
       } else if (latlon && text == null){
 
@@ -260,7 +260,7 @@ function createObj(body){
           created: now,
           updated: now,
         });
-        console.log('Partially Incomplete no text ' + placeCreate);
+        resolve(placeCreate);
           } else{
 
         }
@@ -282,8 +282,7 @@ function createObj(body){
         created: now,
         updated: now,
       });
-      console.log('Totally Incomplete ' + placeCreate);
-      resolve();
+      resolve(placeCreate);
     }
   })
 }
@@ -306,6 +305,8 @@ function longDesc(body){
   let text = para.text();
   text = text.replace(/\[citation needed\]/g, '');
   text = text.replace(/\[\d\]/g, '');
+  text = text.replace(/\\/g, '');
+  text = text.replace(/\\\'/g, '\'');
   return(text);
 }
 
@@ -324,5 +325,52 @@ function source(body){
     if (rel == 'canonical'){
       return(source[i].attribs.href);
     }
+  }
+}
+
+function insert(doc){
+  //console.log(doc);
+  let text = doc.long_desc;
+  let stusps = doc.stusps;
+  let lat = doc.location.coordinates[0];
+
+  if (text == 'none' || stusps == 'none' || lat == 0 || text.includes('Coordinates:')){
+    console.log(doc.name);
+
+    count += 1;
+    if (count == 1) {
+      mongoose.connect('mongodb://localhost/upusa_in',{useMongoClient: true});
+    }
+      doc.save(function(err) {
+        if (err) {
+          console.log("Incomplete Error saving: " + err);
+        } else {
+            count -= 1;
+            if (count === 0){
+              mongoose.connection.close('close', function(){
+              console.log("Incomplete Closing Connection");
+              });
+            }
+          }
+      })
+  } else{
+    console.log(doc.name);
+
+    count += 1;
+    if (count == 1) {
+      mongoose.connect('mongodb://localhost/upusa_cm',{useMongoClient: true});
+    }
+    doc.save(function(err) {
+      if (err) {
+        console.log("Complete Error saving: " + err);
+      } else {
+          count -= 1;
+          if (count === 0){
+            mongoose.connection.close('close', function(){
+            console.log("Complete Closing Connection");
+            });
+          }
+        }
+    })
   }
 }
