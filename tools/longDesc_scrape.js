@@ -6,7 +6,7 @@ var bottleneck = require('bottleneck');
 var mongoose = require('mongoose');
 
 var shortDesc = 'unseen place';
-var locAbbrev = 'none';
+var locAbbrev = 'NV';
 const now = new Date();
 
 const limiter = new bottleneck({
@@ -35,7 +35,7 @@ var placeSchema = mongoose.Schema({
 var Place = mongoose.model('Place', placeSchema);
 
 var data;
-var readableStream = fs.createReadStream('./lists/test.txt');
+var readableStream = fs.createReadStream('./lists/nevada_state_prisons.txt');
 
 readableStream.setEncoding('utf8');
 
@@ -130,70 +130,92 @@ function createObj(body){
         latlon = latlon.split(';');
         let lat = latlon[0];
         let lon = latlon[1];
-        let mapsUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lon + '&key=' + config.staticKey;
 
-        request(mapsUrl, function(err, res, body){
-          if (err != null) {
-            console.log("Geocode Request " + err + '\n' + '\t' + mapsUrl);
-            return;
-          } else{
-            let parsed = JSON.parse(body);
+        if (locAbbrev == 'none'){
+          let mapsUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lon + '&key=' + config.staticKey;
 
+          request(mapsUrl, function(err, res, body){
+            if (err != null) {
+              console.log("Geocode Request " + err + '\n' + '\t' + mapsUrl);
+              return;
+            } else{
+              let parsed = JSON.parse(body);
+              if (parsed.results[0]){
+                let address = parsed.results[0].address_components;
+                for (var i = 0; i < address.length; i++) {
+                  if(address[i].types.includes('administrative_area_level_1')){
+                    let stusps = address[i].short_name;
 
-            if (parsed.results[0]){
-              let address = parsed.results[0].address_components;
-              for (var i = 0; i < address.length; i++) {
-                if(address[i].types.includes('administrative_area_level_1')){
-                  let stusps = address[i].short_name;
+                    let placeCreate = new Place({
+                      name: nm,
+                      short_desc: shortDesc,
+                      long_desc: text,
+                      stusps: stusps,
+                      location: {
+                        type: 'Point',
+                        coordinates: [
+                          lat,
+                          lon
+                        ]
+                      },
+                      loc_source: link,
+                      desc_source: link,
+                      created: now,
+                      updated: now,
+                    });
 
-                  let placeCreate = new Place({
-                    name: nm,
-                    short_desc: shortDesc,
-                    long_desc: text,
-                    stusps: stusps,
-                    location: {
-                      type: 'Point',
-                      coordinates: [
-                        lat,
-                        lon
-                      ]
-                    },
-                    loc_source: link,
-                    desc_source: link,
-                    created: now,
-                    updated: now,
-                  });
+                    console.log('Complete ' + placeCreate);
 
-                  console.log('Complete ' + placeCreate);
-
-                } else{
-                  //This is the wrong object, move on
+                  } else{
+                    //This is the wrong object, move on
+                  }
                 }
-              }
-            }else {
-              //There are no location results
-              let placeCreate = new Place({
-                name: nm,
-                short_desc: shortDesc,
-                long_desc: text,
-                stusps: locAbbrev,
-                location: {
-                  type: 'Point',
-                  coordinates: [
-                    lat,
-                    lon
-                  ]
-                },
-                loc_source: link,
-                desc_source: link,
-                created: now,
-                updated: now,
-              });
+              } else {
+                //There are no location results
+                let placeCreate = new Place({
+                  name: nm,
+                  short_desc: shortDesc,
+                  long_desc: text,
+                  stusps: locAbbrev,
+                  location: {
+                    type: 'Point',
+                    coordinates: [
+                      lat,
+                      lon
+                    ]
+                  },
+                  loc_source: link,
+                  desc_source: link,
+                  created: now,
+                  updated: now,
+                });
 
-              console.log('Partially Incomplete no stusps ' + placeCreate)
+                console.log('Partially Incomplete no stusps ' + placeCreate)
+              }
             }
-          }
-        })
+          })
+        }else {
+          let placeCreate = new Place({
+            name: nm,
+            short_desc: shortDesc,
+            long_desc: text,
+            stusps: locAbbrev,
+            location: {
+              type: 'Point',
+              coordinates: [
+                lat,
+                lon
+              ]
+            },
+            loc_source: link,
+            desc_source: link,
+            created: now,
+            updated: now,
+          });
+
+          console.log('Complete ' + placeCreate);
+        }
+
       } else if (text && latlon == null){
 
         let placeCreate = new Place({
