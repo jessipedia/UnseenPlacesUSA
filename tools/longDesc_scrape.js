@@ -3,14 +3,36 @@ var fs = require('fs');
 var request = require('request');
 var config = require('./config.js');
 var bottleneck = require('bottleneck');
+var mongoose = require('mongoose');
 
 var shortDesc = 'unseen place';
+var locAbbrev = 'none';
 const now = new Date();
 
 const limiter = new bottleneck({
   maxConcurrent: 1,
   minTime: 2000
 });
+
+var placeSchema = mongoose.Schema({
+  name: String,
+  short_desc: String,
+  long_desc: String,
+  stusps: String,
+  location: {
+    type: String,
+    coordinates: [
+      Number,
+      Number
+    ]
+  },
+  loc_source: String,
+  desc_source: String,
+  created: Date,
+  updated: Date,
+}, { typeKey: '$type' })
+
+var Place = mongoose.model('Place', placeSchema);
 
 var data;
 var readableStream = fs.createReadStream('./lists/test.txt');
@@ -75,13 +97,11 @@ function scrape(parsed){
         }
 
         request(options, function(err, res, body){
-          console.log('Scrape Request Made');
-
           if (err != null) {
               console.log("Scrape Request " + err + '\n' + '\t' + url);
               resolve(null)
           } else {
-            resolve(body);
+            resolve(body, parsed[0]);
           }
         })
     } else {
@@ -99,30 +119,109 @@ function createObj(body){
 
       let text = longDesc(body);
       let latlon = geo(body);
+      let nm = firstHeading(body);
+      let link = source(body);
 
-      if (text && latlon){
+
+      console.log(nm);
+      if (latlon && text){
+        console.log('Complete ' + nm);
         latlon = latlon.split(';');
         let lat = latlon[0];
         let lon = latlon[1];
         let mapsUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lon + '&key=' + config.staticKey;
 
-        request(mapsUrl, function(err, res, body){
-          console.log('Geocode Request Made');
-          if (err != null) {
-            console.log("Geocode Request " + err + '\n' + '\t' + mapsUrl);
-            return;
+        // request(mapsUrl, function(err, res, body){
+        //   if (err != null) {
+        //     console.log("Geocode Request " + err + '\n' + '\t' + mapsUrl);
+        //     return;
+        //   } else{
+        //     let parsed = JSON.parse(body);
+        //
+        //
+        //     if (parsed.results[0]){
+        //       let address = parsed.results[0].address_components;
+        //       for (var i = 0; i < address.length; i++) {
+        //         if(address[i].types.includes('administrative_area_level_1')){
+        //           console.log(address[i].short_name);
+        //         } else{
+        //
+        //         }
+        //       }
+        //       //address[i]
+        //     }else {
+        //       console.log(mapsUrl);
+        //     }
+        //     /////Create docs for: Totally Complete, latlon && text but no stusps
+        //   }
+        // })
+      } else if (text == true && latlon == null){
+
+        let placeCreate = new Place({
+          name: nm,
+          short_desc: shortDesc,
+          long_desc: text,
+          stusps: locAbbrev,
+          location: {
+            type: 'Point',
+            coordinates: [
+              0,
+              0
+            ]
+          },
+          loc_source: 'none',
+          desc_source: link,
+          created: now,
+          updated: now,
+        });
+        console.log('Partially Incomplete ' + placeCreate);
+
+      } else if (latlon == true && text === null){
+
+        latlon = latlon.split(';');
+        let lat = latlon[0];
+        let lon = latlon[1];
+
+        let placeCreate = new Place({
+          name: nm,
+          short_desc: shortDesc,
+          long_desc: 'none',
+          stusps: locAbbrev,
+          location: {
+            type: 'Point',
+            coordinates: [
+              lat,
+              lon
+            ]
+          },
+          loc_source: link,
+          desc_source: 'none',
+          created: now,
+          updated: now,
+        });
+        console.log('Partially Incomplete ' + placeCreate);
           } else{
-            let parsed = JSON.parse(body);
-            console.log(parsed);
-            /////Return complete here
-          }
-        })
-      } else{
-      ///// Return partially incomplete here
-      resolve();
-      }
-    } else{
-      ////Return Totally incomplete here too
+
+        }
+    } else {
+      let placeCreate = new Place({
+        name: body,
+        short_desc: shortDesc,
+        long_desc: 'none',
+        stusps: locAbbrev,
+        location: {
+          type: 'Point',
+          coordinates: [
+            0,
+            0
+          ]
+        },
+        loc_source: 'none',
+        desc_source: 'none',
+        created: now,
+        updated: now,
+      });
+      //console.log('Totally Incomplete ' + placeCreate);
       resolve();
     }
   })
@@ -147,4 +246,22 @@ function longDesc(body){
   text = text.replace(/\[citation needed\]/g, '');
   text = text.replace(/\[\d\]/g, '');
   return(text);
+}
+
+function firstHeading(body){
+  let $ = cheerio.load(body);
+  let heading = $(".firstHeading").html();
+  //console.log(heading);
+  return(heading);
+}
+
+function source(body){
+  let $ = cheerio.load(body);
+  let source = $('link');
+  for (var i = 0; i < source.length; i++) {
+    let rel = source[i].attribs.rel;
+    if (rel == 'canonical'){
+      return(source[i].attribs.href);
+    }
+  }
 }
