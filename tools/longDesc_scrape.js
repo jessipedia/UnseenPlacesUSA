@@ -33,9 +33,11 @@ var placeSchema = mongoose.Schema({
 }, { typeKey: '$type' })
 
 var Place = mongoose.model('Place', placeSchema);
+var incPlace = mongoose.model('incPlace', placeSchema);
 var incompleteCount = 0;
 var completeCount = 0;
 var count = 0;
+var length = 0;
 
 var data;
 var readableStream = fs.createReadStream('./lists/superfund.txt');
@@ -48,9 +50,10 @@ readableStream.on('data', function(chunk) {
 
 readableStream.on('end', function() {
    let list = data.split(',');
-
+      count = list.length;
+      length = list.length;
   for (let i = 0; i < list.length; i++) {
-      counter = i;
+
       let name = list[i].trim();
       name = name.replace(/undefined/, '');
       let strp = name.replace(/\([^)]*\)/, '');
@@ -146,7 +149,7 @@ function createObj(body){
                   if(address[i].types.includes('administrative_area_level_1')){
                     let stusps = address[i].short_name;
 
-                    let placeCreate = new Place({
+                    let placeCreate = {
                       name: nm,
                       short_desc: shortDesc,
                       long_desc: text,
@@ -162,7 +165,7 @@ function createObj(body){
                       desc_source: link,
                       created: now,
                       updated: now,
-                    });
+                    };
 
                     resolve(placeCreate);
 
@@ -172,7 +175,7 @@ function createObj(body){
                 }
               } else {
                 //There are no location results
-                let placeCreate = new Place({
+                let placeCreate = {
                   name: nm,
                   short_desc: shortDesc,
                   long_desc: text,
@@ -188,14 +191,14 @@ function createObj(body){
                   desc_source: link,
                   created: now,
                   updated: now,
-                });
+                };
 
                 resolve(placeCreate);
               }
             }
           })
         }else {
-          let placeCreate = new Place({
+          let placeCreate = {
             name: nm,
             short_desc: shortDesc,
             long_desc: text,
@@ -211,14 +214,14 @@ function createObj(body){
             desc_source: link,
             created: now,
             updated: now,
-          });
+          };
 
           resolve(placeCreate);
         }
 
       } else if (text && latlon == null){
 
-        let placeCreate = new Place({
+        let placeCreate = {
           name: nm,
           short_desc: shortDesc,
           long_desc: text,
@@ -234,7 +237,7 @@ function createObj(body){
           desc_source: link,
           created: now,
           updated: now,
-        });
+        };
         resolve(placeCreate);
 
       } else if (latlon && text == null){
@@ -243,7 +246,7 @@ function createObj(body){
         let lat = latlon[0];
         let lon = latlon[1];
 
-        let placeCreate = new Place({
+        let placeCreate = {
           name: nm,
           short_desc: shortDesc,
           long_desc: 'none',
@@ -259,13 +262,13 @@ function createObj(body){
           desc_source: 'none',
           created: now,
           updated: now,
-        });
+        };
         resolve(placeCreate);
           } else{
 
         }
     } else {
-      let placeCreate = new Place({
+      let placeCreate = {
         name: body,
         short_desc: shortDesc,
         long_desc: 'none',
@@ -281,7 +284,7 @@ function createObj(body){
         desc_source: 'none',
         created: now,
         updated: now,
-      });
+      };
       resolve(placeCreate);
     }
   })
@@ -335,13 +338,36 @@ function insert(doc){
   let lat = doc.location.coordinates[0];
 
   if (text == 'none' || stusps == 'none' || lat == 0 || text.includes('Coordinates:')){
-    console.log(doc.name);
+    //Incomplete
+    //console.log('Incomplete');
+    //console.log(doc);
 
-    count += 1;
-    if (count == 1) {
-      mongoose.connect('mongodb://localhost/upusa_in',{useMongoClient: true});
+    let incomplete = new incPlace ({
+      name: doc.name,
+      short_desc: doc.short_desc,
+      long_desc: doc.long_desc,
+      stusps: doc.stusps,
+      location: {
+        type: doc.location.type,
+        coordinates: [
+          doc.location.coordinates[0],
+          doc.location.coordinates[1]
+        ]
+      },
+      loc_source: doc.loc_source,
+      desc_source: doc.desc_source,
+      created: doc.created,
+      updated: doc.updated,
+    })
+
+    //console.log(incomplete);
+
+    //count += 1;
+    if (count = length) {
+      console.log('Incomplete opening connection');
+      mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
     }
-      doc.save(function(err) {
+      incomplete.save(function(err) {
         if (err) {
           console.log("Incomplete Error saving: " + err);
         } else {
@@ -354,13 +380,36 @@ function insert(doc){
           }
       })
   } else{
-    console.log(doc.name);
+    //Complete
+    //console.log('Complete');
+    //console.log(doc);
 
-    count += 1;
-    if (count == 1) {
-      mongoose.connect('mongodb://localhost/upusa_cm',{useMongoClient: true});
+    let complete = new Place ({
+      name: doc.name,
+      short_desc: doc.short_desc,
+      long_desc: doc.long_desc,
+      stusps: doc.stusps,
+      location: {
+        type: doc.location.type,
+        coordinates: [
+          doc.location.coordinates[0],
+          doc.location.coordinates[1]
+        ]
+      },
+      loc_source: doc.loc_source,
+      desc_source: doc.desc_source,
+      created: doc.created,
+      updated: doc.updated,
+    })
+
+    //console.log(complete);
+
+    //count += 1;
+    if (count = length) {
+      console.log('Complete opening connection');
+      mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
     }
-    doc.save(function(err) {
+    complete.save(function(err) {
       if (err) {
         console.log("Complete Error saving: " + err);
       } else {
