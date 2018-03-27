@@ -10,7 +10,7 @@ var locAbbrev = 'none';
 const now = new Date();
 
 const limiter = new bottleneck({
-  maxConcurrent: 1,
+  maxConcurrent: 6,
   minTime: 2000
 });
 
@@ -121,41 +121,80 @@ function createObj(body){
       let latlon = geo(body);
       let nm = firstHeading(body);
       let link = source(body);
-
-
       console.log(nm);
+      //console.log(latlon);
+      //console.log(text == null);
+
       if (latlon && text){
-        console.log('Complete ' + nm);
+        //console.log('Complete ' + nm);
         latlon = latlon.split(';');
         let lat = latlon[0];
         let lon = latlon[1];
         let mapsUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lon + '&key=' + config.staticKey;
 
-        // request(mapsUrl, function(err, res, body){
-        //   if (err != null) {
-        //     console.log("Geocode Request " + err + '\n' + '\t' + mapsUrl);
-        //     return;
-        //   } else{
-        //     let parsed = JSON.parse(body);
-        //
-        //
-        //     if (parsed.results[0]){
-        //       let address = parsed.results[0].address_components;
-        //       for (var i = 0; i < address.length; i++) {
-        //         if(address[i].types.includes('administrative_area_level_1')){
-        //           console.log(address[i].short_name);
-        //         } else{
-        //
-        //         }
-        //       }
-        //       //address[i]
-        //     }else {
-        //       console.log(mapsUrl);
-        //     }
-        //     /////Create docs for: Totally Complete, latlon && text but no stusps
-        //   }
-        // })
-      } else if (text == true && latlon == null){
+        request(mapsUrl, function(err, res, body){
+          if (err != null) {
+            console.log("Geocode Request " + err + '\n' + '\t' + mapsUrl);
+            return;
+          } else{
+            let parsed = JSON.parse(body);
+
+
+            if (parsed.results[0]){
+              let address = parsed.results[0].address_components;
+              for (var i = 0; i < address.length; i++) {
+                if(address[i].types.includes('administrative_area_level_1')){
+                  let stusps = address[i].short_name;
+
+                  let placeCreate = new Place({
+                    name: nm,
+                    short_desc: shortDesc,
+                    long_desc: text,
+                    stusps: stusps,
+                    location: {
+                      type: 'Point',
+                      coordinates: [
+                        lat,
+                        lon
+                      ]
+                    },
+                    loc_source: link,
+                    desc_source: link,
+                    created: now,
+                    updated: now,
+                  });
+
+                  console.log('Complete ' + placeCreate);
+
+                } else{
+                  //This is the wrong object, move on
+                }
+              }
+            }else {
+              //There are no location results
+              let placeCreate = new Place({
+                name: nm,
+                short_desc: shortDesc,
+                long_desc: text,
+                stusps: locAbbrev,
+                location: {
+                  type: 'Point',
+                  coordinates: [
+                    lat,
+                    lon
+                  ]
+                },
+                loc_source: link,
+                desc_source: link,
+                created: now,
+                updated: now,
+              });
+
+              console.log('Partially Incomplete no stusps ' + placeCreate)
+            }
+          }
+        })
+      } else if (text && latlon == null){
 
         let placeCreate = new Place({
           name: nm,
@@ -174,9 +213,9 @@ function createObj(body){
           created: now,
           updated: now,
         });
-        console.log('Partially Incomplete ' + placeCreate);
+        console.log('Partially Incomplete no latlon' + placeCreate);
 
-      } else if (latlon == true && text === null){
+      } else if (latlon && text == null){
 
         latlon = latlon.split(';');
         let lat = latlon[0];
@@ -199,7 +238,7 @@ function createObj(body){
           created: now,
           updated: now,
         });
-        console.log('Partially Incomplete ' + placeCreate);
+        console.log('Partially Incomplete no text ' + placeCreate);
           } else{
 
         }
@@ -221,7 +260,7 @@ function createObj(body){
         created: now,
         updated: now,
       });
-      //console.log('Totally Incomplete ' + placeCreate);
+      console.log('Totally Incomplete ' + placeCreate);
       resolve();
     }
   })
@@ -250,7 +289,7 @@ function longDesc(body){
 
 function firstHeading(body){
   let $ = cheerio.load(body);
-  let heading = $(".firstHeading").html();
+  let heading = $(".firstHeading").text();
   //console.log(heading);
   return(heading);
 }
