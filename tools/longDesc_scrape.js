@@ -52,21 +52,32 @@ readableStream.on('end', function() {
    let list = data.split(',');
       count = list.length;
       length = list.length;
-  for (let i = 0; i < list.length; i++) {
 
-      let name = list[i].trim();
-      name = name.replace(/undefined/, '');
-      let strp = name.replace(/\([^)]*\)/, '');
-      strp = encodeURIComponent(strp);
+      createPlaces(list);
 
 
-      limiter.schedule(() => gather(strp))
-        .then(result => scrape(result))
-        .then(result => createObj(result))
-        .then(result => insert(result));
-  }
+  console.log('After List Loop');
 });
 
+function createPlaces(list){
+  return new Promise(resolve => {
+    for (let i = 0; i < list.length; i++) {
+
+        let name = list[i].trim();
+        name = name.replace(/undefined/, '');
+        let strp = name.replace(/\([^)]*\)/, '');
+        strp = encodeURIComponent(strp);
+
+
+        limiter.schedule(() => gather(strp))
+          .then(result => scrape(result))
+          .then(result => createObj(result))
+          .then(result => insert(result));
+    }
+  })
+  console.log('About to Resolve');
+  resolve();
+}
 
 
 function gather(place){
@@ -333,6 +344,8 @@ function source(body){
 
 function insert(doc){
   //console.log(doc);
+  //console.log(count);
+  //console.log(length);
   let text = doc.long_desc;
   let stusps = doc.stusps;
   let lat = doc.location.coordinates[0];
@@ -362,16 +375,19 @@ function insert(doc){
 
     //console.log(incomplete);
 
-    //count += 1;
-    if (count = length) {
+    //count = count + 1
+    if (count ==  length) {
       console.log('Incomplete opening connection');
       mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
     }
       incomplete.save(function(err) {
+        console.log('Saving incomplete' + count);
         if (err) {
           console.log("Incomplete Error saving: " + err);
         } else {
-            count -= 1;
+            count = count - 1;
+            console.log('Saving Incomplete');
+            console.log(count);
             if (count === 0){
               mongoose.connection.close('close', function(){
               console.log("Incomplete Closing Connection");
@@ -404,16 +420,18 @@ function insert(doc){
 
     //console.log(complete);
 
-    //count += 1;
-    if (count = length) {
+    //count = count + 1;
+    if (count == length) {
       console.log('Complete opening connection');
       mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
     }
     complete.save(function(err) {
+      console.log('Saving count' + count);
       if (err) {
         console.log("Complete Error saving: " + err);
       } else {
-          count -= 1;
+        console.log('Saving Complete');
+          count = count - 1;
           if (count === 0){
             mongoose.connection.close('close', function(){
             console.log("Complete Closing Connection");
