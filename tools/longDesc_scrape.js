@@ -6,8 +6,9 @@ var bottleneck = require('bottleneck');
 var mongoose = require('mongoose');
 
 var shortDesc = 'unseen place';
-var locAbbrev = 'NV';
+var locAbbrev = 'none';
 const now = new Date();
+var filename = 'superfund'
 
 const limiter = new bottleneck({
   maxConcurrent: 6,
@@ -40,7 +41,7 @@ var count = 0;
 var length = 0;
 
 var data;
-var readableStream = fs.createReadStream('./lists/superfund.txt');
+var readableStream = fs.createReadStream('./lists/' + filename + '.txt');
 
 readableStream.setEncoding('utf8');
 
@@ -60,7 +61,7 @@ readableStream.on('end', function() {
 });
 
 function createPlaces(list){
-  return new Promise(resolve => {
+  //return new Promise(resolve => {
     for (let i = 0; i < list.length; i++) {
 
         let name = list[i].trim();
@@ -74,9 +75,10 @@ function createPlaces(list){
           .then(result => createObj(result))
           .then(result => insert(result));
     }
-  })
-  console.log('About to Resolve');
-  resolve();
+    //console.log('About to Resolve');
+    //resolve();
+  //})
+
 }
 
 
@@ -94,6 +96,8 @@ function gather(place){
           resolve("Gather Request " + err + '\n' + '\t' + wikiapi);
       } else {
           let parsed = JSON.parse(body);
+          fs.appendFileSync('gather_log_' + filename + ' ' + now + '.txt', res + '\n');
+
             resolve(parsed);
         }
     })
@@ -119,10 +123,12 @@ function scrape(parsed){
               console.log("Scrape Request " + err + '\n' + '\t' + url);
               resolve(null)
           } else {
-            resolve(body, parsed[0]);
+            resolve(body);
+            fs.appendFileSync('scrape_log_' + filename + ' ' + now + '.txt', res + '\n');
           }
         })
     } else {
+      fs.appendFileSync('gather_log_' + filename + ' ' + now + '.txt', parsed + '\n');
       resolve(parsed[0]);
     }
 
@@ -277,6 +283,24 @@ function createObj(body){
         resolve(placeCreate);
           } else{
 
+            let placeCreate = {
+              name: nm,
+              short_desc: shortDesc,
+              long_desc: 'none',
+              stusps: locAbbrev,
+              location: {
+                type: 'Point',
+                coordinates: [
+                  0,
+                  0
+                ]
+              },
+              loc_source: link,
+              desc_source: 'none',
+              created: now,
+              updated: now,
+            };
+            resolve(placeCreate);
         }
     } else {
       let placeCreate = {
@@ -349,6 +373,8 @@ function insert(doc){
   let text = doc.long_desc;
   let stusps = doc.stusps;
   let lat = doc.location.coordinates[0];
+
+  fs.appendFileSync('insert_log_' + filename + ' ' + now + '.txt', doc.name + '\n');
 
   if (text == 'none' || stusps == 'none' || lat == 0 || text.includes('Coordinates:')){
     //Incomplete

@@ -44,4 +44,4 @@ Palo Verde Nuclear Generating Station,
 River Bend Nuclear Generating Station,
 South Texas Nuclear Generating Station,
 Waterford Nuclear Generating Station,
-Wolf Creek Generating Station,
+Wolf Creek Generating Station
