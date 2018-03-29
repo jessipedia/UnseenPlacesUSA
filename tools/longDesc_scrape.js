@@ -5,10 +5,10 @@ var config = require('./config.js');
 var bottleneck = require('bottleneck');
 var mongoose = require('mongoose');
 
-var shortDesc = 'unseen place';
+var shortDesc = 'American Indian reservation';
 var locAbbrev = 'none';
 const now = new Date();
-var filename = 'superfund'
+var filename = 'ai_reservations_a-m'
 
 const limiter = new bottleneck({
   maxConcurrent: 6,
@@ -54,33 +54,20 @@ readableStream.on('end', function() {
       count = list.length;
       length = list.length;
 
-      createPlaces(list);
+      for (let i = 0; i < list.length; i++) {
+
+          let name = list[i].trim();
+          name = name.replace(/undefined/, '');
+          let strp = name.replace(/\([^)]*\)/, '');
+          strp = encodeURIComponent(strp);
 
 
-  console.log('After List Loop');
+          limiter.schedule(() => gather(strp))
+            .then(result => scrape(result))
+            .then(result => createObj(result))
+            .then(result => insert(result));
+      }
 });
-
-function createPlaces(list){
-  //return new Promise(resolve => {
-    for (let i = 0; i < list.length; i++) {
-
-        let name = list[i].trim();
-        name = name.replace(/undefined/, '');
-        let strp = name.replace(/\([^)]*\)/, '');
-        strp = encodeURIComponent(strp);
-
-
-        limiter.schedule(() => gather(strp))
-          .then(result => scrape(result))
-          .then(result => createObj(result))
-          .then(result => insert(result));
-    }
-    //console.log('About to Resolve');
-    //resolve();
-  //})
-
-}
-
 
 function gather(place){
   return new Promise(resolve => {
@@ -92,13 +79,14 @@ function gather(place){
 
     request(options, function(err, res, body) {
       if (err) {
+          count = count -1;
           console.log("Gather Request " + err + '\n' + '\t' + wikiapi);
-          resolve("Gather Request " + err + '\n' + '\t' + wikiapi);
+          return;
       } else {
           let parsed = JSON.parse(body);
-          fs.appendFileSync('gather_log_' + filename + ' ' + now + '.txt', res + '\n');
-
-            resolve(parsed);
+          //This is for debugging
+          //fs.appendFileSync('gather_log_' + filename + ' ' + now + '.txt', res + '\n');
+          resolve(parsed);
         }
     })
   })
@@ -107,40 +95,40 @@ function gather(place){
 function scrape(parsed){
   return new Promise(resolve => {
     if (parsed == null){
-      console.log('Scrape Results null: ' + parsed);
+      console.log('Error Scrape Results null: ' + parsed);
+      count = count - 1;
       return;
     } else{
-
-      if (parsed[3][0]){
-        let url = parsed[3][0];
-        let options = {
-          uri: url,
-          family: 4
-        }
-
-        request(options, function(err, res, body){
-          if (err != null) {
-              console.log("Scrape Request " + err + '\n' + '\t' + url);
-              resolve(null)
-          } else {
-            resolve(body);
-            fs.appendFileSync('scrape_log_' + filename + ' ' + now + '.txt', res + '\n');
+        if (parsed[3][0]){
+          let url = parsed[3][0];
+          let options = {
+            uri: url,
+            family: 4
           }
-        })
-    } else {
-      fs.appendFileSync('gather_log_' + filename + ' ' + now + '.txt', parsed + '\n');
-      resolve(parsed[0]);
-    }
 
+          request(options, function(err, res, body){
+            if (err != null) {
+                count = count - 1;
+                console.log("Scrape Request " + err + '\n' + '\t' + url);
+                return
+            } else {
+              resolve(body);
+              //This is for debugging
+              //fs.appendFileSync('scrape_log_' + filename + ' ' + now + '.txt', res + '\n');
+            }
+          })
+      } else {
+        //This is for debugging
+        //fs.appendFileSync('scrape_log_' + filename + ' ' + now + '.txt', parsed + '\n');
+        resolve(parsed[0]);
       }
-})
+    }
+  })
 }
 
 function createObj(body){
   return new Promise(resolve => {
-
    if (body.includes('<!DOCTYPE html>')){
-
       let text = longDesc(body);
       let latlon = geo(body);
       let nm = firstHeading(body);
@@ -157,6 +145,7 @@ function createObj(body){
           request(mapsUrl, function(err, res, body){
             if (err != null) {
               console.log("Geocode Request " + err + '\n' + '\t' + mapsUrl);
+              count = count - 1;
               return;
             } else{
               let parsed = JSON.parse(body);
@@ -340,36 +329,49 @@ function longDesc(body){
   let $ = cheerio.load(body);
   let paraHtml = $(".mw-parser-output > p").html();
   let para = cheerio.load(paraHtml);
-  let text = para.text();
-  text = text.replace(/\[citation needed\]/g, '');
-  text = text.replace(/\[\d\]/g, '');
-  text = text.replace(/\\/g, '');
-  text = text.replace(/\\\'/g, '\'');
-  return(text);
+  if(para){
+    let text = para.text();
+    text = text.replace(/\[citation needed\]/g, '');
+    text = text.replace(/\[update\]/g, '');
+    text = text.replace(/\[\d+\]/g, '');
+    text = text.replace(/\\/g, '');
+    text = text.replace(/\\\'/g, '\'');
+    console.log(text + '\n');
+    return(text);
+  } else{
+    return(null);
+  }
+
 }
 
 function firstHeading(body){
   let $ = cheerio.load(body);
   let heading = $(".firstHeading").text();
-  //console.log(heading);
-  return(heading);
+  if(heading){
+    return(heading);
+  } else{
+    return(null);
+  }
+
 }
 
 function source(body){
   let $ = cheerio.load(body);
   let source = $('link');
-  for (var i = 0; i < source.length; i++) {
-    let rel = source[i].attribs.rel;
-    if (rel == 'canonical'){
-      return(source[i].attribs.href);
+  if (source){
+    for (var i = 0; i < source.length; i++) {
+      let rel = source[i].attribs.rel;
+      if (rel == 'canonical'){
+        return(source[i].attribs.href);
+      }
+      //Doesn't return if cannonical doesn't exist
     }
-  }
+  } else {
+      return(null)
+    }
 }
 
 function insert(doc){
-  //console.log(doc);
-  //console.log(count);
-  //console.log(length);
   let text = doc.long_desc;
   let stusps = doc.stusps;
   let lat = doc.location.coordinates[0];
@@ -377,9 +379,6 @@ function insert(doc){
   fs.appendFileSync('insert_log_' + filename + ' ' + now + '.txt', doc.name + '\n');
 
   if (text == 'none' || stusps == 'none' || lat == 0 || text.includes('Coordinates:')){
-    //Incomplete
-    //console.log('Incomplete');
-    //console.log(doc);
 
     let incomplete = new incPlace ({
       name: doc.name,
@@ -399,32 +398,24 @@ function insert(doc){
       updated: doc.updated,
     })
 
-    //console.log(incomplete);
-
-    //count = count + 1
     if (count ==  length) {
-      console.log('Incomplete opening connection');
+      //console.log("Incomplete Doc Opening Connection");
       mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
     }
       incomplete.save(function(err) {
-        console.log('Saving incomplete' + count);
         if (err) {
-          console.log("Incomplete Error saving: " + err);
+          //console.log("Incomplete Doc Error saving: " + err);
         } else {
             count = count - 1;
-            console.log('Saving Incomplete');
-            console.log(count);
+            //console.log('Saving Incomplete Doc ' + count);
             if (count === 0){
               mongoose.connection.close('close', function(){
-              console.log("Incomplete Closing Connection");
+              //console.log("Incomplete Doc Closing Connection");
               });
             }
           }
       })
   } else{
-    //Complete
-    //console.log('Complete');
-    //console.log(doc);
 
     let complete = new Place ({
       name: doc.name,
@@ -444,23 +435,19 @@ function insert(doc){
       updated: doc.updated,
     })
 
-    //console.log(complete);
-
-    //count = count + 1;
     if (count == length) {
-      console.log('Complete opening connection');
+      //console.log('Complete Doc Opening connection');
       mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
     }
     complete.save(function(err) {
-      console.log('Saving count' + count);
       if (err) {
         console.log("Complete Error saving: " + err);
       } else {
-        console.log('Saving Complete');
+        //console.log('Saving Complete Doc ' + count);
           count = count - 1;
           if (count === 0){
             mongoose.connection.close('close', function(){
-            console.log("Complete Closing Connection");
+            //console.log("Complete Doc Closing Connection");
             });
           }
         }
