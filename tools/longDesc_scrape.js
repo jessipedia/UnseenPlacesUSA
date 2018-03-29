@@ -5,10 +5,10 @@ var config = require('./config.js');
 var bottleneck = require('bottleneck');
 var mongoose = require('mongoose');
 
-var shortDesc = 'American Indian reservation';
-var locAbbrev = 'none';
+var shortDesc = 'state prison';
+var locAbbrev = 'WY';
 const now = new Date();
-var filename = 'ai_reservations_a-m'
+var filename = 'wyoming_state_prisons'
 
 const limiter = new bottleneck({
   maxConcurrent: 6,
@@ -336,7 +336,6 @@ function longDesc(body){
     text = text.replace(/\[\d+\]/g, '');
     text = text.replace(/\\/g, '');
     text = text.replace(/\\\'/g, '\'');
-    console.log(text + '\n');
     return(text);
   } else{
     return(null);
@@ -399,18 +398,18 @@ function insert(doc){
     })
 
     if (count ==  length) {
-      //console.log("Incomplete Doc Opening Connection");
+      console.log("Incomplete Doc Opening Connection");
       mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
     }
       incomplete.save(function(err) {
         if (err) {
-          //console.log("Incomplete Doc Error saving: " + err);
+          console.log("Incomplete Doc Error saving: " + err);
         } else {
             count = count - 1;
-            //console.log('Saving Incomplete Doc ' + count);
+            console.log('Saving Incomplete Doc ' + count);
             if (count === 0){
               mongoose.connection.close('close', function(){
-              //console.log("Incomplete Doc Closing Connection");
+              console.log("Incomplete Doc Closing Connection");
               });
             }
           }
@@ -436,18 +435,18 @@ function insert(doc){
     })
 
     if (count == length) {
-      //console.log('Complete Doc Opening connection');
+      console.log('Complete Doc Opening connection');
       mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
     }
     complete.save(function(err) {
       if (err) {
         console.log("Complete Error saving: " + err);
       } else {
-        //console.log('Saving Complete Doc ' + count);
+        console.log('Saving Complete Doc ' + count);
           count = count - 1;
           if (count === 0){
             mongoose.connection.close('close', function(){
-            //console.log("Complete Doc Closing Connection");
+            console.log("Complete Doc Closing Connection");
             });
           }
         }

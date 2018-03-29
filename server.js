@@ -4,18 +4,21 @@ var mongoose = require('mongoose');
 
 var placeSchema = mongoose.Schema({
   name: String,
-  description: String,
+  short_desc: String,
+  long_desc: String,
+  stusps: String,
   location: {
     type: String,
     coordinates: [
       Number,
       Number
     ]
-    //index: '2dsphere'
   },
-  source: String,
-  added: Date
-}, { typeKey: '$type' });
+  loc_source: String,
+  desc_source: String,
+  created: Date,
+  updated: Date,
+}, { typeKey: '$type' })
 //Set a variable so we can use our model quickly
 var Place = mongoose.model('Place', placeSchema);
 
@@ -61,7 +64,7 @@ function placeResult(req, res) {
   var loc = data.location;
   var name;
   //console.log(loc);
-  mongoose.connect('mongodb://localhost/up_prod',{useMongoClient: true});
+  mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
   console.log('DB Connected');
 
   if (loc) {
@@ -86,7 +89,7 @@ function placeResult(req, res) {
     } else if (search){
         search = data.search;
         var query = new RegExp(search, 'i');
-        Place.find( { 'location': { $geoWithin: { $geometry: shape.geometry } }, 'description' : { $regex: query } } , function(err, docs){
+        Place.find( { 'location': { $geoWithin: { $geometry: shape.geometry } }, 'short_desc' : { $regex: query } } , function(err, docs){
           if (err) {
             res.send(err)
             mongoose.disconnect();
@@ -119,7 +122,7 @@ function placeResult(req, res) {
     search = data.search;
 
     var query = new RegExp(search, 'i');
-    Place.find({ 'description' : { $regex: query } }, function(err, docs){
+    Place.find({ 'short_desc' : { $regex: query } }, function(err, docs){
       if (err) {
         res.send(err)
         mongoose.disconnect();
