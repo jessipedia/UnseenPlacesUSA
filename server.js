@@ -68,16 +68,18 @@ function placeResult(req, res) {
   console.log('DB Connected');
 
   if (loc) {
-
+    console.log(loc);
     if (loc.length > 2){
+    console.log('loc larger than 2');
     name = 'properties.Name';
-    } else {
+  } else {
+    console.log('loc not larger than 2');
     name = 'properties.STUSPS';
     }
 
     console.log('Searching for loc');
     Shape.findOne({ [name] : data.location }, function(err, shape){
-      //console.log(shape);
+      console.log(shape);
       if (shape === null){
         res.send('Invalid Location Name')
       }

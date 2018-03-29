@@ -6,9 +6,9 @@ var bottleneck = require('bottleneck');
 var mongoose = require('mongoose');
 
 var shortDesc = 'state prison';
-var locAbbrev = 'WY';
+var locAbbrev = 'GA';
 const now = new Date();
-var filename = 'wyoming_state_prisons'
+var filename = 'georgis_state_prisons'
 
 const limiter = new bottleneck({
   maxConcurrent: 6,
@@ -387,8 +387,8 @@ function insert(doc){
       location: {
         type: doc.location.type,
         coordinates: [
-          doc.location.coordinates[0],
-          doc.location.coordinates[1]
+          doc.location.coordinates[1],
+          doc.location.coordinates[0]
         ]
       },
       loc_source: doc.loc_source,
@@ -424,8 +424,8 @@ function insert(doc){
       location: {
         type: doc.location.type,
         coordinates: [
-          doc.location.coordinates[0],
-          doc.location.coordinates[1]
+          doc.location.coordinates[1],
+          doc.location.coordinates[0]
         ]
       },
       loc_source: doc.loc_source,
