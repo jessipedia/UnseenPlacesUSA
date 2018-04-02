@@ -5,10 +5,10 @@ var config = require('./config.js');
 var bottleneck = require('bottleneck');
 var mongoose = require('mongoose');
 
-var shortDesc = 'state prison';
-var locAbbrev = 'GA';
+var shortDesc = 'hydroelectric power plant';
+var locAbbrev = 'none';
 const now = new Date();
-var filename = 'georgis_state_prisons'
+var filename = 'large_hydro'
 
 const limiter = new bottleneck({
   maxConcurrent: 6,

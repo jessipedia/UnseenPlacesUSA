@@ -20,18 +20,18 @@ function count(data){
 
     for (var i = 0; i < data.length; i++) {
 
-      if (data[i].description.includes('private prison')){
+      if (data[i].short_desc.includes('private state prison')){
         counted.set('private state prison', (counted.get('private state prison') + 1));
-      } else if (data[i].description.includes('state prison')){
+      } else if (data[i].short_desc.includes('state prison')){
         counted.set('state prison', (counted.get('state prison') + 1));
-      } else if (data[i].description.includes('juvenile prison')){
+      } else if (data[i].short_desc.includes('juvenile prison')){
         counted.set('state prison', (counted.get('state prison') + 1));
-      } else if (data[i].description.includes('work release')){
+      } else if (data[i].short_desc.includes('work release')){
         counted.set('state prison', (counted.get('state prison') + 1));
-      } else if (counted.has(data[i].description)){
-        counted.set(data[i].description, (counted.get(data[i].description) + 1));
+      } else if (counted.has(data[i].short_desc)){
+        counted.set(data[i].short_desc, (counted.get(data[i].short_desc) + 1));
       } else{
-          counted.set(data[i].description, 1);
+          counted.set(data[i].short_desc, 1);
       }
     }
     return counted;
