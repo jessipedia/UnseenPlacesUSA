@@ -1,6 +1,7 @@
 var url = "http://localhost:3000/api/places";
 var placeData = [];
 var stateShapes;
+let sliderStatus = 'closed';
 
 loadJSON(url)
   .then(result => drawBoxes(result));
@@ -12,6 +13,19 @@ function loadJSON(url){
       .then(data => resolve(data))
       .catch(err => { throw err });
   })
+}
+
+function collapse(){
+  let slider = document.getElementById('sliderBody');
+  //console.log(slider.classList);
+  if (sliderStatus == 'closed'){
+    slider.classList.remove("sliderClosed");
+    sliderStatus = 'open';
+  } else {
+    slider.setAttribute("class", "sliderClosed");
+    sliderStatus = 'closed';
+  }
+
 }
 
 function drawBoxes(data){
@@ -58,6 +72,13 @@ function drawBoxes(data){
       boxBody.setAttribute("class", "boxBody");
       box.appendChild(boxBody);
 
+      let latlon = document.createElement('p');
+      latlon.textContent = data[i].location.coordinates[1] + " , " + data[i].location.coordinates[0];
+      latlon.setAttribute("class", "latlon text");
+      // latlon.setAttribute("class", "desc");
+      // latlon.setAttribute("class", "text");
+      boxBody.appendChild(latlon);
+
       let short_desc = document.createElement('p');
       short_desc.textContent = data[i].name + " is " + avan + " " + data[i].short_desc + ".";
       short_desc.setAttribute("class", "desc");
@@ -71,7 +92,6 @@ function drawBoxes(data){
       boxBody.appendChild(long_desc);
 
       if (data[i].desc_source.includes('wikipedia')){
-        console.log('wikipedia');
         let ref_link = document.createElement('a');
         ref_link.setAttribute("href", data[i].desc_source);
         ref_link.setAttribute("class", "text");
@@ -79,6 +99,43 @@ function drawBoxes(data){
         ref_link.textContent = " Wikipedia"
         long_desc.appendChild(ref_link);
       }
+
+      let line = document.createElement('div');
+      line.setAttribute("class", "hline-bottom");
+      boxBody.appendChild(line);
+
+      let refBox = document.createElement('div');
+      refBox.setAttribute("class", "refBox");
+      boxBody.appendChild(refBox);
+
+      let latlon_source = document.createElement('p');
+      latlon_source.textContent = "Location Source: ";
+      latlon_source.setAttribute("class", "text ref");
+      refBox.appendChild(latlon_source);
+
+      let latlon_link = document.createElement('a');
+      latlon_link.setAttribute("href", data[i].loc_source);
+      latlon_link.setAttribute("class", "text ref link");
+      latlon_link.textContent = data[i].loc_source;
+      latlon_source.appendChild(latlon_link);
+
+      let desc_source = document.createElement('p');
+      desc_source.textContent = "Description Source: ";
+      desc_source.setAttribute("class", "text ref");
+      refBox.appendChild(desc_source);
+
+      let desc_link = document.createElement('a');
+      desc_link.setAttribute("href", data[i].desc_source);
+      desc_link.setAttribute("class", "text ref link");
+      desc_link.textContent = data[i].desc_source;
+      desc_source.appendChild(desc_link);
+
+      let lastUpdate = document.createElement('p');
+      lastUpdate.textContent = "Data last updated: " + data[i].updated;
+      lastUpdate.setAttribute("class", "text ref");
+      refBox.appendChild(lastUpdate);
+
+
 
       container.appendChild(box);
 

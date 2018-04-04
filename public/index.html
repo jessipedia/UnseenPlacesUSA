@@ -6,7 +6,7 @@
         <title></title>
         <meta name="description" content="">
         <link href="https://fonts.googleapis.com/css?family=Francois+One" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300i,400|Roboto+Condensed" rel="stylesheet">
         <style>
           html,
           body {
@@ -33,23 +33,37 @@
           #slider{
             height: 100%;
             width: 5%;
-            background: #111212;
+            /*background: #393a3b;*/
+            background: #40474F;
             float: left;
             position: fixed;
+            box-shadow: 0px 4px 0px black;
           }
 
           #sliderBody{
             height: 100%;
-            width: 400px;
+            max-width: 400px;
             margin-left: 5%;
+            padding: 0px;
             overflow: hidden;
             position: fixed;
-            background: #111212;
-            transition: max-height 500ms ease;
+            background: #40474F;
+            transition: margin-left 500ms ease;
           }
 
           #sliderBody.sliderClosed{
-            width: 0px;
+            /*max-width: 0px;*/
+            margin-left: -400px;
+
+          }
+
+          .sliderContainer{
+            padding: 20px;
+          }
+
+          .icon{
+            padding: 10px;
+            margin: auto;
           }
 
           input[type="checkbox"]:checked ~ #sliderBody {
@@ -63,6 +77,34 @@
             width: 95%;
             height: 20px;
             position: fixed;
+          }
+
+          #dropdown{
+            background-color: #FFF;
+            font-family: 'Open Sans', sans-serif;
+            border: none;
+            height: 1.75em;
+          }
+
+          #search{
+            background-color: #FFF;
+            font-family: 'Open Sans', sans-serif;
+            border: none;
+            height: 1.75em;
+          }
+
+          .button{
+            opacity: 1;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 2px;
+            background-color: #FF5C5C;
+            color: white;
+            font-family: 'Open Sans', sans-serif;
+
           }
 
 
@@ -107,11 +149,39 @@
 
           .text{
             font-family: 'Open Sans', sans-serif;
+            font-size: .9em;
+            margin-top: 0px;
+          }
+
+          .latlon{
+            font-style: italic;
+            font-size: .75em;
+          }
+
+          .silderText{
+            color: #fff;
+            font-family: 'Open Sans', sans-serif;
             font-size: .9em
+          }
+
+          .sliderHeader{
+            font-family: 'Roboto Condensed', sans-serif;
+            color: #fff;
           }
 
           .link{
             text-decoration: none;
+            color: #FF5C5C;
+          }
+
+          .ref{
+            font-size: .7em;
+            font-style: italic;
+            margin: 3px;
+          }
+
+          .refBox{
+            margin-bottom: 10px;
           }
 
 
@@ -127,6 +197,11 @@
             width: 95%;
             display: inline-block;
             font-size: 1.5em;
+
+          }
+
+          .placeNameHeader:hover{
+            color: #FF5C5C;
           }
 
           .toggle{
@@ -135,6 +210,11 @@
 
           input[type="checkbox"]:checked ~ .boxBody {
               max-height: 800px;
+          }
+
+          .hline-bottom {
+            margin-bottom: 10px;
+            border-bottom: 1px solid #40474F;
           }
 
         </style>
@@ -146,15 +226,24 @@
     </head>
     <body>
         <div id="map"></div>
-        <div id="slider">
-          <input class="check" type="checkbox" id="" value="">
-        </div>
+
         <div id="sliderBody" class="sliderClosed">
-          <p>In publishing and graphic design, lorem ipsum is a placeholder text commonly used
-           to demonstrate the visual form of a document without relying on meaningful content (also called greeking).
-           Replacing the actual content with placeholder text allows designers to design the form of the content before
-            the content itself has been produced.
-          </p>
+          <div class="sliderContainer">
+            <h1 class="sliderHeader">UnseenPlacesUSA</h1>
+            <p class="silderText">In publishing and graphic design, lorem ipsum is a placeholder text commonly used
+             to demonstrate the visual form of a document without relying on meaningful content (also called greeking).
+             Replacing the actual content with placeholder text allows designers to design the form of the content before
+              the content itself has been produced.
+            </p>
+          </div>
+        </div>
+        <div id="slider">
+          <img
+            class="icon"
+            src="eye.svg"
+            width="50px"
+            color="white"
+            onclick="collapse()">
         </div>
 
 
@@ -220,7 +309,7 @@
               	<option value="WY">Wyoming</option>
               </select>
               <input id="search" type="text" value="">
-              <button type="submit" onClick="submit()">Submit</button>
+              <button class= "button" type="submit" onClick="submit()">Submit</button>
           </div>
           <div id="spacer">
           </div>
