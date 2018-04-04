@@ -6,7 +6,7 @@
         <title></title>
         <meta name="description" content="">
         <link href="https://fonts.googleapis.com/css?family=Francois+One" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300i,400|Roboto+Condensed" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400|Roboto+Condensed" rel="stylesheet">
         <style>
           html,
           body {
@@ -28,16 +28,16 @@
             padding: 0;
             float: right;
             position: relative;
+            /* background: #DDDDDD; */
           }
 
           #slider{
             height: 100%;
             width: 5%;
-            /*background: #393a3b;*/
             background: #40474F;
             float: left;
             position: fixed;
-            box-shadow: 0px 4px 0px black;
+            box-shadow: -5px 0px 15px 0px rgba(0, 0, 0, 20);
           }
 
           #sliderBody{
@@ -49,6 +49,7 @@
             position: fixed;
             background: #40474F;
             transition: margin-left 500ms ease;
+            box-shadow: -5px 0px 15px 0px rgba(0, 0, 0, 20);
           }
 
           #sliderBody.sliderClosed{
@@ -60,10 +61,23 @@
           .sliderContainer{
             padding: 20px;
           }
-
-          .icon{
+          .logo{
             padding: 10px;
-            margin: auto;
+            margin-top: 5px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+
+          #logoBox{
+            width: auto;
+            height: auto;
+            background: #25323E;
+          }
+          .icon{
+            padding-top: 75px;
+            width: 40%;
+            margin-left: 30%;
+            margin-right: 30%;
           }
 
           input[type="checkbox"]:checked ~ #sliderBody {
@@ -111,6 +125,7 @@
 
           #spacer{
             height: 40px;
+            background: none;
           }
 
           .box{
@@ -119,11 +134,11 @@
             padding: 0;
           }
 
-          .boxHead{
-            background: #efefef;
+          /* .boxHead{
+            background: #6A7683;
             margin: 0;
             padding: 0;
-          }
+          } */
 
           .boxBody{
             background: #efefef;
@@ -161,10 +176,16 @@
           .silderText{
             color: #fff;
             font-family: 'Open Sans', sans-serif;
-            font-size: .9em
+            font-size: .9em;
+            font-weight: 300;
           }
 
           .sliderHeader{
+            font-family: 'Open Sans', sans-serif;
+            color: #fff;
+          }
+
+          .sliderTitle{
             font-family: 'Roboto Condensed', sans-serif;
             color: #fff;
           }
@@ -215,6 +236,7 @@
           .hline-bottom {
             margin-bottom: 10px;
             border-bottom: 1px solid #40474F;
+            opacity: .75;
           }
 
         </style>
@@ -229,21 +251,48 @@
 
         <div id="sliderBody" class="sliderClosed">
           <div class="sliderContainer">
-            <h1 class="sliderHeader">UnseenPlacesUSA</h1>
-            <p class="silderText">In publishing and graphic design, lorem ipsum is a placeholder text commonly used
+            <h1 class="sliderTitle">UnseenPlacesUSA</h1>
+            <p class="silderText">UnseenPlaces USA description goes here. In publishing and graphic design, lorem ipsum is a placeholder text commonly used
              to demonstrate the visual form of a document without relying on meaningful content (also called greeking).
              Replacing the actual content with placeholder text allows designers to design the form of the content before
               the content itself has been produced.
             </p>
+            <p class="silderText">Process, acknowledgement of the incomplete unseen places.</p>
+              <img
+              src="github.svg"
+              height="25px"
+              color="white">
+              <img
+                src="twitter.svg"
+                height="25px"
+                color="white">
+            <h4 class="sliderHeader">Collaborate</h4>
+            <p class="silderText">Collaborate with us, share data, it's fun</p>
+
+            <p class="silderText">If you like UnseenPlacesUSA you might also like:</p>
+            <ul class="silderText">
+            <li>Jenny Odell</li>
+            <li>The Center for Land Use Interpretation</li>
+            <li>Native Land</li>
+            <li>Josh Begley</li>
+            <li>An American Index of the Hidden and Unfamiliar, Taryn Simon</li>
+            </ul>
+
           </div>
         </div>
         <div id="slider">
-          <img
-            class="icon"
-            src="eye.svg"
-            width="50px"
-            color="white"
-            onclick="collapse()">
+          <a href="#"><div id="logoBox">
+            <img
+              class="logo"
+              src="eye.svg"
+              width="50px">
+          </div>
+        </a>
+
+            <img
+              class="icon"
+              src="info.svg"
+              onclick="collapse()">
         </div>
 
 
