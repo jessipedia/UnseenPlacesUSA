@@ -14,6 +14,13 @@
             padding: 0;
             height: 100%;
           }
+          ul {
+          }
+
+          a{
+            text-decoration: none;
+            color: #FF5C5C;
+          }
 
           #map {
             height: 100vh;
@@ -28,7 +35,7 @@
             padding: 0;
             float: right;
             position: relative;
-            /* background: #DDDDDD; */
+            box-shadow: 8px 7px 15px 0px rgba(0, 0, 0, 20);
           }
 
           #slider{
@@ -37,7 +44,7 @@
             background: #40474F;
             float: left;
             position: fixed;
-            box-shadow: -5px 0px 15px 0px rgba(0, 0, 0, 20);
+            box-shadow: -5px 7px 15px 0px rgba(0, 0, 0, 20);
           }
 
           #sliderBody{
@@ -49,7 +56,7 @@
             position: fixed;
             background: #40474F;
             transition: margin-left 500ms ease;
-            box-shadow: -5px 0px 15px 0px rgba(0, 0, 0, 20);
+            box-shadow: -5px 7px 15px 0px rgba(0, 0, 0, 20);
           }
 
           #sliderBody.sliderClosed{
@@ -72,28 +79,46 @@
             width: auto;
             height: auto;
             background: #25323E;
+            margin-bottom: 75px;
           }
           .icon{
-            padding-top: 75px;
             width: 40%;
+            margin-top: 10px;
+            margin-bottom: 0px;
             margin-left: 30%;
             margin-right: 30%;
+            padding: 0px;
+          }
+
+          #infoBox{
+            margin: 0px;
+            padding: 0px;
+            height: 70px;
+          }
+
+          #locBox{
+            margin: 0px;
+            padding: 0px;
+            height: 70px;
           }
 
           #infoBox :hover .infoPath{
             fill: #FF5C5C;
           }
 
-          #gitBox :hover .gitPath{
+          .gitPath{
             fill: #FF5C5C;
           }
 
-          #twitBox :hover .twitPath{
+          .twitPath{
             fill: #FF5C5C;
           }
 
           .socialIcon{
-            width: 30px;
+            height: 20px;
+            width: 20px;
+            padding-left: 3px;
+            padding-right: 3px;
           }
 
           input[type="checkbox"]:checked ~ #sliderBody {
@@ -105,8 +130,31 @@
             margin-bottom: 100px;
             padding: 10px;
             width: 95%;
-            height: 20px;
+            height: 30px;
             position: fixed;
+            box-shadow: 0px 2px 4px -4px rgba(0, 0, 0, 20);
+            /* border-bottom: 1px solid #BBB; */
+          }
+
+          #spacer{
+            height: 30px;
+            background: none;
+
+          }
+
+          #dropdownBox{
+            display: inline;
+            padding-right: 5px;
+
+          }
+
+          #searchBox{
+            display: inline;
+            padding-right: 5px;
+          }
+
+          .label{
+            display: block;
           }
 
           #dropdown{
@@ -114,6 +162,8 @@
             font-family: 'Open Sans', sans-serif;
             border: none;
             height: 1.75em;
+
+
           }
 
           #search{
@@ -121,6 +171,7 @@
             font-family: 'Open Sans', sans-serif;
             border: none;
             height: 1.75em;
+            /* color: #9299A1; */
           }
 
           .button{
@@ -137,24 +188,11 @@
 
           }
 
-
-
-          #spacer{
-            height: 40px;
-            background: none;
-          }
-
           .box{
             background: #efefef;
             margin: 10px;
             padding: 0;
           }
-
-          /* .boxHead{
-            background: #6A7683;
-            margin: 0;
-            padding: 0;
-          } */
 
           .boxBody{
             background: #efefef;
@@ -218,7 +256,7 @@
           }
 
           .refBox{
-            margin-bottom: 10px;
+            font-size: .85em;
           }
 
 
@@ -277,7 +315,7 @@
 
             <h4 class="sliderHeader">Collaborate</h4>
             <p class="silderText">Collaborate with us, share data, it's fun</p>
-            <div id="gitBox">
+            <a href="https://github.com/jessipedia/UnseenPlacesUSA" id="gitBox">
               <svg class="socialIcon" width="89px" height="87px" viewBox="0 0 89 87" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                   <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
                   <title>github</title>
@@ -289,8 +327,8 @@
                       </g>
                   </g>
               </svg>
-            </div>
-            <div id="twitBox">
+            </a>
+            <a href="https://twitter.com/UnseenPlacesUSA" id="twitBox">
               <svg class="socialIcon" width="91px" height="74px" viewBox="0 0 91 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                   <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
                   <title>twitter</title>
@@ -302,16 +340,17 @@
                       </g>
                   </g>
               </svg>
-            </div>
-
+            </a>
+            <div class="refBox">
             <p class="silderText">If you like UnseenPlacesUSA you might also like:</p>
             <ul class="silderText">
-            <li>Jenny Odell</li>
-            <li>The Center for Land Use Interpretation</li>
-            <li>Native Land</li>
-            <li>Josh Begley</li>
-            <li>An American Index of the Hidden and Unfamiliar, Taryn Simon</li>
+            <li><a href="http://www.jennyodell.com/satellite-landscapes.html">Satellite Landscapes</a> - <a href="http://www.jennyodell.com/">Jenny Odell</a></li>
+            <li><a href="http://www.clui.org/">The Center for Land Use Interpretation</a></li>
+            <li><a href="https://native-land.ca/">Native Land</a></li>
+            <li><a href="http://prisonmap.com/">Prison Map</a> - <a href="https://joshbegley.com/">Josh Begley</a></li>
+            <li><a href="http://tarynsimon.com/works/aihu/#1">An American Index of the Hidden and Unfamiliar</a> - <a href="http://tarynsimon.com/">Taryn Simon</a></li>
             </ul>
+          </div>
 
           </div>
         </div>
@@ -342,13 +381,27 @@
             </g>
         </svg>
       </div>
+      <!-- <div id="locBox">
+        <svg class="icon" width="59px" height="87px" viewBox="0 0 59 87" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+          <!--   <title>location</title>
+            <desc>Created with Sketch.</desc>
+            <defs></defs>
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="location" transform="translate(-1.000000, 0.000000)" fill="#DDDDDD" fill-rule="nonzero">
+                    <path d="M30.396,37.844 C31.529,37.844 32.449,36.906 32.449,35.748 L32.449,30.645 L37.553,30.645 C38.713,30.645 39.653,29.723 39.653,28.588 C39.653,27.453 38.714,26.531 37.553,26.531 L32.449,26.531 L32.449,21.46 C32.449,20.304 31.529,19.364 30.396,19.364 C29.263,19.364 28.344,20.304 28.344,21.46 L28.342,26.532 L23.241,26.532 C22.081,26.532 21.141,27.453 21.141,28.589 C21.141,29.725 22.081,30.646 23.241,30.646 L28.342,30.646 L28.344,35.749 C28.344,36.906 29.263,37.844 30.396,37.844 Z M0.985,30.131 C1.19,43.397 30.5,86.384 30.5,86.384 C30.5,86.384 59.809,42.368 60.014,30.132 C60.287,13.833 46.799,0.617 30.5,0.617 C14.2,0.617 0.732,13.833 0.985,30.131 Z M11.886,28.589 C11.886,18.48 20.082,10.284 30.191,10.284 C40.3,10.284 48.496,18.48 48.496,28.589 C48.496,38.698 40.301,46.895 30.191,46.895 C20.083,46.895 11.886,38.698 11.886,28.589 Z" id="Shape"></path>
+                </g>
+            </g>
+        </svg>
+      </div> -->
         </div>
 
 
         <div id="container">
           <div class ="controls">
+            <div id="dropdownBox">
             <select id="dropdown">
-                <option value="">All</option>
+                <option value="">All States</option>
               	<option value="AL">Alabama</option>
               	<option value="AK">Alaska</option>
                 <option value="AS">American Samoa</option>
@@ -406,8 +459,11 @@
               	<option value="WI">Wisconsin</option>
               	<option value="WY">Wyoming</option>
               </select>
-              <input id="search" type="text" value="">
-              <button class= "button" type="submit" onClick="submit()">Submit</button>
+            </div>
+            <div id="searchBox">
+              <input id="search" type="text" value="" placeholder=" Keyword">
+            </div>
+              <button class= "button" type="submit" onClick="submit()">Filter</button>
           </div>
           <div id="spacer">
           </div>
