@@ -26,7 +26,7 @@ function collapse(){
     sliderStatus = 'closed';
   }
 
-}
+} 
 
 
 function drawBoxes(data){
