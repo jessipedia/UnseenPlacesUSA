@@ -1,0 +1,289 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+ul {
+}
+
+a{
+  text-decoration: none;
+  color: #FF5C5C;
+}
+
+#map {
+  height: 100vh;
+  width: 75%;
+  margin-left: 70px;
+  position: fixed;
+}
+
+#container {
+  width: 30%;
+  max-width: 640px;
+  margin: 0;
+  padding: 0;
+  float: right;
+  position: relative;
+  background: white;
+}
+
+#slider{
+  height: 100%;
+  width: 70px;
+  background: #40474F;
+  float: left;
+  position: fixed;
+  box-shadow: -5px 7px 15px 0px rgba(0, 0, 0, 20);
+}
+
+#sliderBody{
+  height: 100%;
+  max-width: 400px;
+  margin-left: 70px;
+  padding: 0px;
+  overflow: hidden;
+  position: fixed;
+  background: #40474F;
+  transition: margin-left 500ms ease;
+  box-shadow: -5px 7px 15px 0px rgba(0, 0, 0, 20);
+}
+
+#sliderBody.sliderClosed{
+  /*max-width: 0px;*/
+  margin-left: -400px;
+
+}
+
+.sliderContainer{
+  padding: 20px;
+}
+.logo{
+  padding: 10px;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#logoBox{
+  width: auto;
+  height: auto;
+  background: #25323E;
+  margin-bottom: 75px;
+}
+.icon{
+  width: 40%;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-left: 30%;
+  margin-right: 30%;
+  padding: 0px;
+}
+
+#infoBox{
+  margin: 0px;
+  padding: 0px;
+  height: 70px;
+}
+
+#locBox{
+  margin: 0px;
+  padding: 0px;
+  height: 70px;
+}
+
+#infoBox :hover .infoPath{
+  fill: #FF5C5C;
+}
+
+.gitPath{
+  fill: #FF5C5C;
+}
+
+.twitPath{
+  fill: #FF5C5C;
+}
+
+.socialIcon{
+  height: 20px;
+  width: 20px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+input[type="checkbox"]:checked ~ #sliderBody {
+    max-height: 500px;
+}
+
+.controls{
+  background: #efefef;
+  margin-bottom: 100px;
+  padding: 10px;
+  width: 100%;
+  height: 30px;
+  position: fixed;
+  box-shadow: none;
+  box-shadow: 0px 2px 4px -4px rgba(0, 0, 0, 20);
+  /* border-bottom: 1px solid #BBB; */
+}
+
+#spacer{
+  height: 50px;
+  background: none;
+  box-shadow: none;
+
+}
+
+#dropdownBox{
+  display: inline;
+  padding-right: 5px;
+
+
+}
+
+#searchBox{
+  display: inline;
+  padding-right: 5px;
+}
+
+.label{
+  display: block;
+}
+
+#dropdown{
+  background-color: #FFF;
+  font-family: 'Open Sans', sans-serif;
+  border: none;
+  height: 1.75em;
+
+
+}
+
+#search{
+  background-color: #FFF;
+  font-family: 'Open Sans', sans-serif;
+  border: none;
+  height: 1.75em;
+  /* color: #9299A1; */
+}
+
+.button{
+  opacity: 1;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 2px;
+  background-color: #FF5C5C;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+
+}
+
+.box{
+  background: #efefef;
+  margin: 10px;
+  width: 95%;
+  padding: 0;
+}
+
+.boxBody{
+  background: #efefef;
+  max-height: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: hidden;
+  transition: max-height 500ms ease;
+
+}
+
+.satImage{
+  width: 50%;
+  display: inline;
+  float: left;
+  padding-bottom: 10px;
+}
+
+.desc{
+   margin-bottom: 10px;
+
+ }
+
+.text{
+  font-family: 'Open Sans', sans-serif;
+  font-size: .9em;
+  margin-top: 0px;
+}
+
+.latlon{
+  font-style: italic;
+  font-size: .75em;
+}
+
+.silderText{
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: .9em;
+  font-weight: 300;
+}
+
+.sliderHeader{
+  font-family: 'Open Sans', sans-serif;
+  color: #fff;
+}
+
+.sliderTitle{
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #fff;
+}
+
+.link{
+  text-decoration: none;
+  color: #FF5C5C;
+}
+
+.ref{
+  font-size: .7em;
+  font-style: italic;
+  margin: 3px;
+}
+
+.refBox{
+  font-size: .85em;
+}
+
+
+.labelHeader{
+  width: 100%;
+  height: 100%;
+}
+
+.placeNameHeader{
+  font-family: 'Roboto Condensed', sans-serif;
+  margin: 0;
+  padding: 10px;
+  width: 95%;
+  display: inline-block;
+  font-size: 1.5em;
+
+}
+
+.placeNameHeader:hover{
+  color: #FF5C5C;
+}
+
+.toggle{
+  display: none;
+}
+
+input[type="checkbox"]:checked ~ .boxBody {
+    max-height: 800px;
+}
+
+.hline-bottom {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #40474F;
+  opacity: .75;
+}
