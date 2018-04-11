@@ -14,14 +14,14 @@ a{
 
 #map {
   height: 100vh;
-  width: 75%;
+  width: calc(70% - 70px);
   margin-left: 70px;
   position: fixed;
 }
 
 #container {
   width: 30%;
-  max-width: 640px;
+  /* max-width: 640px; */
   margin: 0;
   padding: 0;
   float: right;
