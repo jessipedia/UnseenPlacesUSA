@@ -1,6 +1,8 @@
+console.log(process.env.CELL_PHONE_NUMBER);
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
+let mdbUri = process.env.UP_MDB_URI;
 
 var placeSchema = mongoose.Schema({
   name: String,
@@ -56,6 +58,12 @@ function listen() {
 
 app.use(express.static('public'));
 
+app.get('/234598', sendKey);
+
+function sendKey(req, res) {
+    res.send(process.env.MBX_KEY)
+}
+
 app.get('/api/places', placeResult);
 
 function placeResult(req, res) {
@@ -64,7 +72,7 @@ function placeResult(req, res) {
   var loc = data.location;
   var name;
   //console.log(loc);
-  mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
+  mongoose.connect(mdbUri,{useMongoClient: true});
   console.log('DB Connected');
 
   if (loc) {
