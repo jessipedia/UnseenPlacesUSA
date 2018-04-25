@@ -1,54 +1,12 @@
-console.log(process.env.CELL_PHONE_NUMBER);
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
+
+var Place = require('./place_schema.js').Place;
+var Shape = require('./shape_schema.js').Shape;
 let mdbUri = process.env.UP_MDB_URI;
 
-var placeSchema = mongoose.Schema({
-  name: String,
-  short_desc: String,
-  long_desc: String,
-  stusps: String,
-  location: {
-    type: String,
-    coordinates: [
-      Number,
-      Number
-    ]
-  },
-  loc_source: String,
-  desc_source: String,
-  created: Date,
-  updated: Date,
-}, { typeKey: '$type' })
-//Set a variable so we can use our model quickly
-var Place = mongoose.model('Place', placeSchema);
-
-var shapeSchema = mongoose.Schema({
-  properties:
-  {
-    Name: String,
-    STATEFP: Number,
-    STATENS: Number,
-    AFFGEOID: String,
-    GEOID: Number,
-    STUSPS: String,
-    LSAD: Number,
-    ALAND: Number,
-    AWATER: Number
-  },
-  geometry:
-  {
-    type: String,
-    coordinates:
-    [[]]
-  }
-}, { typeKey: '$type' });
-
-var Shape = mongoose.model('Shape', shapeSchema);
-
-var server = app.listen(process.env.PORT || 3000, listen);
-
+var server = app.listen(process.env.PORT || 8000, listen);
 
 function listen() {
   var host = server.address().address;
