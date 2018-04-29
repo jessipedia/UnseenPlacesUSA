@@ -1,4 +1,4 @@
-var url = "http://localhost:3000/api/places";
+var url = "/api/places";
 var placeData = [];
 var stateShapes;
 let sliderStatus = 'closed';

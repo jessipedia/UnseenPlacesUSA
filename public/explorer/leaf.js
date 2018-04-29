@@ -17,6 +17,7 @@ fetch(url)
 fetch('/234598')
   .then(res => res.text())
   .then(text => drawTiles(text))
+  .catch(err => { throw err });
 
   function drawTiles(res){
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
