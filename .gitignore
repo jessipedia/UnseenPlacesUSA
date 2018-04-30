@@ -1,6 +1,26 @@
 # Node
 npm-debug.log
 /tools/node_modules
+node_modules/
 
 # Mac
 .DS_Store
+
+#Style
+.editorconfig
+.eslintrc.js
+
+#Environment
+app-env
+
+#Logs
+/tools/logs/
+
+#Database
+db/
+
+#Configs
+tools/config.js
+
+#Zips for deploy
+upusa.zip
