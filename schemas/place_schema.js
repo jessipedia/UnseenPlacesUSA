@@ -1,5 +1,5 @@
-var mongoose  = require('mongoose');
-var Schema    = mongoose.Schema;
+const mongoose  = require('mongoose');
+const Schema    = mongoose.Schema;
 
 const placeSchema = new Schema({
                     name: String,
@@ -18,8 +18,6 @@ const placeSchema = new Schema({
                     created: Date,
                     updated: Date,
                   }, { typeKey: '$type' });
-
-
 
 const Place = mongoose.model('places', placeSchema);
 

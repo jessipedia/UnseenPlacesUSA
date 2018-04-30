@@ -4,12 +4,15 @@
   "description": "UnseenPlaces server",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint"
   },
   "author": "JSD",
   "license": "ISC",
   "dependencies": {
+    "eslint": "^4.19.1",
     "express": "^4.16.2",
-    "mongoose": "^4.13.5"
+    "mongoose": "^4.13.5",
+    "package.json": "^2.0.1"
   }
 }
