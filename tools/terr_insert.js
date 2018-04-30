@@ -33,9 +33,10 @@ var terrSchema = mongoose.Schema({
 
 var terrShape = mongoose.model('Shape', terrSchema);
 
-mongoose.connect('mongodb://localhost/up_prod',{useMongoClient: true});
+mongoose.connect('mongodb://jscottdutcher:5eD8xe5T6vr3@jessdb-shard-00-00-98ywm.mongodb.net:27017,jessdb-shard-00-01-98ywm.mongodb.net:27017,jessdb-shard-00-02-98ywm.mongodb.net:27017/upusa?ssl=true&replicaSet=JessDB-shard-0&authSource=admin',{useMongoClient: true});
 
 terrShape.insertMany(features, function(err, docs) {
+  console.log('Saving');
   if (err){
     console.log(err);
   }else{

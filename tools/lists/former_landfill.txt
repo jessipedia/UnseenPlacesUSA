@@ -9,4 +9,4 @@ Munisport,
 Scarboro Landfill,
 Fountain Avenue Landfill,
 Pennsylvania Avenue Landfill,
-Warren County PCB Landfill,
+Warren County PCB Landfill

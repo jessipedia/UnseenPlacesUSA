@@ -5,10 +5,10 @@ var config = require('./config.js');
 var bottleneck = require('bottleneck');
 var mongoose = require('mongoose');
 
-var shortDesc = 'hydroelectric power plant';
+var shortDesc = 'automatic tracking radar station';
 var locAbbrev = 'none';
 const now = new Date();
-var filename = 'large_hydro'
+var filename = 'auto_tracking_radar'
 
 const limiter = new bottleneck({
   maxConcurrent: 6,
@@ -39,6 +39,9 @@ var incompleteCount = 0;
 var completeCount = 0;
 var count = 0;
 var length = 0;
+
+mongoose.connect('',{useMongoClient: true});
+console.log('Opening connection');
 
 var data;
 var readableStream = fs.createReadStream('./lists/' + filename + '.txt');
@@ -84,6 +87,7 @@ function gather(place){
           return;
       } else {
           let parsed = JSON.parse(body);
+          console.log('Completed request');
           //This is for debugging
           //fs.appendFileSync('gather_log_' + filename + ' ' + now + '.txt', res + '\n');
           resolve(parsed);
@@ -113,6 +117,7 @@ function scrape(parsed){
                 return
             } else {
               resolve(body);
+              console.log('Completed Scrape');
               //This is for debugging
               //fs.appendFileSync('scrape_log_' + filename + ' ' + now + '.txt', res + '\n');
             }
@@ -120,6 +125,7 @@ function scrape(parsed){
       } else {
         //This is for debugging
         //fs.appendFileSync('scrape_log_' + filename + ' ' + now + '.txt', parsed + '\n');
+        console.log('Completed Scrape')
         resolve(parsed[0]);
       }
     }
@@ -172,7 +178,7 @@ function createObj(body){
                       created: now,
                       updated: now,
                     };
-
+                    console.log('Completed CreateObj');
                     resolve(placeCreate);
 
                   } else{
@@ -198,7 +204,7 @@ function createObj(body){
                   created: now,
                   updated: now,
                 };
-
+                console.log('Completed CreateObj');
                 resolve(placeCreate);
               }
             }
@@ -221,7 +227,7 @@ function createObj(body){
             created: now,
             updated: now,
           };
-
+          console.log('Completed CreateObj');
           resolve(placeCreate);
         }
 
@@ -244,6 +250,7 @@ function createObj(body){
           created: now,
           updated: now,
         };
+        console.log('Completed CreateObj');
         resolve(placeCreate);
 
       } else if (latlon && text == null){
@@ -269,6 +276,7 @@ function createObj(body){
           created: now,
           updated: now,
         };
+        console.log('Completed CreateObj');
         resolve(placeCreate);
           } else{
 
@@ -289,6 +297,7 @@ function createObj(body){
               created: now,
               updated: now,
             };
+            console.log('Completed CreateObj');
             resolve(placeCreate);
         }
     } else {
@@ -309,6 +318,7 @@ function createObj(body){
         created: now,
         updated: now,
       };
+      console.log('Completed CreateObj');
       resolve(placeCreate);
     }
   })
@@ -378,7 +388,7 @@ function insert(doc){
   fs.appendFileSync('insert_log_' + filename + ' ' + now + '.txt', doc.name + '\n');
 
   if (text == 'none' || stusps == 'none' || lat == 0 || text.includes('Coordinates:')){
-
+    console.log('Place is Incomplete');
     let incomplete = new incPlace ({
       name: doc.name,
       short_desc: doc.short_desc,
@@ -396,11 +406,11 @@ function insert(doc){
       created: doc.created,
       updated: doc.updated,
     })
-
-    if (count ==  length) {
-      console.log("Incomplete Doc Opening Connection");
-      mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
-    }
+    // if (count ==  length) {
+    //   console.log("Incomplete Doc Opening Connection");
+    //
+    //
+    // }
       incomplete.save(function(err) {
         if (err) {
           console.log("Incomplete Doc Error saving: " + err);
@@ -415,6 +425,7 @@ function insert(doc){
           }
       })
   } else{
+    console.log('Place is Complete');
 
     let complete = new Place ({
       name: doc.name,
@@ -434,10 +445,13 @@ function insert(doc){
       updated: doc.updated,
     })
 
-    if (count == length) {
-      console.log('Complete Doc Opening connection');
-      mongoose.connect('mongodb://localhost/upusa',{useMongoClient: true});
-    }
+    // if (count == length) {
+    //   console.log('Complete Doc Opening connection');
+    //   mongoose.connect('mongodb://jscottdutcher:5eD8xe5T6vr3@jessdb-shard-00-00-98ywm.mongodb.net:27017,jessdb-shard-00-01-98ywm.mongodb.net:27017,jessdb-shard-00-02-98ywm.mongodb.net:27017/upusa?ssl=true&replicaSet=JessDB-shard-0&authSource=admin',{useMongoClient: true});
+    // }
+
+    console.log('After new Place created');
+
     complete.save(function(err) {
       if (err) {
         console.log("Complete Error saving: " + err);

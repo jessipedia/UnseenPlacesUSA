@@ -20,4 +20,4 @@ Trenton Correctional Institution,
 Turbeville Correctional Institution,
 Tyger River Correctional Institution,
 Walden Correctional Institution,
-Wateree River Correctional Institution,
+Wateree River Correctional Institution
