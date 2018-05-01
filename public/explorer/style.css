@@ -256,8 +256,10 @@ a{
 /***********/
 
 /* Map */
+
+
+
 /* Side-Slider Menu */
-/* Places Container */
 
 #up-c-slider_body_container.up-u-slider_body_closed{
   /*max-width: 0px;*/
@@ -272,6 +274,8 @@ a{
 input[type="checkbox"]:checked ~ #up-c-slider_body_container {
     max-height: 500px;
 }
+/* Places Container */
+
 
 .up-c-placesbox_h1:hover{
   color: #FF5C5C;

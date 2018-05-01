@@ -3,7 +3,6 @@ var myMap = L.map('up-l-map_box', {preferCanvas: true, scrollWheelZoom: false}).
 var myScale = L.control.scale().addTo(myMap)
 var placesLayer = L.layerGroup();
 var placeMarkers = [];
-// let myKey = process.env.MBX_KEY;
 
 var myIcon = L.icon({
     iconUrl: 'placeMarker.png'
