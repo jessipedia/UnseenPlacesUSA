@@ -117,6 +117,18 @@ a{
   padding-right: 3px;
 }
 
+.up-c-sidebar_body_text{
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: .9em;
+  font-weight: 300;
+}
+
+.up-c-sidebar_body_h1{
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #fff;
+}
+
 /* Places Container */
 
 
@@ -176,61 +188,29 @@ a{
 
 }
 
-.desc{
-   margin-bottom: 10px;
-
- }
-
- .text{
+ .up-c-placesbox_text{
    font-family: 'Open Sans', sans-serif;
    font-size: .9em;
    margin-top: 0px;
  }
 
- .latlon{
+ .up-c-placesbox_text_latlon{
    font-style: italic;
    font-size: .75em;
  }
 
- .silderText{
-   color: #fff;
-   font-family: 'Open Sans', sans-serif;
-   font-size: .9em;
-   font-weight: 300;
- }
-
- .sliderHeader{
-   font-family: 'Open Sans', sans-serif;
-   color: #fff;
- }
-
- .sliderTitle{
-   font-family: 'Roboto Condensed', sans-serif;
-   color: #fff;
- }
-
- .link{
-   text-decoration: none;
-   color: #FF5C5C;
- }
-
- .ref{
+ .up-c-placesbox_text_ref{
    font-size: .7em;
    font-style: italic;
    margin: 3px;
  }
 
- .refBox{
-   font-size: .85em;
- }
-
-
- .labelHeader{
+ .up-c-placesbox_checkbox_label{
    width: 100%;
    height: 100%;
  }
 
- .placeNameHeader{
+ .up-c-placesbox_h1{
    font-family: 'Roboto Condensed', sans-serif;
    margin: 0;
    padding: 10px;
@@ -240,7 +220,7 @@ a{
 
  }
 
- .hline-bottom {
+ .up-c-placesbox_divider_line {
    margin-bottom: 10px;
    border-bottom: 1px solid #40474F;
    opacity: .75;
@@ -294,7 +274,7 @@ input[type="checkbox"]:checked ~ #up-c-slider_body_container {
     max-height: 500px;
 }
 
-.placeNameHeader:hover{
+.up-c-placesbox_h1:hover{
   color: #FF5C5C;
 }
 

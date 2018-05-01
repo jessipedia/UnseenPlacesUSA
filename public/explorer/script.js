@@ -62,13 +62,13 @@ function drawBoxes(data){
       box.appendChild(input);
 
       let label = document.createElement('label');
-      label.setAttribute("class", "labelHeader");
+      label.setAttribute("class", "up-c-placesbox_checkbox_label");
       label.setAttribute("for", data[i]._id);
       box.appendChild(label);
 
       let placeNameHeader = document.createElement('h1');
       placeNameHeader.textContent = data[i].name;
-      placeNameHeader.setAttribute("class", "placeNameHeader");
+      placeNameHeader.setAttribute("class", "up-c-placesbox_h1");
       label.appendChild(placeNameHeader);
 
       let boxBody = document.createElement('div');
@@ -77,65 +77,58 @@ function drawBoxes(data){
 
       let latlon = document.createElement('p');
       latlon.textContent = data[i].location.coordinates[1] + " , " + data[i].location.coordinates[0];
-      latlon.setAttribute("class", "latlon text");
-      // latlon.setAttribute("class", "desc");
-      // latlon.setAttribute("class", "text");
+      latlon.setAttribute("class", "up-c-placesbox_text_latlon up-c-placesbox_text");
       boxBody.appendChild(latlon);
 
       let short_desc = document.createElement('p');
       short_desc.textContent = data[i].name + " is " + avan + " " + data[i].short_desc + ".";
-      short_desc.setAttribute("class", "desc");
-      short_desc.setAttribute("class", "text");
+      short_desc.setAttribute("class", "up-c-placesbox_text");
       boxBody.appendChild(short_desc);
 
       let long_desc = document.createElement('p');
       long_desc.textContent = data[i].long_desc;
-      long_desc.setAttribute("class", "desc");
-      long_desc.setAttribute("class", "text");
+      long_desc.setAttribute("class", "up-c-placesbox_text");
       boxBody.appendChild(long_desc);
 
       if (data[i].desc_source.includes('wikipedia')){
         let ref_link = document.createElement('a');
         ref_link.setAttribute("href", data[i].desc_source);
-        ref_link.setAttribute("class", "text");
-        ref_link.setAttribute("class", "link");
         ref_link.textContent = " Wikipedia"
         long_desc.appendChild(ref_link);
       }
 
       let line = document.createElement('div');
-      line.setAttribute("class", "hline-bottom");
+      line.setAttribute("class", "up-c-placesbox_divider_line");
       boxBody.appendChild(line);
 
       let refBox = document.createElement('div');
-      refBox.setAttribute("class", "refBox");
       boxBody.appendChild(refBox);
 
       let latlon_source = document.createElement('p');
       latlon_source.textContent = "Location Source: ";
-      latlon_source.setAttribute("class", "text ref");
+      latlon_source.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
       refBox.appendChild(latlon_source);
 
       let latlon_link = document.createElement('a');
       latlon_link.setAttribute("href", data[i].loc_source);
-      latlon_link.setAttribute("class", "text ref link");
+      latlon_link.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
       latlon_link.textContent = data[i].loc_source;
       latlon_source.appendChild(latlon_link);
 
       let desc_source = document.createElement('p');
       desc_source.textContent = "Description Source: ";
-      desc_source.setAttribute("class", "text ref");
+      desc_source.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
       refBox.appendChild(desc_source);
 
       let desc_link = document.createElement('a');
       desc_link.setAttribute("href", data[i].desc_source);
-      desc_link.setAttribute("class", "text ref link");
+      desc_link.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
       desc_link.textContent = data[i].desc_source;
       desc_source.appendChild(desc_link);
 
       let lastUpdate = document.createElement('p');
       lastUpdate.textContent = "Data last updated: " + data[i].updated;
-      lastUpdate.setAttribute("class", "text ref");
+      lastUpdate.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
       refBox.appendChild(lastUpdate);
 
       container.appendChild(box);
