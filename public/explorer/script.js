@@ -18,7 +18,7 @@ function loadJSON(url){
 }
 
 function collapse(){
-  let slider = document.getElementById('sliderBody');
+  let slider = document.getElementById('up-c-slider_body_container');
   //console.log(slider.classList);
   if (sliderStatus == 'closed'){
     slider.classList.remove("sliderClosed");
@@ -43,7 +43,7 @@ function drawBoxes(data){
       var container = document.getElementById('up-l-places_container');
 
       let box = document.createElement('div');
-      box.setAttribute("class", "box "+ data[i]._id);
+      box.setAttribute("class", "up-c-placesbox "+ data[i]._id);
 
       let input = document.createElement('input');
       input.setAttribute("class", "toggle");
@@ -72,7 +72,7 @@ function drawBoxes(data){
       label.appendChild(placeNameHeader);
 
       let boxBody = document.createElement('div');
-      boxBody.setAttribute("class", "boxBody");
+      boxBody.setAttribute("class", "up-c-placesbox_body");
       box.appendChild(boxBody);
 
       let latlon = document.createElement('p');
