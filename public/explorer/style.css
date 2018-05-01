@@ -129,6 +129,26 @@ a{
   color: #fff;
 }
 
+.up-c-sidebar_logo{
+  padding: 10px;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.up-c-sidebar_icon{
+  width: 40%;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-left: 30%;
+  margin-right: 30%;
+  padding: 0px;
+}
+
+.up-c-sidebar_body_social{
+  fill: #FF5C5C;
+}
+
 /* Places Container */
 
 
@@ -226,6 +246,11 @@ a{
    opacity: .75;
  }
 
+ .up-c-placesbox_toggle{
+   display: none;
+ }
+
+
 /***********/
 /* Utility */
 /***********/
@@ -234,39 +259,13 @@ a{
 /* Side-Slider Menu */
 /* Places Container */
 
-#up-c-slider_body_container.sliderClosed{
+#up-c-slider_body_container.up-u-slider_body_closed{
   /*max-width: 0px;*/
   margin-left: -400px;
 
 }
 
-.up-c-sidebar_icon_container :hover .infoPath{
-  fill: #FF5C5C;
-}
-
-.logo{
-  padding: 10px;
-  margin-top: 5px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-
-.icon{
-  width: 40%;
-  margin-top: 10px;
-  margin-bottom: 0px;
-  margin-left: 30%;
-  margin-right: 30%;
-  padding: 0px;
-}
-
-.gitPath{
-  fill: #FF5C5C;
-}
-
-
-.twitPath{
+.up-c-sidebar_icon_container :hover .up-u-info_icon{
   fill: #FF5C5C;
 }
 
@@ -276,10 +275,6 @@ input[type="checkbox"]:checked ~ #up-c-slider_body_container {
 
 .up-c-placesbox_h1:hover{
   color: #FF5C5C;
-}
-
-.toggle{
-  display: none;
 }
 
 input[type="checkbox"]:checked ~ .up-c-placesbox_body {

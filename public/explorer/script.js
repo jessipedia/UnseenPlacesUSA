@@ -21,10 +21,10 @@ function collapse(){
   let slider = document.getElementById('up-c-slider_body_container');
   //console.log(slider.classList);
   if (sliderStatus == 'closed'){
-    slider.classList.remove("sliderClosed");
+    slider.classList.remove("up-u-slider_body_closed");
     sliderStatus = 'open';
   } else {
-    slider.setAttribute("class", "sliderClosed");
+    slider.setAttribute("class", "up-u-slider_body_closed");
     sliderStatus = 'closed';
   }
 
@@ -46,7 +46,7 @@ function drawBoxes(data){
       box.setAttribute("class", "up-c-placesbox "+ data[i]._id);
 
       let input = document.createElement('input');
-      input.setAttribute("class", "toggle");
+      input.setAttribute("class", "up-c-placesbox_toggle");
       input.setAttribute("type", "checkbox");
       input.setAttribute("id", data[i]._id);
       input.setAttribute("value", "box");
