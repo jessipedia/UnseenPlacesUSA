@@ -40,7 +40,7 @@ function drawBoxes(data){
       let state = data[i].stusps;
       placeData.push({id, cord});
 
-      var container = document.getElementById('container');
+      var container = document.getElementById('up-l-places_container');
 
       let box = document.createElement('div');
       box.setAttribute("class", "box "+ data[i]._id);
@@ -138,8 +138,6 @@ function drawBoxes(data){
       lastUpdate.setAttribute("class", "text ref");
       refBox.appendChild(lastUpdate);
 
-
-
       container.appendChild(box);
 
     }
@@ -154,9 +152,7 @@ function submit(){
 
   let boxes = document.getElementsByClassName('box');
   for (var i = boxes.length - 1; i > -1 ; i--) {
-
   boxes[i].remove();
-
   }
 
   let json = loadJSON(placeUrl)

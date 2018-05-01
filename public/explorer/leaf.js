@@ -1,5 +1,5 @@
 var url = "/api/places";
-var myMap = L.map('map', {preferCanvas: true, scrollWheelZoom: false}).setView([39.648734, -118.9761848], 2.5);
+var myMap = L.map('up-l-map_box', {preferCanvas: true, scrollWheelZoom: false}).setView([39.648734, -118.9761848], 2.5);
 var myScale = L.control.scale().addTo(myMap)
 var placesLayer = L.layerGroup();
 var placeMarkers = [];
@@ -27,8 +27,6 @@ fetch('/234598')
         accessToken: res
     }).addTo(myMap);
   }
-
-
 
 function drawMarkers(data){
   placesLayer.eachLayer(function (layer) {
