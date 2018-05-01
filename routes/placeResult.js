@@ -1,11 +1,11 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
 
-var Place = require('../schemas/place_schema.js').Place;
-var Shape = require('../schemas/shape_schema.js').Shape;
+const Place = require('../schemas/place_schema.js').Place;
+const Shape = require('../schemas/shape_schema.js').Shape;
 
-let mdbUri = process.env.UP_MDB_URI;
+const mdbUri = process.env.UP_MDB_URI;
 
 router.get('/', placeResult);
 
