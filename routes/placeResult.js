@@ -17,7 +17,7 @@ function placeResult(req, res) {
   var loc = data.location;
   var name;
   //console.log(loc);
-  mongoose.connect(mdbUri,{useMongoClient: true});
+  mongoose.connect(mdbUri, {useMongoClient: true});
   console.log('DB Connected');
 
   if (loc) {

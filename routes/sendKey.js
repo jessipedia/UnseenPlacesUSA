@@ -6,5 +6,5 @@ router.get('/', sendKey);
 module.exports = router;
 
 function sendKey(req, res) {
-    res.send(process.env.MBX_KEY)
+    res.send(process.env.MBX_KEY);
 }
