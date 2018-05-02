@@ -1,16 +1,14 @@
-var url = "/api/places";
-var placeData = [];
-let sliderStatus = 'closed';
+const url = "/api/places";
 
-var myMap = L.map('up-l-map_box', {preferCanvas: true, scrollWheelZoom: false}).setView([39.648734, -118.9761848], 2.5);
-var myScale = L.control.scale().addTo(myMap)
-var placesLayer = L.layerGroup();
-var placeMarkers = [];
+const placeData = [];
 
-var myIcon = L.icon({
+const myMap = L.map('up-l-map_box', {preferCanvas: true, scrollWheelZoom: false}).setView([39.648734, -118.9761848], 2.5);
+const placesLayer = L.layerGroup();
+const myIcon = L.icon({
     iconUrl: 'placeMarker.png'
   })
 
+let sliderStatus = 'closed';
 
 fetch('/234598')
   .then(res => res.text())
@@ -25,7 +23,6 @@ loadJSON(url)
 
 function loadJSON(url){
   return new Promise(resolve => {
-    console.log('load JSON');
     fetch(url)
       .then(res => res.json())
       .then(data => resolve(data))
@@ -33,13 +30,11 @@ function loadJSON(url){
   })
 }
 
-
-
 //Sidebar
 
 function collapse(){
   let slider = document.getElementById('up-c-slider_body_container');
-  //console.log(slider.classList);
+
   if (sliderStatus == 'closed'){
     slider.classList.remove("up-u-slider_body_closed");
     sliderStatus = 'open';
@@ -62,60 +57,82 @@ function drawTiles(res){
 }
 
 function drawMarkers(data){
-  placesLayer.eachLayer(function (layer) {
-    layer.remove();
-  });
 
   let latSum = 0;
   let lonSum = 0;
   let westMostLon = 100;
   let eastMostLon = -200;
-  let smallestLonName;
-  let biggestLonName;
 
-  for (var i = 0; i < data.length; i++) {
-    lonSum = lonSum + data[i].location.coordinates[0];
-    latSum = latSum + data[i].location.coordinates[1];
+  let eastTest = -200;
 
-    if (data[i].location.coordinates[0] < westMostLon){
-      westMostLon = data[i].location.coordinates[0];
-      smallestLonName = data[i].name;
-    }
+  placesLayer.eachLayer(function (layer) {
+    layer.remove();
+  });
 
-    if (data[i].location.coordinates[0] > eastMostLon){
-      eastMostLon = data[i].location.coordinates[0];
-      biggestLonName = data[i].name;
+  //finlethe eastmost and westmost places and calculate the latsum and lonsum and create a marker point
+  for (let i = 0; i < data.length; i++) {
+
+    //Find sums of lat and lon
+    latSum = locSum(data[i].location.coordinates[1], latSum);
+    lonSum = locSum(data[i].location.coordinates[0], lonSum);
+
+    eastTest = eastMost(data[i].location.coordinates[0], eastTest);
+    console.log(eastTest);
+
+    findEastWest(data[i].location.coordinates[0]);
+    console.log(eastMostLon);
+    addMarker(data[i].location.coordinates[0], data[i].location.coordinates[1], data[i]._id, data[i].name);
+
   }
 
+  let zoom = findZoomLevel(westMostLon, eastMostLon);
 
-  let marker = L.marker([data[i].location.coordinates[1], data[i].location.coordinates[0]], {icon: myIcon});
-  marker._id = data[i]._id;
-  marker.name = data[i].name;
-  marker.addTo(placesLayer).on('click', onClick);
-  }
-
-  function diff(w,e){
-    return Math.abs(w - e);
-  }
-
-  let diffNum = diff(westMostLon,eastMostLon);
-
-  function zoomLevel(diffNum){
-    if (diffNum>=50){
-      return 2.5;
-    }else if (diffNum >= 30 && diffNum < 50 ) {
-      return 4;
-    }else if (diffNum >= 10 && diffNum < 30 ) {
-      return 6;
-    }else {
-      return 7;
-    }
-  }
-
-  let zoom = zoomLevel(diffNum);
-
+//flyto the calculated center of the group of places, at the calculated zoom level, and add the layer of places to the map
   myMap.flyTo([latSum/data.length, lonSum/data.length], zoom)
   placesLayer.addTo(myMap);
+
+  function eastMost(lon, e){
+    if (lon > e){
+      return lon
+    } else {
+      return e
+    }
+  }
+
+  function findEastWest(lat){
+    if (lat < westMostLon){
+      westMostLon = lat;
+    }
+
+    if (lat > eastMostLon){
+      eastMostLon = lat;
+    }
+  }
+}
+
+function locSum(loc, sum){
+  return loc + sum;
+}
+
+function findZoomLevel(w,e){
+  let diff = Math.abs(w - e);
+
+  if (diff>=50){
+    return 2.5;
+  }else if (diff >= 30 && diff < 50 ) {
+    return 4;
+  }else if (diff >= 10 && diff < 30 ) {
+    return 6;
+  }else {
+    return 7;
+  }
+}
+
+function addMarker(lat, lon, id, name){
+  let marker = L.marker([lon, lat], {icon: myIcon});
+  marker._id = id;
+  marker.name = name;
+  marker.addTo(placesLayer).on('click', onClick);
 }
 
 function onClick(){
@@ -237,7 +254,7 @@ function drawBoxes(data){
 function submit(){
 
   let loc = document.getElementById('dropdown').value;
-  var search = document.getElementById('search').value;
+  let search = document.getElementById('search').value;
   let placeUrl = url + "?location=" + loc + "&search=" + search;
 
   let boxes = document.getElementsByClassName('box');
