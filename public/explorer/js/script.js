@@ -70,6 +70,7 @@ function drawBoxes(data){
       input.setAttribute("type", "checkbox");
       input.setAttribute("id", data[i]._id);
       input.setAttribute("value", "box");
+      //input.setAttribute("tabindex", "0");
       input.onclick = function(input){
         let thisCheckbox = document.getElementById(input.target.id);
         if (thisCheckbox.checked){
@@ -84,10 +85,12 @@ function drawBoxes(data){
       let label = document.createElement('label');
       label.setAttribute("class", "up-c-placesbox_checkbox_label");
       label.setAttribute("for", data[i]._id);
+      label.setAttribute("tabindex", "0");
       box.appendChild(label);
 
       let placeNameHeader = document.createElement('h1');
       placeNameHeader.textContent = data[i].name;
+      //placeNameHeader.setAttribute("tabindex", "0");
       placeNameHeader.setAttribute("class", "up-c-placesbox_h1");
       label.appendChild(placeNameHeader);
 
