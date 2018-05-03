@@ -1,6 +1,6 @@
-/***********/
+/***/
 /* Normalizing */
-/***********/
+/***/
 
 html,
 body {
@@ -9,18 +9,18 @@ body {
   height: 100%;
 }
 
-/***********/
+/***/
 /* Unclassified Element Selectors */
-/***********/
+/***/
 
 a{
   text-decoration: none;
   color: #FF5C5C;
 }
 
-/***********/
+/***/
 /* Layout  */
-/***********/
+/***/
 
 /* Map */
 
@@ -32,8 +32,6 @@ a{
 }
 
 /* Side-Slider Menu */
-
-
 
 /* Places Container */
 
@@ -65,11 +63,12 @@ a{
 
 }
 
-/***********/
+/***/
 /* Components */
-/***********/
+/***/
 
 /* Map */
+
 /* Side-Slider Menu */
 
 .up-c-slider{
@@ -150,7 +149,6 @@ a{
 }
 
 /* Places Container */
-
 
 .up-c-dropdown_container{
   display: inline;
@@ -251,18 +249,15 @@ a{
  }
 
 
-/***********/
+/***/
 /* Utility */
-/***********/
+/***/
 
 /* Map */
-
-
 
 /* Side-Slider Menu */
 
 #up-c-slider_body_container.up-u-slider_body_closed{
-  /*max-width: 0px;*/
   margin-left: -400px;
 
 }
@@ -275,7 +270,6 @@ input[type="checkbox"]:checked ~ #up-c-slider_body_container {
     max-height: 500px;
 }
 /* Places Container */
-
 
 .up-c-placesbox_h1:hover{
   color: #FF5C5C;
