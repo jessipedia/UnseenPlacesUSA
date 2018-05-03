@@ -1,14 +1,11 @@
-var fs = require('fs');
-var fileName = './cb_2016_us_state_500k.geojson';
-//var file = require(fileName);
+//Edits US census geojson for use with project
+const fs = require('fs');
+const fileName = './cb_2016_us_state_500k.geojson';
+const content = fs.readFileSync(fileName);
 
-//console.log(fileName);
-var content = fs.readFileSync(fileName);
-//console.log(content);
+const jsonContent = JSON.parse(content);
 
-var jsonContent = JSON.parse(content);
-
-for (var i = 0; i < jsonContent.features.length; i++) {
+for (let i = 0; i < jsonContent.features.length; i++) {
   delete jsonContent.features[i].properties.description;
   delete jsonContent.features[i].properties.timestamp;
   delete jsonContent.features[i].properties.begin;
@@ -20,9 +17,8 @@ for (var i = 0; i < jsonContent.features.length; i++) {
   delete jsonContent.features[i].properties.drawOrder;
   delete jsonContent.features[i].properties.icon;
   delete jsonContent.features[i].properties.NAME2;
-  console.log(jsonContent.features[i].properties);
 }
 
-var stringJSON = JSON.stringify(jsonContent);
+const stringJSON = JSON.stringify(jsonContent);
 
 fs.appendFileSync('cb_2016_us_state_500k_edit_v2.geojson', stringJSON);

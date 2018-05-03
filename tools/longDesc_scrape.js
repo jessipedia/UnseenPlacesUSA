@@ -1,21 +1,23 @@
-var cheerio = require('cheerio');
-var fs = require('fs');
-var request = require('request');
-var config = require('./config.js');
-var bottleneck = require('bottleneck');
-var mongoose = require('mongoose');
+//Scaper for Wikipedia location data
+//Refactor to use schema files, many more helper functions
+const cheerio = require('cheerio');
+const fs = require('fs');
+const request = require('request');
+const config = require('./config.js');
+const bottleneck = require('bottleneck');
+const mongoose = require('mongoose');
 
-var shortDesc = 'automatic tracking radar station';
-var locAbbrev = 'none';
+const shortDesc = 'automatic tracking radar station';
+const locAbbrev = 'none';
 const now = new Date();
-var filename = 'auto_tracking_radar'
+const filename = 'auto_tracking_radar';
 
 const limiter = new bottleneck({
   maxConcurrent: 6,
   minTime: 2000
 });
 
-var placeSchema = mongoose.Schema({
+const placeSchema = mongoose.Schema({
   name: String,
   short_desc: String,
   long_desc: String,
@@ -33,18 +35,16 @@ var placeSchema = mongoose.Schema({
   updated: Date,
 }, { typeKey: '$type' })
 
-var Place = mongoose.model('Place', placeSchema);
-var incPlace = mongoose.model('incPlace', placeSchema);
-var incompleteCount = 0;
-var completeCount = 0;
-var count = 0;
-var length = 0;
+const Place = mongoose.model('Place', placeSchema);
+const incPlace = mongoose.model('incPlace', placeSchema);
+let count = 0;
+let length = 0;
 
 mongoose.connect('',{useMongoClient: true});
 console.log('Opening connection');
 
-var data;
-var readableStream = fs.createReadStream('./lists/' + filename + '.txt');
+let data;
+const readableStream = fs.createReadStream('./lists/' + filename + '.txt');
 
 readableStream.setEncoding('utf8');
 
@@ -53,7 +53,7 @@ readableStream.on('data', function(chunk) {
 });
 
 readableStream.on('end', function() {
-   let list = data.split(',');
+   const list = data.split(',');
       count = list.length;
       length = list.length;
 
@@ -406,11 +406,6 @@ function insert(doc){
       created: doc.created,
       updated: doc.updated,
     })
-    // if (count ==  length) {
-    //   console.log("Incomplete Doc Opening Connection");
-    //
-    //
-    // }
       incomplete.save(function(err) {
         if (err) {
           console.log("Incomplete Doc Error saving: " + err);
@@ -444,13 +439,6 @@ function insert(doc){
       created: doc.created,
       updated: doc.updated,
     })
-
-    // if (count == length) {
-    //   console.log('Complete Doc Opening connection');
-    //   mongoose.connect('mongodb://jscottdutcher:5eD8xe5T6vr3@jessdb-shard-00-00-98ywm.mongodb.net:27017,jessdb-shard-00-01-98ywm.mongodb.net:27017,jessdb-shard-00-02-98ywm.mongodb.net:27017/upusa?ssl=true&replicaSet=JessDB-shard-0&authSource=admin',{useMongoClient: true});
-    // }
-
-    console.log('After new Place created');
 
     complete.save(function(err) {
       if (err) {
