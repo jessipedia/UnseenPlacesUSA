@@ -5,7 +5,7 @@ const placeData = [];
 const myMap = L.map('up-l-map_box', {preferCanvas: true, scrollWheelZoom: false}).setView([39.648734, -118.9761848], 2.5);
 const placesLayer = L.layerGroup();
 const myIcon = L.icon({
-    iconUrl: 'placeMarker.png'
+    iconUrl: 'img/placeMarker.png'
   })
 
 let sliderStatus = 'closed';
