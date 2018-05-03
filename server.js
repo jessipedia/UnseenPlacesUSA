@@ -13,6 +13,7 @@ function listen() {
 
 app.use(express.static('public'));
 
-app.use('/234598', sendKey);
+//Mapbox API key stored serverside
+app.use('/key', sendKey);
 
 app.use('/api/places', placeResult);
