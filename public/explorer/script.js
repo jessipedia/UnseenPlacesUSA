@@ -18,7 +18,7 @@ fetch('/234598')
 loadJSON(url)
   .then(function(result){
     drawBoxes(result);
-    drawMarkers(result);
+    resetMap(result);
   });
 
 function loadJSON(url){
@@ -56,15 +56,14 @@ function drawTiles(res){
   }).addTo(myMap);
 }
 
-function drawMarkers(data){
+function resetMap(data){
 
   let latSum = 0;
   let lonSum = 0;
   let westMostLon = 100;
   let eastMostLon = -200;
 
-  let eastTest = -200;
-
+  //Remove placesLayer, if it exists
   placesLayer.eachLayer(function (layer) {
     layer.remove();
   });
@@ -76,37 +75,39 @@ function drawMarkers(data){
     latSum = locSum(data[i].location.coordinates[1], latSum);
     lonSum = locSum(data[i].location.coordinates[0], lonSum);
 
-    eastTest = eastMost(data[i].location.coordinates[0], eastTest);
-    console.log(eastTest);
+    //Find east and west most locations
+    eastMostLon = findMost('east', data[i].location.coordinates[0], eastMostLon);
+    westMostLon = findMost('west', data[i].location.coordinates[0], westMostLon);
 
-    findEastWest(data[i].location.coordinates[0]);
-    console.log(eastMostLon);
+    //Add a marker to the placesLayer
     addMarker(data[i].location.coordinates[0], data[i].location.coordinates[1], data[i]._id, data[i].name);
 
   }
 
   let zoom = findZoomLevel(westMostLon, eastMostLon);
 
-//flyto the calculated center of the group of places, at the calculated zoom level, and add the layer of places to the map
+  //flyto the calculated center of the group of places, at the calculated zoom level
   myMap.flyTo([latSum/data.length, lonSum/data.length], zoom)
+  //Add placesLayer to map
   placesLayer.addTo(myMap);
+}
 
-  function eastMost(lon, e){
-    if (lon > e){
-      return lon
-    } else {
-      return e
-    }
-  }
-
-  function findEastWest(lat){
-    if (lat < westMostLon){
-      westMostLon = lat;
-    }
-
-    if (lat > eastMostLon){
-      eastMostLon = lat;
-    }
+function findMost(dir, lon, val){
+  switch (dir) {
+    case 'east':
+      if (lon > val){
+        return lon
+      } else {
+        return val
+      }
+      break;
+    case 'west':
+      if (lon < val){
+        return lon
+      } else {
+        return val
+      }
+      break;
   }
 }
 
@@ -264,5 +265,5 @@ function submit(){
 
   let json = loadJSON(placeUrl)
     json.then(result =>drawBoxes(result));
-    json.then(result =>drawMarkers(result));
+    json.then(result =>resetMap(result));
 }
