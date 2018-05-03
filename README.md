@@ -6,10 +6,10 @@ This project currently includes a [web explorer](unseenplaces.us/explorer) for t
 
 This is an ongoing project.
 
-##Public
+## Public
 
 Contains public files for the web explorer, api, and visual tests.
 
-##Tools
+## Tools
 
 Contains webscrapers and associated files for generating the dataset.
