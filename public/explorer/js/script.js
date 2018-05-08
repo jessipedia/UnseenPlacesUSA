@@ -49,17 +49,14 @@ function onClick(){
   myMap.flyTo([this._latlng.lat, this._latlng.lng], 15);
 }
 
-function testOpen(e){
-  console.log(e);
-}
+// function testOpen(e){
+//   console.log(e);
+// }
 
 
 //Place Container
 //Refactor to clone from HTML instead of building from nothing
 function drawBoxes(data){
-
-let copy = document.getElementById("template");
-console.log(copy);
 
     for (var i = 0; i < data.length; i++) {
       let avan = AvsAnSimple.query(data[i].short_desc);
@@ -70,10 +67,10 @@ console.log(copy);
 
       var container = document.getElementById('up-l-places_container');
 
-      let box = document.createElement('div');
-      box.setAttribute("class", "up-c-placesbox ");
-      box.setAttribute("tabindex", "0");
-      box.onclick = function(e){
+      let newBox = document.getElementById("template").cloneNode([true]);
+      newBox.removeAttribute("hidden");
+      newBox.setAttribute("id", data[i]._id);
+      newBox.onclick = function(e){
         let boxBody = e.target.parentElement.children[1];
         if(boxBody.getAttribute("hidden") == null){
           boxBody.setAttribute("hidden", "true");
@@ -90,31 +87,19 @@ console.log(copy);
         }
       }
 
-      let placeNameHeader = document.createElement('h1');
-      placeNameHeader.textContent = data[i].name;
-      placeNameHeader.setAttribute("id", data[i]._id);
-      placeNameHeader.setAttribute("class", "up-c-placesbox_h1");
-      box.appendChild(placeNameHeader);
+      let h1 = newBox.getElementsByTagName("h1")[0];
+      h1.textContent = data[i].name;
 
-      let boxBody = document.createElement('div');
-      boxBody.setAttribute("class", "up-c-placesbox_body");
-      boxBody.setAttribute("hidden", "true")
-      box.appendChild(boxBody);
+      let boxBody = newBox.getElementsByTagName("div")[0];
 
-      let latlon = document.createElement('p');
+      let latlon = boxBody.getElementsByTagName("p")[0];
       latlon.textContent = data[i].location.coordinates[1] + " , " + data[i].location.coordinates[0];
-      latlon.setAttribute("class", "up-c-placesbox_text_latlon up-c-placesbox_text");
-      boxBody.appendChild(latlon);
 
-      let short_desc = document.createElement('p');
+      let short_desc = boxBody.getElementsByTagName("p")[1];
       short_desc.textContent = data[i].name + " is " + avan + " " + data[i].short_desc + ".";
-      short_desc.setAttribute("class", "up-c-placesbox_text");
-      boxBody.appendChild(short_desc);
 
-      let long_desc = document.createElement('p');
+      let long_desc = boxBody.getElementsByTagName("p")[2];
       long_desc.textContent = data[i].long_desc;
-      long_desc.setAttribute("class", "up-c-placesbox_text");
-      boxBody.appendChild(long_desc);
 
       if (data[i].desc_source.includes('wikipedia')){
         let ref_link = document.createElement('a');
@@ -123,42 +108,20 @@ console.log(copy);
         long_desc.appendChild(ref_link);
       }
 
-      let line = document.createElement('div');
-      line.setAttribute("class", "up-c-placesbox_divider_line");
-      boxBody.appendChild(line);
+      let refBox = newBox.getElementsByTagName("div")[2];
 
-      let refBox = document.createElement('div');
-      boxBody.appendChild(refBox);
-
-      let latlon_source = document.createElement('p');
-      latlon_source.textContent = "Location Source: ";
-      latlon_source.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
-      refBox.appendChild(latlon_source);
-
-      let latlon_link = document.createElement('a');
+      let latlon_link = refBox.getElementsByTagName("p")[0].getElementsByTagName("a")[0];
       latlon_link.setAttribute("href", data[i].loc_source);
-      latlon_link.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
       latlon_link.textContent = data[i].loc_source;
-      latlon_source.appendChild(latlon_link);
 
-      let desc_source = document.createElement('p');
-      desc_source.textContent = "Description Source: ";
-      desc_source.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
-      refBox.appendChild(desc_source);
-
-      let desc_link = document.createElement('a');
+      let desc_link = refBox.getElementsByTagName("p")[1].getElementsByTagName("a")[0];
       desc_link.setAttribute("href", data[i].desc_source);
-      desc_link.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
       desc_link.textContent = data[i].desc_source;
-      desc_source.appendChild(desc_link);
 
-      let lastUpdate = document.createElement('p');
+      let lastUpdate = refBox.getElementsByTagName("p")[2];
       lastUpdate.textContent = "Data last updated: " + data[i].updated;
-      lastUpdate.setAttribute("class", "up-c-placesbox_text up-c-placesbox_text_ref");
-      refBox.appendChild(lastUpdate);
 
-      container.appendChild(box);
-
+      container.appendChild(newBox);
     }
 }
 
