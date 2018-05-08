@@ -1,7 +1,6 @@
 //JS for
 
 const url = "/api/places";
-const placeData = [];
 
 let sliderStatus = 'closed';
 
@@ -49,82 +48,88 @@ function onClick(){
   myMap.flyTo([this._latlng.lat, this._latlng.lng], 15);
 }
 
-// function testOpen(e){
-//   console.log(e);
-// }
-
-
 //Place Container
-//Refactor to clone from HTML instead of building from nothing
+
+//Draw location boxes
 function drawBoxes(data){
 
-    for (var i = 0; i < data.length; i++) {
-      let avan = AvsAnSimple.query(data[i].short_desc);
-      let id = data[i]._id;
-      let cord = data[i].location.coordinates;
-      let state = data[i].stusps;
-      placeData.push({id, cord});
+    for (let i = 0; i < data.length; i++) {
+      const avan = AvsAnSimple.query(data[i].short_desc);
+      const container = document.getElementById('up-l-places_container');
 
-      var container = document.getElementById('up-l-places_container');
-
-      let newBox = document.getElementById("template").cloneNode([true]);
+      //select hidden box template and update elements
+      const newBox = document.getElementById("template").cloneNode([true]);
       newBox.removeAttribute("hidden");
       newBox.setAttribute("id", data[i]._id);
 
-      let h1 = newBox.getElementsByTagName("h1")[0];
+      //update h1 elements, Add eventhandelers for mouse and keyboard
+      const h1 = newBox.getElementsByTagName("h1")[0];
       h1.textContent = data[i].name;
       h1.onclick = boxToggle;
       h1.onkeydown = boxToggle;
 
-      let boxBody = newBox.getElementsByTagName("div")[0];
+      //select and update placesbox_body elements
+      const boxBody = newBox.getElementsByTagName("div")[0];
 
-      let latlon = boxBody.getElementsByTagName("p")[0];
+      const latlon = boxBody.getElementsByTagName("p")[0];
       latlon.textContent = data[i].location.coordinates[1] + " , " + data[i].location.coordinates[0];
 
-      let short_desc = boxBody.getElementsByTagName("p")[1];
+      const short_desc = boxBody.getElementsByTagName("p")[1];
       short_desc.textContent = data[i].name + " is " + avan + " " + data[i].short_desc + ".";
 
-      let long_desc = boxBody.getElementsByTagName("p")[2];
+      const long_desc = boxBody.getElementsByTagName("p")[2];
       long_desc.textContent = data[i].long_desc;
 
       if (data[i].desc_source.includes('wikipedia')){
-        let ref_link = document.createElement('a');
+        const ref_link = document.createElement('a');
         ref_link.setAttribute("href", data[i].desc_source);
         ref_link.textContent = " Wikipedia"
         long_desc.appendChild(ref_link);
       }
 
-      let refBox = newBox.getElementsByTagName("div")[2];
+      //select and update placesbox_refbox elements
+      const refBox = newBox.getElementsByTagName("div")[2];
 
-      let latlon_link = refBox.getElementsByTagName("p")[0].getElementsByTagName("a")[0];
+      const latlon_link = refBox.getElementsByTagName("p")[0].getElementsByTagName("a")[0];
       latlon_link.setAttribute("href", data[i].loc_source);
       latlon_link.textContent = data[i].loc_source;
 
-      let desc_link = refBox.getElementsByTagName("p")[1].getElementsByTagName("a")[0];
+      const desc_link = refBox.getElementsByTagName("p")[1].getElementsByTagName("a")[0];
       desc_link.setAttribute("href", data[i].desc_source);
       desc_link.textContent = data[i].desc_source;
 
-      let lastUpdate = refBox.getElementsByTagName("p")[2];
+      const lastUpdate = refBox.getElementsByTagName("p")[2];
       lastUpdate.textContent = "Data last updated: " + data[i].updated;
 
-
+      //Append new location box to the document
       container.appendChild(newBox);
     }
 }
 
+//Open & Close the placesbox_body
 function boxToggle(e){
-  let targetElement = e.target.parentElement.children[1];
-  //console.log(targetElement);
+  //keyboard toggle only works with enter key
+  if (e.type == 'keydown' && e.key !=  'Enter'){
+    return
+  }
+  //select placesbox_body element
+  const targetElement = e.target.parentElement.children[1];
+
       if(targetElement.getAttribute("hidden") == null){
+        //if not hidden, hide the placesbox_body
         targetElement.setAttribute("hidden", "true");
         targetElement.setAttribute("class", "up-c-placesbox_body");
       } else {
+        //if hidden, show placesbox_body
         targetElement.removeAttribute("hidden");
         targetElement.setAttribute("class", "up-c-placesbox_body up-c-placesbox_body_shown");
-        let targetLatLon = targetElement.getElementsByTagName("p")[0].textContent;
-        let arrayLatLon = targetLatLon.split(',');
-        let lat = arrayLatLon[0].replace(/\s/g,'');
-        let lon = arrayLatLon[1].replace(/\s/g,'');
+
+        //flyto placesbox_body latlon location on the map
+        //using existing element data
+        const targetLatLon = targetElement.getElementsByTagName("p")[0].textContent;
+        const arrayLatLon = targetLatLon.split(',');
+        const lat = arrayLatLon[0].replace(/\s/g,'');
+        const lon = arrayLatLon[1].replace(/\s/g,'');
         myMap.flyTo([lat, lon], 15);
       }
   }
