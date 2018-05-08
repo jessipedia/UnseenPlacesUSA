@@ -1,19 +1,24 @@
-//JS for
+/* JS for drawing and interacting with non-map elements */
 
 const url = "/api/places";
 
-let sliderStatus = 'closed';
+loadPlaces(url);
 
 fetch('/key')
   .then(res => res.text())
   .then(text => drawTiles(text))
   .catch(err => { throw err });
 
-loadJSON(url)
-  .then(function(result){
-    drawBoxes(result);
-    resetMap(result);
-  });
+
+/* Helper functions */
+
+function loadPlaces(u){
+  loadJSON(u)
+    .then(function(result){
+      drawBoxes(result);
+      resetMap(result);
+    });
+}
 
 function loadJSON(url){
   return new Promise(resolve => {
@@ -24,31 +29,39 @@ function loadJSON(url){
   })
 }
 
-//Sidebar
+function removeBoxes(){
+  const boxes = document.getElementsByClassName('up-c-placesbox');
+  for (let i = boxes.length - 1; i > -1 ; i--) {
+  boxes[i].remove();
+  }
+}
+
+/* Sidebar */
 
 function collapse(){
-  let slider = document.getElementById('up-c-slider_body_container');
+  const slider = document.getElementById('up-c-slider_body_container');
 
-  if (sliderStatus == 'closed'){
-    slider.classList.remove("up-u-slider_body_closed");
-    sliderStatus = 'open';
-  } else {
+  if (slider.classList.length == 0){
     slider.setAttribute("class", "up-u-slider_body_closed");
-    sliderStatus = 'closed';
+  } else {
+    slider.classList.remove("up-u-slider_body_closed");
   }
 
 }
 
+/* Map */
+
+//Flyto point and scroll to view placebox when clicking on point
 function onClick(){
-  let place = document.getElementById(this._id);
+  const place = document.getElementById(this._id);
   place.checked = true;
-  let boxes = document.getElementsByClassName(this._id);
-  let box = boxes[0];
+  const boxes = document.getElementsByClassName(this._id);
+  const box = boxes[0];
   box.scrollIntoView({behavior:"smooth"});
   myMap.flyTo([this._latlng.lat, this._latlng.lng], 15);
 }
 
-//Place Container
+/* Place Container */
 
 //Draw location boxes
 function drawBoxes(data){
@@ -107,6 +120,7 @@ function drawBoxes(data){
     }
 }
 
+
 //Open & Close the placesbox_body
 function boxToggle(e){
   //keyboard toggle only works with enter key
@@ -135,19 +149,12 @@ function boxToggle(e){
       }
   }
 
-
+//Search function in controls
 function submit(){
-  //Search function in controls
-  let loc = document.getElementById('up-c-dropdown_elem').value;
-  let search = document.getElementById('up-c-search_elem').value;
-  let placeUrl = url + "?location=" + loc + "&search=" + search;
+  const loc = document.getElementById('up-c-dropdown_elem').value;
+  const search = document.getElementById('up-c-search_elem').value;
+  const placeUrl = url + "?location=" + loc + "&search=" + search;
 
-  let boxes = document.getElementsByClassName('up-c-placesbox');
-  for (var i = boxes.length - 1; i > -1 ; i--) {
-  boxes[i].remove();
-  }
-
-  let json = loadJSON(placeUrl)
-    json.then(result =>drawBoxes(result));
-    json.then(result =>resetMap(result));
+  removeBoxes();
+  loadPlaces(placeUrl);
 }
