@@ -121,12 +121,11 @@ function boxToggle(e){
       } else {
         targetElement.removeAttribute("hidden");
         targetElement.setAttribute("class", "up-c-placesbox_body up-c-placesbox_body_shown");
-        console.log(targetElement.getElementsByTagName("p")[0].textContent);
-        // let obj = placeData.filter(function(place){return place.id == e.path[0].id});
-        // console.log(obj);
-        // let lon = obj[0].cord[0];
-        // let lat = obj[0].cord[1];
-        //myMap.flyTo([lat, lon], 15);
+        let targetLatLon = targetElement.getElementsByTagName("p")[0].textContent;
+        let arrayLatLon = targetLatLon.split(',');
+        let lat = arrayLatLon[0].replace(/\s/g,'');
+        let lon = arrayLatLon[1].replace(/\s/g,'');
+        myMap.flyTo([lat, lon], 15);
       }
   }
 
