@@ -266,12 +266,20 @@ a{
   fill: #FF5C5C;
 }
 
+.up-c-sidebar_icon_container :focus .up-u-info_icon{
+  fill: #FF5C5C;
+}
+
 /* input[type="checkbox"]:checked ~ #up-c-slider_body_container {
     max-height: 500px;
 } */
 /* Places Container */
 
 .up-c-placesbox_h1:hover{
+  color: #FF5C5C;
+}
+
+.up-c-placesbox_h1:focus{
   color: #FF5C5C;
 }
 

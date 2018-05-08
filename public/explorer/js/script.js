@@ -70,25 +70,11 @@ function drawBoxes(data){
       let newBox = document.getElementById("template").cloneNode([true]);
       newBox.removeAttribute("hidden");
       newBox.setAttribute("id", data[i]._id);
-      newBox.onclick = function(e){
-        let boxBody = e.target.parentElement.children[1];
-        if(boxBody.getAttribute("hidden") == null){
-          boxBody.setAttribute("hidden", "true");
-          boxBody.setAttribute("class", "up-c-placesbox_body");
-        } else {
-          boxBody.removeAttribute("hidden");
-          boxBody.setAttribute("class", "up-c-placesbox_body up-c-placesbox_body_shown");
-          console.log(e.path[0].id);
-          let obj = placeData.filter(function(place){return place.id == e.path[0].id});
-          console.log(obj);
-          let lon = obj[0].cord[0];
-          let lat = obj[0].cord[1];
-          myMap.flyTo([lat, lon], 15);
-        }
-      }
 
       let h1 = newBox.getElementsByTagName("h1")[0];
       h1.textContent = data[i].name;
+      h1.onclick = boxToggle;
+      h1.onkeydown = boxToggle;
 
       let boxBody = newBox.getElementsByTagName("div")[0];
 
@@ -121,9 +107,28 @@ function drawBoxes(data){
       let lastUpdate = refBox.getElementsByTagName("p")[2];
       lastUpdate.textContent = "Data last updated: " + data[i].updated;
 
+
       container.appendChild(newBox);
     }
 }
+
+function boxToggle(e){
+  let targetElement = e.target.parentElement.children[1];
+  //console.log(targetElement);
+      if(targetElement.getAttribute("hidden") == null){
+        targetElement.setAttribute("hidden", "true");
+        targetElement.setAttribute("class", "up-c-placesbox_body");
+      } else {
+        targetElement.removeAttribute("hidden");
+        targetElement.setAttribute("class", "up-c-placesbox_body up-c-placesbox_body_shown");
+        console.log(targetElement.getElementsByTagName("p")[0].textContent);
+        // let obj = placeData.filter(function(place){return place.id == e.path[0].id});
+        // console.log(obj);
+        // let lon = obj[0].cord[0];
+        // let lat = obj[0].cord[1];
+        //myMap.flyTo([lat, lon], 15);
+      }
+  }
 
 function submit(){
 
