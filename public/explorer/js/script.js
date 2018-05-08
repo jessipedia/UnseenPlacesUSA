@@ -49,9 +49,17 @@ function onClick(){
   myMap.flyTo([this._latlng.lat, this._latlng.lng], 15);
 }
 
+function testOpen(e){
+  console.log(e);
+}
+
+
 //Place Container
 //Refactor to clone from HTML instead of building from nothing
 function drawBoxes(data){
+
+let copy = document.getElementById("template");
+console.log(copy);
 
     for (var i = 0; i < data.length; i++) {
       let avan = AvsAnSimple.query(data[i].short_desc);
@@ -63,39 +71,34 @@ function drawBoxes(data){
       var container = document.getElementById('up-l-places_container');
 
       let box = document.createElement('div');
-      box.setAttribute("class", "up-c-placesbox "+ data[i]._id);
-
-      let input = document.createElement('input');
-      input.setAttribute("class", "up-c-placesbox_toggle");
-      input.setAttribute("type", "checkbox");
-      input.setAttribute("id", data[i]._id);
-      input.setAttribute("value", "box");
-      //input.setAttribute("tabindex", "0");
-      input.onclick = function(input){
-        let thisCheckbox = document.getElementById(input.target.id);
-        if (thisCheckbox.checked){
-          let obj = placeData.filter(function(place){return place.id == input.target.id});
+      box.setAttribute("class", "up-c-placesbox ");
+      box.setAttribute("tabindex", "0");
+      box.onclick = function(e){
+        let boxBody = e.target.parentElement.children[1];
+        if(boxBody.getAttribute("hidden") == null){
+          boxBody.setAttribute("hidden", "true");
+          boxBody.setAttribute("class", "up-c-placesbox_body");
+        } else {
+          boxBody.removeAttribute("hidden");
+          boxBody.setAttribute("class", "up-c-placesbox_body up-c-placesbox_body_shown");
+          console.log(e.path[0].id);
+          let obj = placeData.filter(function(place){return place.id == e.path[0].id});
+          console.log(obj);
           let lon = obj[0].cord[0];
           let lat = obj[0].cord[1];
           myMap.flyTo([lat, lon], 15);
         }
       }
-      box.appendChild(input);
-
-      let label = document.createElement('label');
-      label.setAttribute("class", "up-c-placesbox_checkbox_label");
-      label.setAttribute("for", data[i]._id);
-      label.setAttribute("tabindex", "0");
-      box.appendChild(label);
 
       let placeNameHeader = document.createElement('h1');
       placeNameHeader.textContent = data[i].name;
-      //placeNameHeader.setAttribute("tabindex", "0");
+      placeNameHeader.setAttribute("id", data[i]._id);
       placeNameHeader.setAttribute("class", "up-c-placesbox_h1");
-      label.appendChild(placeNameHeader);
+      box.appendChild(placeNameHeader);
 
       let boxBody = document.createElement('div');
       boxBody.setAttribute("class", "up-c-placesbox_body");
+      boxBody.setAttribute("hidden", "true")
       box.appendChild(boxBody);
 
       let latlon = document.createElement('p');

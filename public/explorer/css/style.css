@@ -198,10 +198,10 @@ a{
 
 .up-c-placesbox_body{
   background: #efefef;
-  max-height: 0px;
+  max-height: 800px;
   padding-left: 10px;
   padding-right: 10px;
-  overflow: hidden;
+  /* overflow: hidden; */
   transition: max-height 500ms ease;
 
 }
@@ -266,15 +266,19 @@ a{
   fill: #FF5C5C;
 }
 
-input[type="checkbox"]:checked ~ #up-c-slider_body_container {
+/* input[type="checkbox"]:checked ~ #up-c-slider_body_container {
     max-height: 500px;
-}
+} */
 /* Places Container */
 
 .up-c-placesbox_h1:hover{
   color: #FF5C5C;
 }
 
-input[type="checkbox"]:checked ~ .up-c-placesbox_body {
-    max-height: 800px;
+.up-c-placesbox_body.up-c-placesbox_body_shown{
+  max-height: 800px;
 }
+
+/* input[type="checkbox"]:checked ~ .up-c-placesbox_body {
+    max-height: 800px;
+} */
