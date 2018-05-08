@@ -61,6 +61,7 @@ function drawBoxes(data){
       const newBox = document.getElementById("template").cloneNode([true]);
       newBox.removeAttribute("hidden");
       newBox.setAttribute("id", data[i]._id);
+      newBox.setAttribute("class", "up-c-placesbox");
 
       //update h1 elements, Add eventhandelers for mouse and keyboard
       const h1 = newBox.getElementsByTagName("h1")[0];
@@ -134,13 +135,14 @@ function boxToggle(e){
       }
   }
 
-function submit(){
 
-  let loc = document.getElementById('dropdown').value;
-  let search = document.getElementById('search').value;
+function submit(){
+  //Search function in controls
+  let loc = document.getElementById('up-c-dropdown_elem').value;
+  let search = document.getElementById('up-c-search_elem').value;
   let placeUrl = url + "?location=" + loc + "&search=" + search;
 
-  let boxes = document.getElementsByClassName('box');
+  let boxes = document.getElementsByClassName('up-c-placesbox');
   for (var i = boxes.length - 1; i > -1 ; i--) {
   boxes[i].remove();
   }
