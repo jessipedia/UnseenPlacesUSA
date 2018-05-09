@@ -41,15 +41,15 @@ a{
   padding: 0;
   float: right;
   position: relative;
-  background: white;
+  background: #E3E6E8;
 }
 
 .up-l-controls_container{
-  background: #efefef;
+  background: #40474F;
   margin-bottom: 100px;
   padding: 10px;
   width: 100%;
-  height: 30px;
+  height: 60px;
   position: fixed;
   box-shadow: none;
   box-shadow: 0px 2px 4px -4px rgba(0, 0, 0, 20);
@@ -57,7 +57,7 @@ a{
 
 
 #up-l-controls_spacer{
-  height: 50px;
+  height: 80px;
   background: none;
   box-shadow: none;
 
@@ -70,6 +70,43 @@ a{
 /***/
 /* Components */
 /***/
+
+/* All */
+
+.up-c-dialog{
+  /* position: absolute;
+  left: 0px;
+  right: 0px;
+  width: -webkit-fit-content;
+  height: -webkit-fit-content;
+  color: black;
+  margin: auto;
+  border-width: initial;
+  border-style: solid;
+  border-color: initial;
+  border-image: initial;
+  padding: 1em; */
+  border: none;
+  color: #fff;
+  font-family: 'EB Garamond', serif;
+  font-size: 1.25em;
+  width: 60%;
+  background: #40474F;
+}
+
+.up-c-button{
+  opacity: 1;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 2px;
+  background-color: #FF5C5C;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+
+}
 
 /* Map */
 
@@ -154,6 +191,14 @@ a{
 
 /* Places Container */
 
+.up-c-controls_header{
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 1.25em;
+  font-weight: lighter;
+  color: #fff;
+  margin: 0px;
+  margin-bottom: 10px;
+}
 .up-c-dropdown_container{
   display: inline;
   padding-right: 5px;
@@ -179,29 +224,15 @@ a{
   height: 1.75em;
 }
 
-.up-c-button{
-  opacity: 1;
-  border: none;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  border-radius: 2px;
-  background-color: #FF5C5C;
-  color: white;
-  font-family: 'Open Sans', sans-serif;
-
-}
-
 .up-c-placesbox{
-  background: #efefef;
+  background: #B7BDC4;
   margin: 10px;
   width: 95%;
   padding: 0;
 }
 
 .up-c-placesbox_body{
-  background: #efefef;
+  background: #B7BDC4;
   max-height: 800px;
   padding-left: 10px;
   padding-right: 10px;
@@ -211,18 +242,21 @@ a{
 }
 
  .up-c-placesbox_text{
-   font-family: 'Open Sans', sans-serif;
-   font-size: .9em;
+   font-family: 'EB Garamond', serif;
+   /* font-family: 'Open Sans', sans-serif; */
+   font-size: 1.1em;
    margin-top: 0px;
  }
 
  .up-c-placesbox_text_latlon{
+   font-family: 'Open Sans', sans-serif;
    font-style: italic;
    font-size: .75em;
  }
 
  .up-c-placesbox_text_ref{
-   font-size: .7em;
+   font-family: 'Open Sans', sans-serif;
+   font-size: .75em;
    font-style: italic;
    margin: 3px;
  }

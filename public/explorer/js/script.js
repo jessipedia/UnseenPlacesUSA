@@ -64,6 +64,17 @@ function onClick(){
 /* Place Container */
 
 //Draw location boxes
+function popUp(){
+  let dialog = document.getElementById('up-c-infodialog');
+  let button = document.getElementById('up-c-infodialog_button');
+  dialog.showModal();
+
+  button.addEventListener('click', function() {
+    dialog.close();
+  })
+}
+
+
 function drawBoxes(data){
 
     for (let i = 0; i < data.length; i++) {
