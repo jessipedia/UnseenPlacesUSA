@@ -53,11 +53,11 @@ function collapse(){
 
 //Flyto point and scroll to view placebox when clicking on point
 function onClick(){
-  const place = document.getElementById(this._id);
-  place.checked = true;
-  const boxes = document.getElementsByClassName(this._id);
-  const box = boxes[0];
-  box.scrollIntoView({behavior:"smooth"});
+  const placebox = document.getElementById(this._id);
+  placebox.scrollIntoView({behavior:"smooth"});
+  const placeboxBody = placebox.getElementsByTagName("div")[0];
+  placeboxBody.removeAttribute("hidden");
+  placeboxBody.setAttribute("class", "up-c-placesbox_body up-c-placesbox_body_shown");
   myMap.flyTo([this._latlng.lat, this._latlng.lng], 15);
 }
 
