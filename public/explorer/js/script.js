@@ -10,6 +10,7 @@ fetch('/key')
   .catch(err => { throw err });
 
 searchKeydown();
+reset();
 
 /* Helper functions */
 
@@ -93,10 +94,10 @@ function drawBoxes(data){
       newBox.setAttribute("class", "up-c-placesbox");
 
       //update h1 elements, Add eventhandelers for mouse and keyboard
-      const h1 = newBox.getElementsByTagName("h1")[0];
-      h1.textContent = data[i].name;
-      h1.onclick = boxToggle;
-      h1.onkeydown = boxToggle;
+      const h2 = newBox.getElementsByTagName("h2")[0];
+      h2.textContent = data[i].name;
+      h2.onclick = boxToggle;
+      h2.onkeydown = boxToggle;
 
       //select and update placesbox_body elements
       const boxBody = newBox.getElementsByTagName("div")[0];
@@ -183,5 +184,24 @@ function searchKeydown(){
       return
     }
     submit();
+  })
+}
+
+function reset(){
+  const reset = document.getElementById('up-c-refresh_icon_container');
+
+  reset.onclick = function(){
+    removeBoxes();
+    loadPlaces(url);
+  }
+
+  reset.addEventListener('keydown', function(e){
+    if (e.type == 'keydown' && e.key !=  'Enter'){
+      return
+    } else{
+      removeBoxes();
+      loadPlaces(url);
+    }
+
   })
 }
