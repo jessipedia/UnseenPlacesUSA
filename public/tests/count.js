@@ -1,4 +1,4 @@
-var placeData = "http://localhost:3000/api/places";
+var placeData = "/api/places";
 
 loadJSON(placeData)
   .then(result => drawBar(count(result)));

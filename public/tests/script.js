@@ -1,6 +1,6 @@
 //(function (){
 var stateShapes = "states.json";
-var placeData = "http://localhost:3000/api/places";
+var placeData = "/api/places";
 
 
 var margin = {top: 0, right: 0, bottom: 0, left: 0};
