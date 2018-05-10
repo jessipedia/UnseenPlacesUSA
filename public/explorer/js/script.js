@@ -65,6 +65,10 @@ function onClick(){
 
 //Draw location boxes
 function popUp(){
+  // if (e.type == 'keydown' && e.key !=  'Enter'){
+  //   return
+  // }
+
   let dialog = document.getElementById('up-c-infodialog');
   let button = document.getElementById('up-c-infodialog_button');
   dialog.showModal();

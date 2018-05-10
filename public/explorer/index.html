@@ -8,27 +8,27 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="shortcut icon" href="../favicon.png" type="image/x-icon">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400|Roboto+Condensed" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=EB+Garamond:400" rel="stylesheet">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
         <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
     </head>
     <body>
         <dialog id="up-c-infodialog" class="up-c-dialog">
-          <p class="">
+          <p class="up-c-dialog_text">
             UnseenPlacesUSA is a data research project that explores unknown or ignored places in the United States. This can include places such as iron mines, radar stations, and prisons.
             The dataset is not meant to be a complete accounting of these locations, but an ongoing exploration of what it means to be seen and unseen, to see and un-see, why places are unseen, and how technology affects our ability to see.
 
           </p>
-          <p class="">
+          <p class="up-c-dialog_text">
             This data explorer allows visitors to examine places that are in the UnseenPlacesUSA dataset and learn more about them. Please keep in mind that the data shown here is not complete. Places in the dataset without location data or descriptions have not been included.
           </p>
-          <p class="">
+          <p class="up-c-dialog_text">
             Please reach out to UnseenPlacesUSA if you have any questions, comments, concerns, or if you know of a place that should be added to the dataset.
           </p>
-          <a href="https://github.com/jessipedia/UnseenPlacesUSA" id="gitBox">
+          <!-- <a href="https://github.com/jessipedia/UnseenPlacesUSA" id="gitBox">
             <svg class="up-c-social_icon" width="89px" height="87px" viewBox="0 0 89 87" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+                Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch
                 <title>github</title>
                 <desc>Created with Sketch.</desc>
                 <defs></defs>
@@ -38,10 +38,10 @@
                     </g>
                 </g>
             </svg>
-          </a>
-          <a href="https://twitter.com/UnseenPlacesUSA" id="twitBox">
+          </a> -->
+          <!-- <a href="https://twitter.com/UnseenPlacesUSA" id="twitBox">
             <svg class="up-c-social_icon" width="91px" height="74px" viewBox="0 0 91 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+                Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch
                 <title>twitter</title>
                 <desc>Created with Sketch.</desc>
                 <defs></defs>
@@ -51,8 +51,8 @@
                     </g>
                 </g>
             </svg>
-          </a>
-          <div class="refBox">
+          </a> -->
+          <!-- <div class="refBox">
           <p class="up-c-sidebar_body_text">If you like UnseenPlacesUSA you might also like:</p>
           <ul class="up-c-sidebar_body_text">
           <li><a href="http://www.jennyodell.com/satellite-landscapes.html">Satellite Landscapes</a> - <a href="http://www.jennyodell.com/">Jenny Odell</a></li>
@@ -61,98 +61,46 @@
           <li><a href="http://prisonmap.com/">Prison Map</a> - <a href="https://joshbegley.com/">Josh Begley</a></li>
           <li><a href="http://tarynsimon.com/works/aihu/#1">An American Index of the Hidden and Unfamiliar</a> - <a href="http://tarynsimon.com/">Taryn Simon</a></li>
           </ul>
-        </div>
-          <button id="up-c-infodialog_button" class= "up-c-button" type="reset">Great, thanks!</button>
+        </div> -->
+          <button id="up-c-infodialog_button" class= "up-c-button up-c-dialog_button" type="reset">Close</button>
         </dialog>
         <div id="up-l-map_box"></div>
-        <div id="up-c-slider_body_container" class="up-u-slider_body_closed">
-          <div class="up-c-slider_body">
-            <h1 class="up-c-sidebar_body_h1">UnseenPlacesUSA</h1>
-            <p class="up-c-sidebar_body_text">
-              UnseenPlacesUSA is a data research project that explores unknown or ignored places in the United States. This can include places such as iron mines, radar stations, and prisons.
-              The dataset is not meant to be a complete accounting of these locations, but an ongoing exploration of what it means to be seen and unseen, to see and un-see, why places are unseen, and how technology affects our ability to see.
-
-            </p>
-            <p class="up-c-sidebar_body_text">
-              This data explorer allows visitors to examine places that are in the UnseenPlacesUSA dataset and learn more about them. Please keep in mind that the data shown here is not complete. Places in the dataset without location data or descriptions have not been included.
-            </p>
-            <p class="up-c-sidebar_body_text">
-              Please reach out to UnseenPlacesUSA if you have any questions, comments, concerns, or if you know of a place that should be added to the dataset.
-            </p>
-            <a href="https://github.com/jessipedia/UnseenPlacesUSA" id="gitBox">
-              <svg class="up-c-social_icon" width="89px" height="87px" viewBox="0 0 89 87" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                  <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
-                  <title>github</title>
-                  <desc>Created with Sketch.</desc>
-                  <defs></defs>
-                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                      <g id="github" fill="#EFEFEF" fill-rule="nonzero">
-                          <path class="up-c-sidebar_body_social" d="M44.5,0 C19.9250488,0 0,19.9696786 0,44.5996747 C0,64.308027 12.74925,81.0220164 30.4334805,86.9181457 C32.657959,87.3265115 33.470084,85.949061 33.470084,84.773093 C33.470084,83.7114117 33.4293213,80.1944834 33.4075928,76.4705848 C21.0332031,79.1654679 18.4176113,71.2113946 18.4176113,71.2113946 C16.3914707,66.0610904 13.4770684,64.6891277 13.4770684,64.6891277 C9.43287012,61.9234253 13.783875,61.9778682 13.783875,61.9778682 C18.2517793,62.2881496 20.6040215,66.5728542 20.6040215,66.5728542 C24.5749512,73.3891131 31.0228447,71.4182779 33.5542168,70.2749757 C33.9587148,67.4003873 35.1103262,65.429552 36.3789238,64.3189156 C26.5006191,63.1919898 16.109,59.364606 16.109,42.2749166 C16.109,37.402228 17.8445869,33.4279788 20.6855469,30.3056532 C20.2319424,29.1732395 18.700082,24.6353969 21.1255059,18.4970182 C21.1255059,18.4970182 24.8574219,17.299273 33.3640488,23.070227 C36.9111855,22.0766647 40.716457,21.5866781 44.4999131,21.5703016 C48.2806748,21.5866781 52.0885537,22.0820655 55.6412529,23.0756278 C64.1317139,17.299273 67.8690186,18.5024189 67.8690186,18.5024189 C70.3026123,24.6462855 68.770752,29.1786403 68.3144531,30.3056532 C71.1662773,33.4279788 72.8883057,37.4023151 72.8883057,42.2749166 C72.8883057,59.4081604 62.4803467,63.1810141 52.5667549,64.2862498 C54.1692764,65.6691011 55.5870186,68.3803606 55.5870186,72.5398029 C55.5870186,78.5013508 55.5272217,83.3086208 55.5272217,84.7785808 C55.5272217,85.9654374 56.3365654,87.3536894 58.5909424,86.9181457 C76.2617012,81.0111278 89,64.2971384 89,44.5996747 C89,19.9696786 69.0749512,0 44.5,0 Z" id="Shape"></path>
-                      </g>
-                  </g>
-              </svg>
-            </a>
-            <a href="https://twitter.com/UnseenPlacesUSA" id="twitBox">
-              <svg class="up-c-social_icon" width="91px" height="74px" viewBox="0 0 91 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                  <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
-                  <title>twitter</title>
-                  <desc>Created with Sketch.</desc>
-                  <defs></defs>
-                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                      <g id="twitter" fill="#EFEFEF" fill-rule="nonzero">
-                          <path class="up-c-sidebar_body_social" d="M28.6188133,74 C62.9607345,74 81.739677,45.5327184 81.739677,20.847843 C81.739677,20.0392749 81.7232176,19.2343549 81.6869703,18.4330741 C85.3324631,15.7961374 88.5011161,12.5054267 91,8.75944186 C87.6548071,10.247273 84.0548142,11.2488748 80.2782753,11.7005067 C84.1330742,9.38771781 87.0924211,5.72915055 88.4883761,1.36763729 C84.8811002,3.50741828 80.8861613,5.06263209 76.6327794,5.90215239 C73.2257065,2.27089817 68.3753586,0 63.0044878,0 C52.694086,0 44.3329222,8.3660903 44.3329222,18.6789219 C44.3329222,20.144897 44.4967221,21.5708147 44.8170482,22.938449 C29.2995786,22.157203 15.5402379,14.7235138 6.33277117,3.42000682 C4.72933318,6.18077947 3.80476725,9.38771781 3.80476725,12.8095457 C3.80476725,19.2908082 7.10081713,25.0126744 12.113145,28.3598384 C9.05005811,28.2651426 6.17260815,27.4237951 3.65734118,26.0233785 C3.65459285,26.101758 3.65459285,26.1781727 3.65459285,26.261942 C3.65459285,35.3091163 10.0901787,42.8629993 18.6333425,44.5748223 C17.0644876,45.0027803 15.4137296,45.2322354 13.7101947,45.2322354 C12.5089827,45.2322354 11.3387107,45.1139391 10.2012018,44.8953371 C12.5781427,52.3180999 19.4705485,57.7194514 27.6424323,57.8706064 C21.2523464,62.8822424 13.2024087,65.867013 4.45358491,65.867013 C2.94842689,65.867013 1.46147497,65.7813493 0,65.6084147 C8.26288384,70.9077923 18.0745996,74 28.6197782,74" id="path3611"></path>
-                      </g>
-                  </g>
-              </svg>
-            </a>
-            <div class="refBox">
-            <p class="up-c-sidebar_body_text">If you like UnseenPlacesUSA you might also like:</p>
-            <ul class="up-c-sidebar_body_text">
-            <li><a href="http://www.jennyodell.com/satellite-landscapes.html">Satellite Landscapes</a> - <a href="http://www.jennyodell.com/">Jenny Odell</a></li>
-            <li><a href="http://www.clui.org/">The Center for Land Use Interpretation</a></li>
-            <li><a href="https://native-land.ca/">Native Land</a></li>
-            <li><a href="http://prisonmap.com/">Prison Map</a> - <a href="https://joshbegley.com/">Josh Begley</a></li>
-            <li><a href="http://tarynsimon.com/works/aihu/#1">An American Index of the Hidden and Unfamiliar</a> - <a href="http://tarynsimon.com/">Taryn Simon</a></li>
-            </ul>
-          </div>
-
-          </div>
-        </div>
-        <div class="up-c-slider">
-          <a href="/"><div class="up-c-logo_container">
-            <img
-              class="up-c-sidebar_logo"
-              src="img/eye.svg"
-              width="50px">
-          </div>
-        </a>
-
-        <div onclick="collapse()" class="up-c-sidebar_icon_container" tabindex="0">
-          <svg class="up-c-sidebar_icon" width="101px" height="100px" viewBox="0 0 101 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
-            <title>info</title>
-            <desc>Created with Sketch.</desc>
-            <defs></defs>
-            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" >
-                <g id="info" transform="translate(0.000000, -1.000000)" fill="#DDDDDD" fill-rule="nonzero">
-                    <g id="Group">
-                        <path class="up-u-info_icon" d="M56.67,77.56 L43.33,77.56 L43.33,44.56 L56.67,44.56 L56.67,77.56 Z M50,39.05 C45.9627985,39.05 42.69,35.7772015 42.69,31.74 C42.69,27.7027985 45.9627985,24.43 50,24.43 C54.0372015,24.43 57.31,27.7027985 57.31,31.74 C57.31,35.7772015 54.0372015,39.05 50,39.05 Z" id="Shape"></path>
-                        <path class="up-u-info_icon" d="M85.36,15.64 C71.0601756,1.33990135 49.554209,-2.93806219 30.8703718,4.80093163 C12.1865345,12.5399254 0.0043218846,30.7718005 0.0043218846,50.995 C0.0043218846,71.2181995 12.1865345,89.4500746 30.8703718,97.1890684 C49.554209,104.928062 71.0601756,100.650099 85.36,86.35 C94.7760104,76.9941685 100.070958,64.2687649 100.070958,50.995 C100.070958,37.7212351 94.7760104,24.9958315 85.36,15.64 Z M79.83,80.83 C63.29079,96.9193467 36.8942723,96.7373855 20.5784434,80.4215566 C4.26261451,64.1057277 4.08065333,37.70921 20.17,21.17 C28.0823358,13.2565158 38.8144553,8.81067004 50.005,8.81067004 C61.1955447,8.81067004 71.9276642,13.2565158 79.84,21.17 C96.3096788,37.648332 96.305202,64.3571901 79.83,80.83 Z" id="Shape"></path>
-                        <circle class="up-u-info_icon" id="Oval" cx="50" cy="31.74" r="7.31"></circle>
-                        <rect class="up-u-info_icon" id="Rectangle-path" x="43.33" y="44.57" width="13.35" height="32.99"></rect>
-                    </g>
-                </g>
-            </g>
-        </svg>
-      </div>
-        </div>
-
-
         <div id="up-l-places_container">
-          <div class="">
-          </div>
+
+
           <div class="up-l-controls_container">
-            <h1 class="up-c-controls_header" tabindex="0" onclick="popUp()">UnseenPlacesUSA</h1>
+            <div class="up-l-controls_header">
+              <h1 class="up-c-controls_header" tabindex="0" onclick="popUp()" keydown="popUp">UnseenPlacesUSA</h1>
+              <a href="https://twitter.com/UnseenPlacesUSA" id="twitBox">
+                <svg class="up-c-social_icon" width="91px" height="74px" viewBox="0 0 91 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+                    <title>twitter</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="twitter" fill="#EFEFEF" fill-rule="nonzero">
+                            <path class="up-c-sidebar_body_social" d="M28.6188133,74 C62.9607345,74 81.739677,45.5327184 81.739677,20.847843 C81.739677,20.0392749 81.7232176,19.2343549 81.6869703,18.4330741 C85.3324631,15.7961374 88.5011161,12.5054267 91,8.75944186 C87.6548071,10.247273 84.0548142,11.2488748 80.2782753,11.7005067 C84.1330742,9.38771781 87.0924211,5.72915055 88.4883761,1.36763729 C84.8811002,3.50741828 80.8861613,5.06263209 76.6327794,5.90215239 C73.2257065,2.27089817 68.3753586,0 63.0044878,0 C52.694086,0 44.3329222,8.3660903 44.3329222,18.6789219 C44.3329222,20.144897 44.4967221,21.5708147 44.8170482,22.938449 C29.2995786,22.157203 15.5402379,14.7235138 6.33277117,3.42000682 C4.72933318,6.18077947 3.80476725,9.38771781 3.80476725,12.8095457 C3.80476725,19.2908082 7.10081713,25.0126744 12.113145,28.3598384 C9.05005811,28.2651426 6.17260815,27.4237951 3.65734118,26.0233785 C3.65459285,26.101758 3.65459285,26.1781727 3.65459285,26.261942 C3.65459285,35.3091163 10.0901787,42.8629993 18.6333425,44.5748223 C17.0644876,45.0027803 15.4137296,45.2322354 13.7101947,45.2322354 C12.5089827,45.2322354 11.3387107,45.1139391 10.2012018,44.8953371 C12.5781427,52.3180999 19.4705485,57.7194514 27.6424323,57.8706064 C21.2523464,62.8822424 13.2024087,65.867013 4.45358491,65.867013 C2.94842689,65.867013 1.46147497,65.7813493 0,65.6084147 C8.26288384,70.9077923 18.0745996,74 28.6197782,74" id="path3611"></path>
+                        </g>
+                    </g>
+                </svg>
+              </a>
+              <a href="https://github.com/jessipedia/UnseenPlacesUSA" id="gitBox">
+                <svg class="up-c-social_icon" width="89px" height="87px" viewBox="0 0 89 87" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+                    <title>github</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="github" fill="#EFEFEF" fill-rule="nonzero">
+                            <path class="up-c-sidebar_body_social" d="M44.5,0 C19.9250488,0 0,19.9696786 0,44.5996747 C0,64.308027 12.74925,81.0220164 30.4334805,86.9181457 C32.657959,87.3265115 33.470084,85.949061 33.470084,84.773093 C33.470084,83.7114117 33.4293213,80.1944834 33.4075928,76.4705848 C21.0332031,79.1654679 18.4176113,71.2113946 18.4176113,71.2113946 C16.3914707,66.0610904 13.4770684,64.6891277 13.4770684,64.6891277 C9.43287012,61.9234253 13.783875,61.9778682 13.783875,61.9778682 C18.2517793,62.2881496 20.6040215,66.5728542 20.6040215,66.5728542 C24.5749512,73.3891131 31.0228447,71.4182779 33.5542168,70.2749757 C33.9587148,67.4003873 35.1103262,65.429552 36.3789238,64.3189156 C26.5006191,63.1919898 16.109,59.364606 16.109,42.2749166 C16.109,37.402228 17.8445869,33.4279788 20.6855469,30.3056532 C20.2319424,29.1732395 18.700082,24.6353969 21.1255059,18.4970182 C21.1255059,18.4970182 24.8574219,17.299273 33.3640488,23.070227 C36.9111855,22.0766647 40.716457,21.5866781 44.4999131,21.5703016 C48.2806748,21.5866781 52.0885537,22.0820655 55.6412529,23.0756278 C64.1317139,17.299273 67.8690186,18.5024189 67.8690186,18.5024189 C70.3026123,24.6462855 68.770752,29.1786403 68.3144531,30.3056532 C71.1662773,33.4279788 72.8883057,37.4023151 72.8883057,42.2749166 C72.8883057,59.4081604 62.4803467,63.1810141 52.5667549,64.2862498 C54.1692764,65.6691011 55.5870186,68.3803606 55.5870186,72.5398029 C55.5870186,78.5013508 55.5272217,83.3086208 55.5272217,84.7785808 C55.5272217,85.9654374 56.3365654,87.3536894 58.5909424,86.9181457 C76.2617012,81.0111278 89,64.2971384 89,44.5996747 C89,19.9696786 69.0749512,0 44.5,0 Z" id="Shape"></path>
+                        </g>
+                    </g>
+                </svg>
+              </a>
+            </div>
+            <div class="up-c-controls_text_container">
+              <p class="up-c-controls_text">UnseenPlacesUSA is a data research project that explores unknown or ignored places in the United States.</p>
+            </div>
             <div class="up-c-dropdown_container">
             <select id="up-c-dropdown_elem">
                 <option value="">All States</option>
