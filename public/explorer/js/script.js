@@ -9,6 +9,7 @@ fetch('/key')
   .then(text => drawTiles(text))
   .catch(err => { throw err });
 
+searchKeydown();
 
 /* Helper functions */
 
@@ -172,4 +173,15 @@ function submit(){
 
   removeBoxes();
   loadPlaces(placeUrl);
+}
+
+function searchKeydown(){
+  const search = document.getElementById('up-c-search_elem');
+
+  search.addEventListener('keydown', function(e){
+    if (e.type == 'keydown' && e.key !=  'Enter'){
+      return
+    }
+    submit();
+  })
 }
