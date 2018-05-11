@@ -103,7 +103,7 @@ function drawBoxes(data){
       const boxBody = newBox.getElementsByTagName("div")[0];
 
       const latlon = boxBody.getElementsByTagName("p")[0];
-      latlon.textContent = data[i].location.coordinates[1] + " , " + data[i].location.coordinates[0];
+      latlon.textContent = data[i].location.coordinates[1] + ", " + data[i].location.coordinates[0];
 
       const short_desc = boxBody.getElementsByTagName("p")[1];
       short_desc.textContent = data[i].name + " is " + avan + " " + data[i].short_desc + ".";
