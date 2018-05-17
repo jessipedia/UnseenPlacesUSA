@@ -4,7 +4,8 @@ const app = express();
 const mongoose = require('mongoose');
 const fs = require('fs');
 
-const fileName = './cb_2016_us_state_500k_edit_v2.geojson';
+const fileName = './geography/cb_2016_us_terr_5m_edit.geojson';
+const mdbUri = process.env.UP_MDB_URI;
 const content = fs.readFileSync(fileName);
 const jsonContent = JSON.parse(content);
 
@@ -33,7 +34,7 @@ const terrSchema = mongoose.Schema({
 
 const terrShape = mongoose.model('Shape', terrSchema);
 
-mongoose.connect('mongodb://jscottdutcher:5eD8xe5T6vr3@jessdb-shard-00-00-98ywm.mongodb.net:27017,jessdb-shard-00-01-98ywm.mongodb.net:27017,jessdb-shard-00-02-98ywm.mongodb.net:27017/upusa?ssl=true&replicaSet=JessDB-shard-0&authSource=admin',{useMongoClient: true});
+mongoose.connect(mdbUri, {useMongoClient: true});
 
 terrShape.insertMany(features, function(err, docs) {
   console.log('Saving');

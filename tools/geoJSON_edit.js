@@ -1,7 +1,7 @@
 //Edits US census geojson for use with project
 //https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html
 const fs = require('fs');
-const fileName = './cb_2016_us_state_500k.geojson';
+const fileName = './geography/cb_2016_us_terr_5m.geojson';
 const content = fs.readFileSync(fileName);
 
 const jsonContent = JSON.parse(content);
@@ -22,4 +22,4 @@ for (let i = 0; i < jsonContent.features.length; i++) {
 
 const stringJSON = JSON.stringify(jsonContent);
 
-fs.appendFileSync('cb_2016_us_state_500k_edit_v2.geojson', stringJSON);
+fs.appendFileSync('./geography/cb_2016_us_terr_5m_edit.geojson', stringJSON);
